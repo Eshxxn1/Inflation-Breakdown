@@ -8,31 +8,18 @@ compares with the 2% target. Data from the U.S. Bureau of Labor Statistics (BLS)
 
 ## Where it lives
 
-- **Website:** https://inflationbreakdown.com (GitHub Pages, deployed by `.github/workflows/update.yml`)
-- **Domain:** inflationbreakdown.com, DNS at Cloudflare
+- **Website:** https://inflationbreakdown.com, hosted on Cloudflare Pages from the `site` folder of this repository
+- **Updates:** `.github/workflows/update.yml` fetches new data, rebuilds `site/` and commits; Cloudflare republishes on each commit
 
-### One-time setup (already done if the site is live)
+### One-time setup
 
-1. **Settings → Pages → Source: GitHub Actions.**
-2. **Settings → Secrets and variables → Actions → New repository secret:** `BLS_USER_AGENT`, value like
+1. **GitHub → Settings → Secrets and variables → Actions → New repository secret:** `BLS_USER_AGENT`, value like
    `InflationBreakdown (you@example.com)`. BLS asks automated tools to identify themselves.
-3. **Settings → Pages → Custom domain:** `inflationbreakdown.com`, Save.
-4. **Cloudflare → inflationbreakdown.com → DNS → Records**, add (Proxy status: **DNS only**, grey cloud):
-
-   | Type | Name | Content |
-   |---|---|---|
-   | A | `@` | `185.199.108.153` |
-   | A | `@` | `185.199.109.153` |
-   | A | `@` | `185.199.110.153` |
-   | A | `@` | `185.199.111.153` |
-   | AAAA | `@` | `2606:50c0:8000::153` |
-   | AAAA | `@` | `2606:50c0:8001::153` |
-   | AAAA | `@` | `2606:50c0:8002::153` |
-   | AAAA | `@` | `2606:50c0:8003::153` |
-   | CNAME | `www` | `eshxxn1.github.io` |
-
-   Delete any other A, AAAA or CNAME records for `@` or `www` (Cloudflare adds parking records to new domains).
-5. Wait for GitHub's DNS check to pass (minutes to a few hours), then tick **Enforce HTTPS** in Settings → Pages.
+2. **Cloudflare → Workers & Pages → Create application → Pages → Connect to Git**, pick this repository, then:
+   Framework preset **None**, Build command **(empty)**, Build output directory **`site`**. Save and Deploy.
+3. **Cloudflare → your Pages project → Custom domains → Set up a domain:** `inflationbreakdown.com`, then again for
+   `www.inflationbreakdown.com`. Cloudflare creates the DNS records. Remove any older A/AAAA/CNAME records for
+   `@` and `www` first.
 
 ## Make it yours
 
@@ -58,7 +45,7 @@ Commit the change and the site rebuilds automatically.
    and six FRED series, checks them, and rewrites `data/*.csv`;
 2. runs `scripts/build_site.py`, which puts the page, the data and the chart library into
    `site/index.html`;
-3. commits any changes and publishes the site.
+3. commits any changes; Cloudflare Pages then republishes the site.
 
 On days without a new release nothing changes. If BLS has released but FRED hasn't caught up yet,
 or anything fails a check (a missing row, contributions that don't add up to the published

@@ -1,4 +1,7 @@
-name: Update CPI data and publish
+name: Update CPI data
+
+# Fetches each new BLS CPI release and FRED data, rebuilds site/index.html and commits it.
+# Cloudflare Pages watches this repository and republishes inflationbreakdown.com on every commit.
 
 on:
   schedule:
@@ -11,15 +14,13 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: update
   cancel-in-progress: false
 
 jobs:
-  build:
+  update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,28 +30,16 @@ jobs:
       - run: pip install pandas lxml requests
       - name: Fetch latest BLS and FRED data
         # A run that finds no new release, or data that fails the checks, keeps the current data.
+        # The reason shows as an annotation on the run's summary page.
         continue-on-error: true
         env:
           BLS_USER_AGENT: ${{ secrets.BLS_USER_AGENT }}
         run: python scripts/update_data.py
       - name: Build the site
         run: python scripts/build_site.py
-      - name: Save new data to the repository
+      - name: Save to the repository (Cloudflare Pages republishes from this)
         run: |
           git config user.name "cpi-bot"
           git config user.email "cpi-bot@users.noreply.github.com"
           git add data site
           git diff --cached --quiet || (git commit -m "Update CPI data" && git push)
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
