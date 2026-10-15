@@ -1,0 +1,13 @@
+// Cloudflare Workers static-site settings: serves the built site/ folder.
+// Custom domains (inflationbreakdown.com, www) are attached in the Cloudflare dashboard:
+// Workers & Pages → inflation-breakdown → Settings → Domains & Routes.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "inflation-breakdown",
+  "compatibility_date": "2026-10-12",
+  "observability": { "enabled": true },
+  "assets": {
+    "directory": "site",
+    "not_found_handling": "single-page-application"
+  }
+}
