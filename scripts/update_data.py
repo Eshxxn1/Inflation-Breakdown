@@ -130,8 +130,28 @@ def update_components():
 
 
 # ------------------------------------------------------------------ Table A → components_monthly.csv
+def release_dates(page_html):
+    """Release date of this CPI report and the scheduled date of the next one, from the news release text."""
+    import datetime
+    text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", page_html))
+    def find(pattern):
+        m = re.search(pattern, text)
+        if not m:
+            return None
+        try:
+            return datetime.datetime.strptime(m.group(1), "%B %d, %Y").date().isoformat()
+        except ValueError:
+            return None
+    return {"released": find(r"embargoed until 8:30 a\.m\. \(ET\) \w+, (\w+ \d{1,2}, \d{4})"),
+            "next_release": find(r"scheduled to be published on \w+, (\w+ \d{1,2}, \d{4})")}
+
+
+RELEASE = {}
+
+
 def update_monthly():
-    rows, df, _ = bls_table("cpi.nr0.htm", "All items")
+    rows, df, page_html = bls_table("cpi.nr0.htm", "All items")
+    RELEASE.update(release_dates(page_html))
     labels = [" ".join(str(x) for x in (c if isinstance(c, tuple) else (c,))) for c in df.columns]
     months = []
     for lab in labels[1:8]:
@@ -327,6 +347,15 @@ def main():
     write("effects", effects)
     write("regions", regions)
     write("fred", fred)
+    rel = {"month": month, **{k: v for k, v in RELEASE.items() if v}}
+    old = {}
+    if (DATA / "release.json").exists():
+        import json
+        old = json.loads((DATA / "release.json").read_text(encoding="utf-8"))
+        if old.get("month") != month:  # a new release: drop dates that belonged to the previous one
+            old = {}
+    import json
+    (DATA / "release.json").write_text(json.dumps({**old, **rel}) + "\n", encoding="utf-8")
     report("notice", f"Data updated to {month} (contributions add to the published headline within tolerance)")
 
 

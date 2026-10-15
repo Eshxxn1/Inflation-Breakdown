@@ -46,7 +46,8 @@ def main():
               '<meta name="twitter:card" content="summary_large_image">\n')
 
     light, dark, sizes, favicon = site_shell.LIGHT, site_shell.DARK, site_shell.SIZES, site_shell.FAVICON
-    banner_html, month_name = site_shell.banner(data)
+    release = json.loads((ROOT / 'data' / 'release.json').read_text(encoding='utf-8')) if (ROOT / 'data' / 'release.json').exists() else {}
+    banner_html, month_name = site_shell.banner(data, release)
 
     # minimal stand-in for the dashboard runtime: serves the embedded data, runs calculations, redraws on changes
     shim = (
@@ -90,8 +91,10 @@ def main():
 {cfg.get('analytics_html') or ''}
 </head>
 <body class="standalone">
+<a class="skip" href="#dash-root">Skip to the dashboard</a>
 {site_shell.header(cfg, banner_html)}
 <main class="wrap">
+{site_shell.viewbar(data)}
 <div id="dash-root">
 {page}
 </div>

@@ -89,6 +89,7 @@
   </header>
 
   <section class="cp-card cp-takeaways" aria-label="Key takeaways" id="takeaways">
+    <h2 class="tk-title" id="in-brief">The short version</h2>
     <ul class="v-yoy">
       <li>Prices rose <b><span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=headline">—</span>%</b> in the 12 months to <span data-source="takeaways" data-field="value" data-where="view=all&amp;key=month">—</span>, <b><span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=gap">—</span> points</b> <span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=gap_word">—</span> the 2% target. Core CPI, which excludes food and energy, rose <b><span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=core">—</span>%</b>.</li>
       <li><b><span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=top">—</span></b> added the most: <b><span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=top_pts">—</span> points</b> (<span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=top_share">—</span>% of the total) from <span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=top_weight">—</span>% of the basket, led by <span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=top_sub">—</span> (+<span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=top_sub_pts">—</span>). Next was <span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=second">—</span>, +<span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=second_pts">—</span> (<span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=second_share">—</span>%).</li>
@@ -112,24 +113,42 @@
 
   <section data-tab="overview" role="tabpanel" aria-labelledby="tab-overview" id="overview" class="cp-panel">
     <div class="cp-kpis" id="kpis">
-    <div class="cp-card cp-kpi"><div class="lbl">All items</div>
+    <div class="cp-card cp-kpi">
+      <div class="lbl">All items</div>
       <div class="big"><span class="v-yoy"><span data-source="components" data-field="yoy" data-where="item=All items">—</span>%</span><span class="v-mom"><span data-source="components" data-field="mom_sa" data-where="item=All items">—</span>%</span></div>
-      <div class="sub"><span class="v-yoy">12-month · m/m <span data-source="components" data-field="mom_sa" data-where="item=All items">—</span>%</span><span class="v-mom">1-month SA · 12-mo <span data-source="components" data-field="yoy" data-where="item=All items">—</span>%</span></div></div>
-    <div class="cp-card cp-kpi"><div class="lbl">Core (ex food &amp; energy)</div>
+      <div class="kpi-gap"><span class="v-yoy"><span class="gapnum" data-source="gaps" data-field="gap" data-where="item=All items">—</span> pts vs 2% target</span><span class="v-mom"><span class="gapnum" data-source="gaps" data-field="gap_m" data-where="item=All items">—</span> pts vs 0.17% a month</span></div>
+      <div class="sub"><span class="v-yoy">Latest month: <span data-source="components" data-field="mom_sa" data-where="item=All items">—</span>%</span><span class="v-mom">Past 12 months: <span data-source="components" data-field="yoy" data-where="item=All items">—</span>%</span></div>
+    </div>
+    <div class="cp-card cp-kpi">
+      <div class="lbl">Core (excludes food and energy)</div>
       <div class="big"><span class="v-yoy"><span data-source="components" data-field="yoy" data-where="item=All items less food and energy">—</span>%</span><span class="v-mom"><span data-source="components" data-field="mom_sa" data-where="item=All items less food and energy">—</span>%</span></div>
-      <div class="sub"><span class="v-yoy">12-month · m/m <span data-source="components" data-field="mom_sa" data-where="item=All items less food and energy">—</span>%</span><span class="v-mom">1-month SA · 12-mo <span data-source="components" data-field="yoy" data-where="item=All items less food and energy">—</span>%</span></div></div>
-    <div class="cp-card cp-kpi"><div class="lbl">Supercore*</div>
+      <div class="kpi-gap"><span class="v-yoy"><span class="gapnum" data-source="gaps" data-field="gap" data-where="item=All items less food and energy">—</span> pts vs 2% target</span><span class="v-mom"><span class="gapnum" data-source="gaps" data-field="gap_m" data-where="item=All items less food and energy">—</span> pts vs 0.17% a month</span></div>
+      <div class="sub"><span class="v-yoy">Latest month: <span data-source="components" data-field="mom_sa" data-where="item=All items less food and energy">—</span>%</span><span class="v-mom">Past 12 months: <span data-source="components" data-field="yoy" data-where="item=All items less food and energy">—</span>%</span></div>
+    </div>
+    <div class="cp-card cp-kpi">
+      <div class="lbl">Supercore*</div>
       <div class="big"><span class="v-yoy"><span data-source="roc_latest" data-field="m12" data-where="series=Supercore">—</span>%</span><span class="v-mom"><span data-source="roc_latest" data-field="mom" data-where="series=Supercore">—</span>%</span></div>
-      <div class="sub"><span class="v-yoy">12-month · estimated</span><span class="v-mom">1-month SA · estimated</span></div></div>
-    <div class="cp-card cp-kpi"><div class="lbl">Energy</div>
+      <div class="kpi-gap kpi-gap-note">Services excluding housing</div>
+      <div class="sub">*Estimated from BLS and FRED data</div>
+    </div>
+    <div class="cp-card cp-kpi">
+      <div class="lbl">Energy</div>
       <div class="big"><span class="v-yoy"><span data-source="components" data-field="yoy" data-where="item=Energy">—</span>%</span><span class="v-mom"><span data-source="components" data-field="mom_sa" data-where="item=Energy">—</span>%</span></div>
-      <div class="sub"><span class="v-yoy">12-month · m/m <span data-source="components" data-field="mom_sa" data-where="item=Energy">—</span>%</span><span class="v-mom">1-month SA · 12-mo <span data-source="components" data-field="yoy" data-where="item=Energy">—</span>%</span></div></div>
-    <div class="cp-card cp-kpi"><div class="lbl">Food</div>
+      <div class="kpi-gap"><span class="v-yoy"><span class="gapnum" data-source="gaps" data-field="gap" data-where="item=Energy">—</span> pts vs 2% target</span><span class="v-mom"><span class="gapnum" data-source="gaps" data-field="gap_m" data-where="item=Energy">—</span> pts vs 0.17% a month</span></div>
+      <div class="sub"><span class="v-yoy">Latest month: <span data-source="components" data-field="mom_sa" data-where="item=Energy">—</span>%</span><span class="v-mom">Past 12 months: <span data-source="components" data-field="yoy" data-where="item=Energy">—</span>%</span></div>
+    </div>
+    <div class="cp-card cp-kpi">
+      <div class="lbl">Food</div>
       <div class="big"><span class="v-yoy"><span data-source="components" data-field="yoy" data-where="item=Food">—</span>%</span><span class="v-mom"><span data-source="components" data-field="mom_sa" data-where="item=Food">—</span>%</span></div>
-      <div class="sub"><span class="v-yoy">12-month · m/m <span data-source="components" data-field="mom_sa" data-where="item=Food">—</span>%</span><span class="v-mom">1-month SA · 12-mo <span data-source="components" data-field="yoy" data-where="item=Food">—</span>%</span></div></div>
-    <div class="cp-card cp-kpi"><div class="lbl">Shelter</div>
+      <div class="kpi-gap"><span class="v-yoy"><span class="gapnum" data-source="gaps" data-field="gap" data-where="item=Food">—</span> pts vs 2% target</span><span class="v-mom"><span class="gapnum" data-source="gaps" data-field="gap_m" data-where="item=Food">—</span> pts vs 0.17% a month</span></div>
+      <div class="sub"><span class="v-yoy">Latest month: <span data-source="components" data-field="mom_sa" data-where="item=Food">—</span>%</span><span class="v-mom">Past 12 months: <span data-source="components" data-field="yoy" data-where="item=Food">—</span>%</span></div>
+    </div>
+    <div class="cp-card cp-kpi">
+      <div class="lbl">Shelter</div>
       <div class="big"><span class="v-yoy"><span data-source="components" data-field="yoy" data-where="item=Shelter">—</span>%</span><span class="v-mom"><span data-source="components" data-field="mom_sa" data-where="item=Shelter">—</span>%</span></div>
-      <div class="sub"><span class="v-yoy">12-month · m/m <span data-source="components" data-field="mom_sa" data-where="item=Shelter">—</span>%</span><span class="v-mom">1-month SA · 12-mo <span data-source="components" data-field="yoy" data-where="item=Shelter">—</span>%</span></div></div>
+      <div class="kpi-gap"><span class="v-yoy"><span class="gapnum" data-source="gaps" data-field="gap" data-where="item=Shelter">—</span> pts vs 2% target</span><span class="v-mom"><span class="gapnum" data-source="gaps" data-field="gap_m" data-where="item=Shelter">—</span> pts vs 0.17% a month</span></div>
+      <div class="sub"><span class="v-yoy">Latest month: <span data-source="components" data-field="mom_sa" data-where="item=Shelter">—</span>%</span><span class="v-mom">Past 12 months: <span data-source="components" data-field="yoy" data-where="item=Shelter">—</span>%</span></div>
+    </div>
     </div>
 
     <div class="cp-card" id="stack-card">
