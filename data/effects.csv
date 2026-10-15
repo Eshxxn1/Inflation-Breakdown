@@ -12,17 +12,17 @@ yoy,Energy,"Propane, kerosene, and firewood",Energy,sub,0.055,1.9,0.001,official
 yoy,Energy,Electricity,Energy,sub,2.529,4.4,0.109,official
 yoy,Energy,Utility (piped) gas service,Energy,sub,0.743,5.0,0.038,official
 yoy,Food away from home,Food away from home,Food,parent,5.304,3.5,0.187,official
-yoy,Food away from home,Full service meals and snacks,Food,sub,2.354,3.8,0.09,official
+yoy,Food away from home,Full service meals and snacks,Food,sub,2.354,3.8,0.090,official
 yoy,Food away from home,Limited service meals and snacks,Food,sub,2.647,3.2,0.086,official
 yoy,Food away from home,Food at employee sites and schools,Food,sub,0.064,3.8,0.002,official
 yoy,Food away from home,Food from vending machines and mobile vendors,Food,sub,0.053,2.0,0.001,official
 yoy,Food away from home,Other food away from home,Food,sub,0.185,4.0,0.008,official
 yoy,Food at home,Food at home,Food,parent,8.203,1.8,0.151,official
 yoy,Food at home,Cereals and bakery products,Food,sub,1.021,2.1,0.022,official
-yoy,Food at home,Beef and veal,Food,sub,0.636,3.5,0.02,official
+yoy,Food at home,Beef and veal,Food,sub,0.636,3.5,0.020,official
 yoy,Food at home,Pork,Food,sub,0.337,-0.7,-0.001,official
 yoy,Food at home,Poultry,Food,sub,0.355,1.1,0.005,official
-yoy,Food at home,Fish and seafood,Food,sub,0.318,6.9,0.02,official
+yoy,Food at home,Fish and seafood,Food,sub,0.318,6.9,0.020,official
 yoy,Food at home,Eggs,Food,sub,0.115,-20.6,-0.031,official
 yoy,Food at home,Other meats,Food,sub,0.195,-1.6,-0.003,official
 yoy,Food at home,Dairy and related products,Food,sub,0.741,-0.7,-0.005,official
@@ -33,42 +33,41 @@ yoy,Food at home,Nonalcoholic beverages,Food,sub,0.986,3.8,0.038,official
 yoy,Food at home,Sugar and sweets,Food,sub,0.328,5.5,0.018,official
 yoy,Food at home,Fats and oils,Food,sub,0.221,-0.8,-0.002,official
 yoy,Food at home,Other foods,Food,sub,1.678,1.4,0.024,official
-yoy,Transportation services,Transportation services,Core services,parent,6.261,2.7,0.179,estimate
-yoy,Transportation services,Airline fares,Core services,sub,1.04,22.4,0.206,estimate
-yoy,Transportation services,Motor vehicle insurance,Core services,sub,2.531,-5.0,-0.144,estimate
-yoy,Transportation services,Motor vehicle maintenance and repair,Core services,sub,1.063,5.8,0.063,estimate
-yoy,Transportation services,Car and truck rental,Core services,sub,0.154,9.1,0.014,estimate
-yoy,Transportation services,Leased cars and trucks,Core services,sub,0.383,-0.1,-0.0,estimate
-yoy,Transportation services,Motor vehicle fees,Core services,sub,0.5,0.5,0.003,estimate
-yoy,Transportation services,Other intercity transportation,Core services,sub,0.224,-1.0,-0.002,estimate
-yoy,Transportation services,Intracity transportation,Core services,sub,0.36,9.6,0.034,estimate
-yoy,Transportation services,Rest of transportation services,Core services,sub,,,0.005,estimate
-yoy,Medical care services,Medical care services,Core services,parent,6.834,2.5,0.181,estimate
-yoy,Medical care services,Physicians' services,Core services,sub,1.658,2.1,0.037,estimate
-yoy,Medical care services,Dental services,Core services,sub,0.913,6.0,0.056,estimate
-yoy,Medical care services,Eyeglasses and eye care,Core services,sub,0.317,1.1,0.004,estimate
-yoy,Medical care services,Hospital services,Core services,sub,2.16,5.6,0.124,estimate
-yoy,Medical care services,Nursing homes and adult day services,Core services,sub,0.222,4.7,0.011,estimate
-yoy,Medical care services,Home health care,Core services,sub,0.229,3.3,0.008,estimate
-yoy,Medical care services,Health insurance,Core services,sub,0.818,-9.0,-0.088,estimate
-yoy,Medical care services,Rest of medical care services,Core services,sub,,,0.029,estimate
-yoy,Education and communication services,Education and communication services,Core services,parent,5.018,3.1,0.164,estimate
-yoy,Education and communication services,"Tuition, school fees and childcare",Core services,sub,2.542,3.8,0.101,estimate
-yoy,Education and communication services,Telephone services,Core services,sub,1.493,3.2,0.05,estimate
-yoy,Education and communication services,Internet services,Core services,sub,0.906,0.2,0.002,estimate
-yoy,Education and communication services,Postage and delivery services,Core services,sub,0.066,13.0,0.008,estimate
-yoy,Recreation services,Recreation services,Core services,parent,3.141,2.3,0.077,estimate
-yoy,Recreation services,Video and audio services,Core services,sub,0.78,4.1,0.033,estimate
-yoy,Recreation services,Pet services including veterinary,Core services,sub,0.543,3.1,0.018,estimate
-yoy,Recreation services,Other recreation services,Core services,sub,1.781,1.3,0.025,estimate
-yoy,Other personal services,Other personal services,Core services,parent,1.6,4.5,0.075,estimate
-yoy,Other personal services,Personal care services,Core services,sub,0.668,3.7,0.026,estimate
-yoy,Other personal services,Miscellaneous personal services,Core services,sub,0.932,5.1,0.049,estimate
-yoy,"Water, trash and household services","Water, trash and household services",Core services,parent,2.063,,0.088,mixed
+yoy,Transportation services,Transportation services,Core services,parent,6.261,2.7,0.171,official
+yoy,Transportation services,Airline fares,Core services,sub,1.040,22.4,0.201,official
+yoy,Transportation services,Motor vehicle insurance,Core services,sub,2.531,-5.0,-0.136,official
+yoy,Transportation services,Motor vehicle maintenance and repair,Core services,sub,1.063,5.8,0.060,official
+yoy,Transportation services,Car and truck rental,Core services,sub,0.154,9.1,0.014,official
+yoy,Transportation services,Leased cars and trucks,Core services,sub,0.383,-0.1,0.000,official
+yoy,Transportation services,Motor vehicle fees,Core services,sub,0.500,0.5,0.003,official
+yoy,Transportation services,Other intercity transportation,Core services,sub,0.224,-1.0,-0.003,official
+yoy,Transportation services,Intracity transportation,Core services,sub,0.360,9.6,0.032,official
+yoy,Medical care services,Medical care services,Core services,parent,6.834,2.5,0.174,official
+yoy,Medical care services,Physicians' services,Core services,sub,1.658,2.1,0.036,official
+yoy,Medical care services,Dental services,Core services,sub,0.913,6.0,0.054,official
+yoy,Medical care services,Eyeglasses and eye care,Core services,sub,0.317,1.1,0.003,official
+yoy,Medical care services,Hospital services,Core services,sub,2.160,5.6,0.117,official
+yoy,Medical care services,Nursing homes and adult day services,Core services,sub,0.222,4.7,0.010,official
+yoy,Medical care services,Home health care,Core services,sub,0.229,3.3,0.007,official
+yoy,Medical care services,Health insurance,Core services,sub,0.818,-9.0,-0.078,official
+yoy,Medical care services,Rest of medical care services,Core services,sub,,,0.025,official
+yoy,Education and communication services,Education and communication services,Core services,parent,5.018,3.1,0.156,official
+yoy,Education and communication services,"Tuition, school fees and childcare",Core services,sub,2.542,3.8,0.097,official
+yoy,Education and communication services,Telephone services,Core services,sub,1.493,3.2,0.050,official
+yoy,Education and communication services,Internet services,Core services,sub,0.906,0.2,0.002,official
+yoy,Education and communication services,Postage and delivery services,Core services,sub,0.066,13.0,0.008,official
+yoy,Recreation services,Recreation services,Core services,parent,3.141,2.3,0.076,official
+yoy,Recreation services,Video and audio services,Core services,sub,0.780,4.1,0.032,official
+yoy,Recreation services,Pet services including veterinary,Core services,sub,0.543,3.1,0.017,official
+yoy,Recreation services,Other recreation services,Core services,sub,1.781,1.3,0.025,official
+yoy,Other personal services,Other personal services,Core services,parent,1.600,4.5,0.071,official
+yoy,Other personal services,Personal care services,Core services,sub,0.668,3.7,0.025,official
+yoy,Other personal services,Miscellaneous personal services,Core services,sub,0.932,5.1,0.047,official
+yoy,"Water, trash and household services","Water, trash and household services",Core services,parent,2.063,,0.114,official
 yoy,"Water, trash and household services",Water and sewer and trash collection,Core services,sub,1.147,4.8,0.054,official
 yoy,"Water, trash and household services",Gardening and lawncare services,Core services,sub,0.391,8.8,0.033,official
 yoy,"Water, trash and household services","Moving, storage, freight expense",Core services,sub,0.075,-7.1,-0.014,official
-yoy,"Water, trash and household services",Other household operations,Core services,sub,0.45,,0.015,estimate
+yoy,"Water, trash and household services",Other household operations,Core services,sub,0.450,,0.041,official
 yoy,Medical care commodities,Medical care commodities,Core goods,parent,1.396,-3.3,-0.048,official
 yoy,Medical care commodities,Prescription drugs,Core goods,sub,0.909,-4.5,-0.043,official
 yoy,Medical care commodities,Nonprescription drugs,Core goods,sub,0.357,-0.9,-0.003,official
@@ -89,50 +88,49 @@ yoy,Household furnishings and supplies,Furniture and bedding,Core goods,sub,0.84
 yoy,Household furnishings and supplies,Appliances,Core goods,sub,0.199,-1.0,-0.003,official
 yoy,Household furnishings and supplies,Other household equipment and furnishings,Core goods,sub,0.533,1.3,0.006,official
 yoy,Household furnishings and supplies,"Tools, hardware, outdoor equipment and supplies",Core goods,sub,0.673,2.2,0.017,official
-yoy,Household furnishings and supplies,Housekeeping supplies,Core goods,sub,0.83,1.2,0.01,official
-yoy,Recreation goods,Recreation goods,Core goods,parent,1.922,3.6,0.07,official
+yoy,Household furnishings and supplies,Housekeeping supplies,Core goods,sub,0.830,1.2,0.010,official
+yoy,Recreation goods,Recreation goods,Core goods,parent,1.922,3.6,0.070,official
 yoy,Recreation goods,Video and audio products,Core goods,sub,0.262,1.9,0.005,official
 yoy,Recreation goods,Pets and pet products,Core goods,sub,0.601,1.3,0.008,official
 yoy,Recreation goods,Sporting goods,Core goods,sub,0.535,4.7,0.025,official
 yoy,Recreation goods,Recreational reading materials,Core goods,sub,0.115,7.0,0.008,official
 yoy,Recreation goods,Toys and other recreational goods,Core goods,sub,0.384,5.9,0.024,official
-yoy,Recreation goods,Photographic equipment and supplies,Core goods,sub,0.025,-0.8,0.0,official
+yoy,Recreation goods,Photographic equipment and supplies,Core goods,sub,0.025,-0.8,0.000,official
 yoy,Education and communication goods,Education and communication goods,Core goods,parent,0.789,-2.6,-0.019,official
 yoy,Education and communication goods,"Computers, peripherals, and smart home assistants",Core goods,sub,0.319,9.7,0.031,official
 yoy,Education and communication goods,Computer software and accessories,Core goods,sub,0.031,28.4,0.007,official
 yoy,Education and communication goods,Telephone hardware and smartphones,Core goods,sub,0.402,-12.7,-0.058,official
 yoy,Education and communication goods,Educational books and supplies,Core goods,sub,0.037,1.9,0.001,official
-yoy,"Alcohol, tobacco and personal care goods","Alcohol, tobacco and personal care goods",Core goods,parent,2.123,,0.06,official
+yoy,"Alcohol, tobacco and personal care goods","Alcohol, tobacco and personal care goods",Core goods,parent,2.123,,0.060,official
 yoy,"Alcohol, tobacco and personal care goods",Alcoholic beverages at home,Core goods,sub,0.385,0.2,0.001,official
 yoy,"Alcohol, tobacco and personal care goods",Alcoholic beverages away from home,Core goods,sub,0.438,2.6,0.011,official
 yoy,"Alcohol, tobacco and personal care goods",Tobacco and smoking products,Core goods,sub,0.449,6.4,0.029,official
 yoy,"Alcohol, tobacco and personal care goods",Personal care products,Core goods,sub,0.672,2.1,0.014,official
 yoy,"Alcohol, tobacco and personal care goods",Miscellaneous personal goods,Core goods,sub,0.179,2.9,0.005,official
-mom,Shelter,Shelter,Core services,parent,35.323,0.4,0.139,estimate
-mom,Shelter,Owners' equivalent rent,Core services,sub,25.902,0.3,0.076,estimate
-mom,Shelter,Rent of primary residence,Core services,sub,7.728,0.2,0.015,estimate
-mom,Shelter,Lodging away from home,Core services,sub,1.405,2.0,0.028,estimate
-mom,Shelter,Tenants' and household insurance,Core services,sub,0.287,0.2,0.001,estimate
-mom,Shelter,Rest of shelter,Core services,sub,,,0.019,estimate
+mom,Shelter,Shelter,Core services,parent,35.323,0.4,0.138,official
+mom,Shelter,Owners' equivalent rent,Core services,sub,25.902,0.3,0.091,official
+mom,Shelter,Rent of primary residence,Core services,sub,7.728,0.2,0.019,official
+mom,Shelter,Lodging away from home,Core services,sub,1.405,2.0,0.028,official
+mom,Shelter,Tenants' and household insurance,Core services,sub,0.287,0.2,0.000,official
 mom,Energy,Energy,Energy,parent,7.418,5.2,0.377,official
 mom,Energy,Gasoline (all types),Energy,sub,3.853,9.1,0.337,official
 mom,Energy,Other motor fuels,Energy,sub,0.123,11.9,0.015,official
 mom,Energy,Fuel oil,Energy,sub,0.115,15.3,0.018,official
-mom,Energy,"Propane, kerosene, and firewood",Energy,sub,0.055,0.2,0.0,official
+mom,Energy,"Propane, kerosene, and firewood",Energy,sub,0.055,0.2,0.000,official
 mom,Energy,Electricity,Energy,sub,2.529,0.2,0.006,official
 mom,Energy,Utility (piped) gas service,Energy,sub,0.743,-0.3,-0.002,official
 mom,Food away from home,Food away from home,Food,parent,5.304,0.2,0.012,official
 mom,Food away from home,Full service meals and snacks,Food,sub,2.354,0.3,0.007,official
 mom,Food away from home,Limited service meals and snacks,Food,sub,2.647,0.2,0.005,official
-mom,Food away from home,Food at employee sites and schools,Food,sub,0.064,0.5,0.0,official
-mom,Food away from home,Food from vending machines and mobile vendors,Food,sub,0.053,-0.2,0.0,official
-mom,Food away from home,Other food away from home,Food,sub,0.185,0.0,0.0,official
+mom,Food away from home,Food at employee sites and schools,Food,sub,0.064,0.5,0.000,official
+mom,Food away from home,Food from vending machines and mobile vendors,Food,sub,0.053,-0.2,0.000,official
+mom,Food away from home,Other food away from home,Food,sub,0.185,0.0,0.000,official
 mom,Food at home,Food at home,Food,parent,8.203,-0.1,-0.006,official
 mom,Food at home,Cereals and bakery products,Food,sub,1.021,0.1,0.001,official
 mom,Food at home,Beef and veal,Food,sub,0.636,-1.0,-0.007,official
 mom,Food at home,Pork,Food,sub,0.337,-1.0,-0.003,official
 mom,Food at home,Poultry,Food,sub,0.355,0.7,0.003,official
-mom,Food at home,Fish and seafood,Food,sub,0.318,0.1,0.0,official
+mom,Food at home,Fish and seafood,Food,sub,0.318,0.1,0.000,official
 mom,Food at home,Eggs,Food,sub,0.115,-1.3,-0.002,official
 mom,Food at home,Other meats,Food,sub,0.195,-0.5,-0.001,official
 mom,Food at home,Dairy and related products,Food,sub,0.741,-0.9,-0.007,official
@@ -140,43 +138,43 @@ mom,Food at home,Fresh fruits,Food,sub,0.526,0.8,0.004,official
 mom,Food at home,Fresh vegetables,Food,sub,0.479,0.1,0.001,official
 mom,Food at home,Processed fruits and vegetables,Food,sub,0.266,0.5,0.001,official
 mom,Food at home,Nonalcoholic beverages,Food,sub,0.986,0.9,0.008,official
-mom,Food at home,Sugar and sweets,Food,sub,0.328,0.0,0.0,official
-mom,Food at home,Fats and oils,Food,sub,0.221,-0.2,0.0,official
+mom,Food at home,Sugar and sweets,Food,sub,0.328,0.0,0.000,official
+mom,Food at home,Fats and oils,Food,sub,0.221,-0.2,0.000,official
 mom,Food at home,Other foods,Food,sub,1.678,-0.3,-0.005,official
-mom,Transportation services,Transportation services,Core services,parent,6.261,0.6,0.037,estimate
-mom,Transportation services,Airline fares,Core services,sub,1.04,1.2,0.012,estimate
-mom,Transportation services,Motor vehicle insurance,Core services,sub,2.531,0.1,0.002,estimate
-mom,Transportation services,Motor vehicle maintenance and repair,Core services,sub,1.063,0.7,0.007,estimate
-mom,Transportation services,Car and truck rental,Core services,sub,0.154,5.4,0.008,estimate
-mom,Transportation services,Leased cars and trucks,Core services,sub,0.383,0.3,0.001,estimate
-mom,Transportation services,Motor vehicle fees,Core services,sub,0.5,-0.3,-0.001,estimate
-mom,Transportation services,Other intercity transportation,Core services,sub,0.224,1.5,0.003,estimate
-mom,Transportation services,Intracity transportation,Core services,sub,0.36,2.2,0.008,estimate
-mom,Medical care services,Medical care services,Core services,parent,6.834,0.3,0.02,estimate
-mom,Medical care services,Physicians' services,Core services,sub,1.658,0.0,0.0,estimate
-mom,Medical care services,Dental services,Core services,sub,0.913,0.5,0.004,estimate
-mom,Medical care services,Eyeglasses and eye care,Core services,sub,0.317,0.0,0.0,estimate
-mom,Medical care services,Hospital services,Core services,sub,2.16,0.7,0.015,estimate
-mom,Medical care services,Nursing homes and adult day services,Core services,sub,0.222,0.5,0.001,estimate
-mom,Medical care services,Home health care,Core services,sub,0.229,0.0,0.0,estimate
-mom,Medical care services,Health insurance,Core services,sub,0.818,-0.2,-0.002,estimate
-mom,Education and communication services,Education and communication services,Core services,parent,5.018,0.0,0.0,estimate
-mom,Education and communication services,"Tuition, school fees and childcare",Core services,sub,2.542,0.6,0.015,estimate
-mom,Education and communication services,Telephone services,Core services,sub,1.493,-0.1,-0.001,estimate
-mom,Education and communication services,Internet services,Core services,sub,0.906,-1.3,-0.012,estimate
-mom,Education and communication services,Postage and delivery services,Core services,sub,0.066,0.6,0.0,estimate
-mom,Recreation services,Recreation services,Core services,parent,3.141,0.3,0.009,estimate
-mom,Recreation services,Video and audio services,Core services,sub,0.78,-0.1,-0.001,estimate
-mom,Recreation services,Pet services including veterinary,Core services,sub,0.543,-0.6,-0.003,estimate
-mom,Recreation services,Other recreation services,Core services,sub,1.781,0.8,0.014,estimate
-mom,Other personal services,Other personal services,Core services,parent,1.6,0.4,0.006,estimate
-mom,Other personal services,Personal care services,Core services,sub,0.668,0.4,0.003,estimate
-mom,Other personal services,Miscellaneous personal services,Core services,sub,0.932,0.3,0.003,estimate
-mom,"Water, trash and household services","Water, trash and household services",Core services,parent,2.063,,0.007,mixed
-mom,"Water, trash and household services",Water and sewer and trash collection,Core services,sub,1.147,0.2,0.002,estimate
-mom,"Water, trash and household services",Gardening and lawncare services,Core services,sub,0.391,1.1,0.004,estimate
-mom,"Water, trash and household services","Moving, storage, freight expense",Core services,sub,0.075,-2.3,-0.002,estimate
-mom,"Water, trash and household services",Other household operations,Core services,sub,0.45,,0.002,estimate
+mom,Transportation services,Transportation services,Core services,parent,6.261,0.6,0.037,official
+mom,Transportation services,Airline fares,Core services,sub,1.040,1.2,0.013,official
+mom,Transportation services,Motor vehicle insurance,Core services,sub,2.531,0.1,0.002,official
+mom,Transportation services,Motor vehicle maintenance and repair,Core services,sub,1.063,0.7,0.008,official
+mom,Transportation services,Car and truck rental,Core services,sub,0.154,5.4,0.008,official
+mom,Transportation services,Leased cars and trucks,Core services,sub,0.383,0.3,0.001,official
+mom,Transportation services,Motor vehicle fees,Core services,sub,0.500,-0.3,-0.002,official
+mom,Transportation services,Other intercity transportation,Core services,sub,0.224,1.5,0.003,official
+mom,Transportation services,Intracity transportation,Core services,sub,0.360,2.2,0.008,official
+mom,Medical care services,Medical care services,Core services,parent,6.834,0.3,0.019,official
+mom,Medical care services,Physicians' services,Core services,sub,1.658,0.0,0.000,official
+mom,Medical care services,Dental services,Core services,sub,0.913,0.5,0.004,official
+mom,Medical care services,Eyeglasses and eye care,Core services,sub,0.317,0.0,0.000,official
+mom,Medical care services,Hospital services,Core services,sub,2.160,0.7,0.016,official
+mom,Medical care services,Nursing homes and adult day services,Core services,sub,0.222,0.5,0.001,official
+mom,Medical care services,Home health care,Core services,sub,0.229,0.0,0.000,official
+mom,Medical care services,Health insurance,Core services,sub,0.818,-0.2,-0.002,official
+mom,Education and communication services,Education and communication services,Core services,parent,5.018,0.0,0.002,official
+mom,Education and communication services,"Tuition, school fees and childcare",Core services,sub,2.542,0.6,0.015,official
+mom,Education and communication services,Telephone services,Core services,sub,1.493,-0.1,-0.001,official
+mom,Education and communication services,Internet services,Core services,sub,0.906,-1.3,-0.012,official
+mom,Education and communication services,Postage and delivery services,Core services,sub,0.066,0.6,0.000,official
+mom,Recreation services,Recreation services,Core services,parent,3.141,0.3,0.009,official
+mom,Recreation services,Video and audio services,Core services,sub,0.780,-0.1,-0.001,official
+mom,Recreation services,Pet services including veterinary,Core services,sub,0.543,-0.6,-0.003,official
+mom,Recreation services,Other recreation services,Core services,sub,1.781,0.8,0.014,official
+mom,Other personal services,Other personal services,Core services,parent,1.600,0.4,0.006,official
+mom,Other personal services,Personal care services,Core services,sub,0.668,0.4,0.003,official
+mom,Other personal services,Miscellaneous personal services,Core services,sub,0.932,0.3,0.003,official
+mom,"Water, trash and household services","Water, trash and household services",Core services,parent,2.063,,0.012,official
+mom,"Water, trash and household services",Water and sewer and trash collection,Core services,sub,1.147,0.2,0.003,official
+mom,"Water, trash and household services",Gardening and lawncare services,Core services,sub,0.391,1.1,0.004,official
+mom,"Water, trash and household services","Moving, storage, freight expense",Core services,sub,0.075,-2.3,-0.002,official
+mom,"Water, trash and household services",Other household operations,Core services,sub,0.450,,0.007,official
 mom,Medical care commodities,Medical care commodities,Core goods,parent,1.396,-0.7,-0.009,official
 mom,Medical care commodities,Prescription drugs,Core goods,sub,0.909,-1.2,-0.011,official
 mom,Medical care commodities,Nonprescription drugs,Core goods,sub,0.357,1.3,0.005,official
@@ -195,24 +193,24 @@ mom,Household furnishings and supplies,Household furnishings and supplies,Core g
 mom,Household furnishings and supplies,Window and floor coverings and other linens,Core goods,sub,0.232,-2.4,-0.006,official
 mom,Household furnishings and supplies,Furniture and bedding,Core goods,sub,0.845,-0.8,-0.007,official
 mom,Household furnishings and supplies,Appliances,Core goods,sub,0.199,-0.7,-0.001,official
-mom,Household furnishings and supplies,Other household equipment and furnishings,Core goods,sub,0.533,1.8,0.01,official
+mom,Household furnishings and supplies,Other household equipment and furnishings,Core goods,sub,0.533,1.8,0.010,official
 mom,Household furnishings and supplies,"Tools, hardware, outdoor equipment and supplies",Core goods,sub,0.673,0.5,0.003,official
-mom,Household furnishings and supplies,Housekeeping supplies,Core goods,sub,0.83,-0.1,-0.001,official
+mom,Household furnishings and supplies,Housekeeping supplies,Core goods,sub,0.830,-0.1,-0.001,official
 mom,Recreation goods,Recreation goods,Core goods,parent,1.922,0.9,0.017,official
-mom,Recreation goods,Video and audio products,Core goods,sub,0.262,-0.1,0.0,official
+mom,Recreation goods,Video and audio products,Core goods,sub,0.262,-0.1,0.000,official
 mom,Recreation goods,Pets and pet products,Core goods,sub,0.601,-0.3,-0.002,official
 mom,Recreation goods,Sporting goods,Core goods,sub,0.535,0.4,0.002,official
 mom,Recreation goods,Recreational reading materials,Core goods,sub,0.115,2.2,0.003,official
 mom,Recreation goods,Toys and other recreational goods,Core goods,sub,0.384,3.5,0.014,official
-mom,Recreation goods,Photographic equipment and supplies,Core goods,sub,0.025,-0.1,0.0,official
+mom,Recreation goods,Photographic equipment and supplies,Core goods,sub,0.025,-0.1,0.000,official
 mom,Education and communication goods,Education and communication goods,Core goods,parent,0.789,0.9,0.007,official
 mom,Education and communication goods,"Computers, peripherals, and smart home assistants",Core goods,sub,0.319,1.4,0.004,official
-mom,Education and communication goods,Computer software and accessories,Core goods,sub,0.031,0.4,0.0,official
+mom,Education and communication goods,Computer software and accessories,Core goods,sub,0.031,0.4,0.000,official
 mom,Education and communication goods,Telephone hardware and smartphones,Core goods,sub,0.402,0.6,0.002,official
-mom,Education and communication goods,Educational books and supplies,Core goods,sub,0.037,0.2,0.0,official
-mom,"Alcohol, tobacco and personal care goods","Alcohol, tobacco and personal care goods",Core goods,parent,2.123,,0.0,mixed
-mom,"Alcohol, tobacco and personal care goods",Alcoholic beverages at home,Core goods,sub,0.385,0.0,0.0,official
-mom,"Alcohol, tobacco and personal care goods",Alcoholic beverages away from home,Core goods,sub,0.438,-0.1,0.0,official
+mom,Education and communication goods,Educational books and supplies,Core goods,sub,0.037,0.2,0.000,official
+mom,"Alcohol, tobacco and personal care goods","Alcohol, tobacco and personal care goods",Core goods,parent,2.123,,0.001,official
+mom,"Alcohol, tobacco and personal care goods",Alcoholic beverages at home,Core goods,sub,0.385,0.0,0.000,official
+mom,"Alcohol, tobacco and personal care goods",Alcoholic beverages away from home,Core goods,sub,0.438,-0.1,0.000,official
 mom,"Alcohol, tobacco and personal care goods",Tobacco and smoking products,Core goods,sub,0.449,0.7,0.003,official
-mom,"Alcohol, tobacco and personal care goods",Personal care products,Core goods,sub,0.672,-0.4,-0.003,estimate
-mom,"Alcohol, tobacco and personal care goods",Miscellaneous personal goods,Core goods,sub,0.179,0.1,0.0,estimate
+mom,"Alcohol, tobacco and personal care goods",Personal care products,Core goods,sub,0.672,-0.4,-0.002,official
+mom,"Alcohol, tobacco and personal care goods",Miscellaneous personal goods,Core goods,sub,0.179,0.1,0.000,official
