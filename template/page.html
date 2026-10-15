@@ -1,0 +1,1483 @@
+<style>
+.cp { font-family: var(--font-anthropic-sans); color: var(--color-fg); display: flex; flex-direction: column; gap: var(--cds-gap-lg); }
+.cp h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; }
+.cp h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); }
+.cp h3 { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); }
+.cp-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--cds-gap-md); }
+.cp-take { margin: var(--cds-gap-xs) 0 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-body); max-width: 62rem; }
+.cp-take b { color: var(--color-fg); font-weight: 600; }
+.cp-note { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0 0 var(--cds-gap-sm); }
+.cp-seg { display: inline-flex; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); overflow: hidden; flex-shrink: 0; }
+.cp-seg button { font: inherit; font-size: var(--cds-font-size-caption); background: transparent; color: var(--color-fg-muted); border: 0; padding: var(--cds-pad-xs) var(--cds-pad-sm); cursor: pointer; }
+.cp-seg button + button { border-left: 1px solid var(--color-border-line); }
+.cp-seg button[aria-pressed=true] { background: var(--color-panel); color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+.cp-controls { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; margin-bottom: var(--cds-gap-sm); }
+.cp-controls .lbl { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.cp[data-view=yoy] .v-mom, .cp[data-view=mom] .v-yoy { display: none; }
+.cp-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr)); gap: var(--cds-gap-md); }
+.cp-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); position: relative; min-width: 0; }
+.cp-kpi .lbl { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.cp-kpi .big { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; margin: var(--cds-gap-xs) 0; }
+.cp-kpi .sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+.cp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); gap: var(--cds-gap-md); }
+.cp-chart { width: 100%; }
+.cp-chart svg { display: block; overflow: visible; }
+.cp-legend { display: flex; align-items: center; gap: var(--cds-gap-sm); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); flex-wrap: wrap; margin-bottom: var(--cds-gap-sm); }
+.cp-legend svg { display: block; }
+.cp-tip { position: absolute; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); pointer-events: none; opacity: 0; z-index: 5; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cp-tip .t { color: var(--cds-text-secondary); }
+.cp-tablebox { max-height: 34rem; overflow: auto; }
+.cp table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.cp th { position: sticky; top: 0; background: var(--color-panel); text-align: right; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); }
+.cp th:first-child, .cp td:first-child { text-align: left; }
+.cp td { text-align: right; padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); }
+.cp tr.agg td { font-weight: 600; }
+.cp td.hot { color: var(--color-bad); }
+.cp td.cool { color: var(--color-ok); }
+.cp-fail { display: flex; align-items: center; justify-content: center; gap: var(--cds-gap-xs); min-height: 120px; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.cp-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+.cp [data-dash-source-state=empty] { color: transparent; }
+.cp [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+.cp-sum { margin: 0 0 var(--cds-gap-md); padding-left: 1.1rem; display: flex; flex-direction: column; gap: var(--cds-gap-xs); font-size: var(--cds-font-size-body); line-height: 1.5; }
+.cp-sum b { font-weight: 600; }
+#sankey .clickable { cursor: pointer; }
+#sankey text.lab { paint-order: stroke; stroke: var(--color-panel); stroke-width: 3px; stroke-linejoin: round; }
+.cp-sum .k { color: var(--color-fg-muted); }
+.cp[data-view=yoy] ul.v-mom, .cp[data-view=mom] ul.v-yoy { display: none; }
+#tree .clickable { cursor: pointer; }
+@media (max-width: 640px) { .cp .hide-narrow { display: none; } }
+.cp-titlebox { min-width: 0; }
+.cp-dateline { margin: var(--cds-gap-xs) 0 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.cp-takeaways ul { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: var(--cds-gap-sm); font-size: var(--cds-font-size-body); line-height: 1.55; }
+.cp-takeaways b { font-weight: 600; }
+.cp[data-view=yoy] .cp-takeaways ul.v-mom, .cp[data-view=mom] .cp-takeaways ul.v-yoy { display: none; }
+.cp-tabs { display: flex; flex-wrap: wrap; gap: 2px; border-bottom: 1px solid var(--color-border-line); scrollbar-width: none; }
+.cp-tabs::-webkit-scrollbar { display: none; }
+.cp-tabs button { font: inherit; font-size: var(--cds-font-size-body); background: transparent; color: var(--color-fg-muted); border: 0; border-bottom: 2px solid transparent; padding: var(--cds-pad-sm) var(--cds-pad-md); cursor: pointer; white-space: nowrap; margin-bottom: -1px; }
+.cp-tabs button[aria-selected=true] { color: var(--color-fg); border-bottom-color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+.cp-tabs button:focus-visible, .cp-seg button:focus-visible, .cp-dl button:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 1px; }
+.cp-panel { display: flex; flex-direction: column; gap: var(--cds-gap-md); }
+.cp-panel[hidden] { display: none; }
+.cp-spacer { flex: 1; }
+.cp a { color: inherit; }
+.cp td.muted { color: var(--color-fg-muted); }
+.cp-prose { font-size: var(--cds-font-size-body); line-height: 1.6; max-width: 60rem; }
+.cp-prose p { margin: 0 0 var(--cds-gap-md); }
+.cp-prose h3 { margin-top: var(--cds-gap-md); }
+.cp-gloss { margin: 0; display: grid; grid-template-columns: minmax(9rem, max-content) 1fr; gap: var(--cds-gap-sm) var(--cds-gap-lg); }
+.cp-gloss dt { font-weight: 600; }
+.cp-gloss dd { margin: 0; color: var(--color-fg-muted); }
+@media (max-width: 560px) { .cp-gloss { grid-template-columns: 1fr; gap: 2px; } .cp-gloss dd { margin-bottom: var(--cds-gap-sm); } }
+.cp-check { max-width: 36rem; margin-bottom: var(--cds-gap-md); }
+.cp-dl { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); }
+.cp-dl button { font: inherit; font-size: var(--cds-font-size-caption); background: var(--color-bg); color: var(--color-fg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-xs) var(--cds-pad-sm); cursor: pointer; }
+#downloads:not([hidden]) ~ .in-dash, .standalone .in-dash { display: none; }
+@media (prefers-reduced-motion: no-preference) { .cp-panel:not([hidden]) { animation: cp-fade var(--cds-dur-slow) var(--cds-ease-out, ease-out); } }
+@keyframes cp-fade { from { opacity: 0; } to { opacity: 1; } }
+</style>
+
+<div class="cp" data-view="yoy">
+  <header class="cp-head">
+    <div class="cp-titlebox">
+      <h1>US CPI components vs the 2% target</h1>
+      <p class="cp-dateline"><span id="dateline"></span> · data from BLS and FRED</p>
+    </div>
+    <div class="cp-seg" role="group" aria-label="Measure" id="viewseg">
+      <button type="button" data-view="yoy">12-month</button>
+      <button type="button" data-view="mom">Monthly (SA)</button>
+    </div>
+  </header>
+
+  <section class="cp-card cp-takeaways" aria-label="Key takeaways" id="takeaways">
+    <ul class="v-yoy">
+      <li>Prices rose <b><span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=headline">—</span>%</b> in the 12 months to <span data-source="takeaways" data-field="value" data-where="view=all&amp;key=month">—</span>, <b><span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=gap">—</span> points</b> <span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=gap_word">—</span> the 2% target. Core CPI, which excludes food and energy, rose <b><span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=core">—</span>%</b>.</li>
+      <li><b><span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=top">—</span></b> added the most: <b><span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=top_pts">—</span> points</b> (<span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=top_share">—</span>% of the total) from <span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=top_weight">—</span>% of the basket, led by <span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=top_sub">—</span> (+<span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=top_sub_pts">—</span>). Next was <span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=second">—</span>, +<span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=second_pts">—</span> (<span data-source="takeaways" data-field="value" data-where="view=yoy&amp;key=second_share">—</span>%).</li>
+      <li><b>Momentum:</b> core is running at <b><span data-source="takeaways" data-field="value" data-where="view=all&amp;key=core3">—</span>%</b> annualized over the last three months vs <span data-source="takeaways" data-field="value" data-where="view=all&amp;key=core12">—</span>% over the year: <span data-source="takeaways" data-field="value" data-where="view=all&amp;key=direction">—</span>.</li>
+    </ul>
+    <ul class="v-mom">
+      <li>Prices rose <b><span data-source="takeaways" data-field="value" data-where="view=mom&amp;key=headline">—</span>%</b> in <span data-source="takeaways" data-field="value" data-where="view=all&amp;key=month">—</span> (seasonally adjusted), an annualized pace of <b><span data-source="takeaways" data-field="value" data-where="view=mom&amp;key=ann">—</span>%</b>. Core rose <b><span data-source="takeaways" data-field="value" data-where="view=mom&amp;key=core">—</span>%</b>.</li>
+      <li><b><span data-source="takeaways" data-field="value" data-where="view=mom&amp;key=top">—</span></b> added the most: <b><span data-source="takeaways" data-field="value" data-where="view=mom&amp;key=top_pts">—</span> points</b> (<span data-source="takeaways" data-field="value" data-where="view=mom&amp;key=top_share">—</span>% of the month's increase), led by <span data-source="takeaways" data-field="value" data-where="view=mom&amp;key=top_sub">—</span> (+<span data-source="takeaways" data-field="value" data-where="view=mom&amp;key=top_sub_pts">—</span>). Next was <span data-source="takeaways" data-field="value" data-where="view=mom&amp;key=second">—</span>, +<span data-source="takeaways" data-field="value" data-where="view=mom&amp;key=second_pts">—</span> (<span data-source="takeaways" data-field="value" data-where="view=mom&amp;key=second_share">—</span>%).</li>
+      <li><b>Momentum:</b> core is running at <b><span data-source="takeaways" data-field="value" data-where="view=all&amp;key=core3">—</span>%</b> annualized over the last three months vs <span data-source="takeaways" data-field="value" data-where="view=all&amp;key=core12">—</span>% over the year: <span data-source="takeaways" data-field="value" data-where="view=all&amp;key=direction">—</span>.</li>
+    </ul>
+  </section>
+
+  <nav class="cp-tabs" role="tablist" aria-label="Sections" id="tabs">
+    <button type="button" role="tab" data-tab="overview" id="tab-overview">Overview</button>
+    <button type="button" role="tab" data-tab="drivers" id="tab-drivers">Drivers</button>
+    <button type="button" role="tab" data-tab="components" id="tab-components">Components</button>
+    <button type="button" role="tab" data-tab="momentum" id="tab-momentum">Momentum</button>
+    <button type="button" role="tab" data-tab="regions" id="tab-regions">Regions</button>
+    <button type="button" role="tab" data-tab="method" id="tab-method">Methodology</button>
+  </nav>
+
+  <section data-tab="overview" role="tabpanel" aria-labelledby="tab-overview" id="overview" class="cp-panel">
+    <div class="cp-kpis" id="kpis">
+    <div class="cp-card cp-kpi"><div class="lbl">All items</div>
+      <div class="big"><span class="v-yoy"><span data-source="components" data-field="yoy" data-where="item=All items">—</span>%</span><span class="v-mom"><span data-source="components" data-field="mom_sa" data-where="item=All items">—</span>%</span></div>
+      <div class="sub"><span class="v-yoy">12-month · m/m <span data-source="components" data-field="mom_sa" data-where="item=All items">—</span>%</span><span class="v-mom">1-month SA · 12-mo <span data-source="components" data-field="yoy" data-where="item=All items">—</span>%</span></div></div>
+    <div class="cp-card cp-kpi"><div class="lbl">Core (ex food &amp; energy)</div>
+      <div class="big"><span class="v-yoy"><span data-source="components" data-field="yoy" data-where="item=All items less food and energy">—</span>%</span><span class="v-mom"><span data-source="components" data-field="mom_sa" data-where="item=All items less food and energy">—</span>%</span></div>
+      <div class="sub"><span class="v-yoy">12-month · m/m <span data-source="components" data-field="mom_sa" data-where="item=All items less food and energy">—</span>%</span><span class="v-mom">1-month SA · 12-mo <span data-source="components" data-field="yoy" data-where="item=All items less food and energy">—</span>%</span></div></div>
+    <div class="cp-card cp-kpi"><div class="lbl">Supercore*</div>
+      <div class="big"><span class="v-yoy"><span data-source="roc_latest" data-field="m12" data-where="series=Supercore">—</span>%</span><span class="v-mom"><span data-source="roc_latest" data-field="mom" data-where="series=Supercore">—</span>%</span></div>
+      <div class="sub"><span class="v-yoy">12-month · estimated</span><span class="v-mom">1-month SA · estimated</span></div></div>
+    <div class="cp-card cp-kpi"><div class="lbl">Energy</div>
+      <div class="big"><span class="v-yoy"><span data-source="components" data-field="yoy" data-where="item=Energy">—</span>%</span><span class="v-mom"><span data-source="components" data-field="mom_sa" data-where="item=Energy">—</span>%</span></div>
+      <div class="sub"><span class="v-yoy">12-month · m/m <span data-source="components" data-field="mom_sa" data-where="item=Energy">—</span>%</span><span class="v-mom">1-month SA · 12-mo <span data-source="components" data-field="yoy" data-where="item=Energy">—</span>%</span></div></div>
+    <div class="cp-card cp-kpi"><div class="lbl">Food</div>
+      <div class="big"><span class="v-yoy"><span data-source="components" data-field="yoy" data-where="item=Food">—</span>%</span><span class="v-mom"><span data-source="components" data-field="mom_sa" data-where="item=Food">—</span>%</span></div>
+      <div class="sub"><span class="v-yoy">12-month · m/m <span data-source="components" data-field="mom_sa" data-where="item=Food">—</span>%</span><span class="v-mom">1-month SA · 12-mo <span data-source="components" data-field="yoy" data-where="item=Food">—</span>%</span></div></div>
+    <div class="cp-card cp-kpi"><div class="lbl">Shelter</div>
+      <div class="big"><span class="v-yoy"><span data-source="components" data-field="yoy" data-where="item=Shelter">—</span>%</span><span class="v-mom"><span data-source="components" data-field="mom_sa" data-where="item=Shelter">—</span>%</span></div>
+      <div class="sub"><span class="v-yoy">12-month · m/m <span data-source="components" data-field="mom_sa" data-where="item=Shelter">—</span>%</span><span class="v-mom">1-month SA · 12-mo <span data-source="components" data-field="yoy" data-where="item=Shelter">—</span>%</span></div></div>
+    </div>
+
+    <div class="cp-card" id="stack-card">
+      <h2 id="drivers-summary">What's driving the headline number</h2>
+      <p class="cp-take">
+        <span class="v-yoy">Biggest push: <b><span data-source="contrib_top" data-field="item" data-where="rank=up&amp;view=yoy">—</span></b>
+          (+<span data-source="contrib_top" data-field="contrib" data-where="rank=up&amp;view=yoy">—</span> pts).
+          Biggest drag: <b><span data-source="contrib_top" data-field="item" data-where="rank=down&amp;view=yoy">—</span></b>
+          (<span data-source="contrib_top" data-field="contrib" data-where="rank=down&amp;view=yoy">—</span> pts).</span>
+        <span class="v-mom">Biggest push: <b><span data-source="contrib_top" data-field="item" data-where="rank=up&amp;view=mom">—</span></b>
+          (+<span data-source="contrib_top" data-field="contrib" data-where="rank=up&amp;view=mom">—</span> pts).
+          Biggest drag: <b><span data-source="contrib_top" data-field="item" data-where="rank=down&amp;view=mom">—</span></b>
+          (<span data-source="contrib_top" data-field="contrib" data-where="rank=down&amp;view=mom">—</span> pts).</span>
+      </p>
+      <p class="cp-note" id="stack-note"></p>
+      <div class="cp-chart" id="contribstack" data-source="contrib" role="img" aria-label="Stacked bar splitting the headline into core services, core goods, food and energy contributions" style="min-height:62px"></div>
+      <p class="cp-note" id="stack-sum" style="margin-top:var(--cds-gap-xs)"></p>
+      <div class="cp-tip" id="tip-stack"></div>
+      <p class="cp-note" style="margin-top:var(--cds-gap-sm)">See the <a href="#drivers" data-goto="drivers">Drivers</a> tab for every component and subcomponent.</p>
+    </div>
+
+    <div class="cp-card" id="hist-card">
+      <h2 id="history">Contributions over time</h2>
+      <p class="cp-note" id="hist-note"></p>
+      <div class="cp-controls">
+        <div class="cp-legend" id="hist-legend" style="margin:0"></div>
+        <span class="cp-spacer"></span>
+        <div class="cp-seg" role="group" aria-label="Range" id="histseg">
+          <button type="button" data-range="2Y">2Y</button><button type="button" data-range="5Y">5Y</button><button type="button" data-range="All">Since 2020</button>
+        </div>
+      </div>
+      <div class="cp-chart" id="histchart" data-source="history" style="min-height:320px"></div>
+      <div class="cp-tip" id="tip-hist"></div>
+    </div>
+
+    <div class="cp-card" id="summary-card">
+      <h2 id="summary">Summary: what's adding the most</h2>
+      <ul class="cp-sum v-yoy">
+        <li><span class="k">Largest components of the 12-month headline:</span> <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=p1">—</span></b> +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=p1">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=p1">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=p1">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=p2">—</span></b> +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=p2">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=p2">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=p2">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=p3">—</span></b> +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=p3">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=p3">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=p3">—</span>% of the basket).</li>
+        <li><span class="k">Largest subcomponents:</span> <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=s1">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=yoy&amp;stat=s1">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=s1">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=s1">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=s1">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=s2">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=yoy&amp;stat=s2">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=s2">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=s2">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=s2">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=s3">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=yoy&amp;stat=s3">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=s3">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=s3">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=s3">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=s4">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=yoy&amp;stat=s4">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=s4">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=s4">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=s4">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=s5">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=yoy&amp;stat=s5">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=s5">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=s5">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=s5">—</span>% of the basket).</li>
+        <li><span class="k">Concentration:</span> these five subcomponents are only <b><span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=top5">—</span>%</b> of the CPI basket but account for <b><span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=top5">—</span>%</b> of the 12-month headline.</li>
+        <li><span class="k">Pulling inflation down:</span> <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=d1">—</span></b> <span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=d1">—</span> pts; <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=d2">—</span></b> <span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=d2">—</span> pts; <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=d3">—</span></b> <span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=d3">—</span> pts.</li>
+      </ul>
+      <ul class="cp-sum v-mom">
+        <li><span class="k">Largest components of the latest monthly change:</span> <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=p1">—</span></b> +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=p1">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=p1">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=p1">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=p2">—</span></b> +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=p2">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=p2">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=p2">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=p3">—</span></b> +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=p3">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=p3">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=p3">—</span>% of the basket).</li>
+        <li><span class="k">Largest subcomponents:</span> <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=s1">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=mom&amp;stat=s1">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=s1">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=s1">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=s1">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=s2">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=mom&amp;stat=s2">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=s2">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=s2">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=s2">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=s3">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=mom&amp;stat=s3">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=s3">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=s3">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=s3">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=s4">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=mom&amp;stat=s4">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=s4">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=s4">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=s4">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=s5">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=mom&amp;stat=s5">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=s5">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=s5">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=s5">—</span>% of the basket).</li>
+        <li><span class="k">Concentration:</span> these five subcomponents are only <b><span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=top5">—</span>%</b> of the CPI basket but account for <b><span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=top5">—</span>%</b> of the latest monthly change.</li>
+        <li><span class="k">Pulling inflation down:</span> <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=d1">—</span></b> <span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=d1">—</span> pts; <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=d2">—</span></b> <span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=d2">—</span> pts; <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=d3">—</span></b> <span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=d3">—</span> pts.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section data-tab="drivers" role="tabpanel" aria-labelledby="tab-drivers" id="drivers" class="cp-panel" hidden>
+    <div class="cp-card" id="flow-card">
+      <h2 id="flow">How the basket flows into the headline</h2>
+      <div class="cp-controls">
+        <span class="lbl">Show</span>
+        <div class="cp-seg" role="group" aria-label="Flow measure" id="flowseg">
+          <button type="button" data-measure="contrib">Share of inflation</button><button type="button" data-measure="weight">Share of the CPI basket</button>
+        </div>
+      </div>
+      <p class="cp-note" id="flow-note"></p>
+      <div class="cp-chart" id="sankey" data-source="tree" role="img" aria-label="Sankey diagram from all-items CPI to groups, components and subcomponents" style="min-height:520px"></div>
+      <p class="cp-note" id="flow-offsets" style="margin-top:var(--cds-gap-sm)"></p>
+      <div class="cp-tip" id="tip-flow"></div>
+    </div>
+
+    <div class="cp-card">
+      <h2 id="largest">Largest individual contributors</h2>
+      <p class="cp-note" id="items-note"></p>
+      <div class="cp-chart" id="contribitems" data-source="contrib" role="img" aria-label="Bar chart of the 20 subcomponents contributing most to inflation" style="min-height:480px"></div>
+      <div class="cp-tip" id="tip-contrib"></div>
+    </div>
+
+    <div class="cp-card" id="share-card">
+      <h2 id="shares">Each component's share of the CPI</h2>
+      <p class="cp-note" id="share-note"></p>
+      <div class="cp-tablebox">
+        <table id="sharetable" data-source="tree" data-row-key="view,item">
+          <thead><tr>
+            <th data-field="item">Component</th>
+            <th data-field="basis" class="hide-narrow">Basis</th>
+            <th data-field="weight">Share of basket %</th>
+            <th data-field="change">Change %</th>
+            <th data-field="contrib">Contribution (pts)</th>
+            <th data-field="share">Share of inflation %</th>
+            <th class="hide-narrow">Basket vs inflation</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section data-tab="components" role="tabpanel" aria-labelledby="tab-components" id="components" class="cp-panel" hidden>
+    <div class="cp-card" id="heatmap-card">
+      <h2 id="heatmap">Component heat map</h2>
+      <p class="cp-note" id="heatmap-note"></p>
+      <div class="cp-legend" id="legend-a"></div>
+      <div class="cp-chart" id="treemap" data-source="components" role="img" aria-label="Treemap of CPI components sized by basket share and coloured by inflation versus target" style="min-height:380px"></div>
+      <div class="cp-tip" id="tip-treemap"></div>
+    </div>
+    <div class="cp-card">
+      <h2 id="gapbars">Ahead of or below target</h2>
+      <p class="cp-note" id="bars-note"></p>
+      <div class="cp-chart" id="bars" data-source="components" role="img" aria-label="Bars showing each component's inflation relative to the target" style="min-height:560px"></div>
+      <div class="cp-tip" id="tip-bars"></div>
+    </div>
+    <div class="cp-card">
+      <h2 id="table">All tracked components</h2>
+      <p class="cp-note">Relative importance as of the month before the latest data; 12-month change not seasonally adjusted; 1-month change seasonally adjusted where BLS adjusts the series. Gaps are against 2% a year and 0.17% a month.</p>
+      <div class="cp-tablebox">
+        <table id="comptable" data-source="components" data-row-key="item">
+          <thead><tr>
+            <th data-field="item">Component</th>
+            <th data-field="weight" class="hide-narrow">Weight %</th>
+            <th data-field="yoy">12-mo %</th>
+            <th data-source="gaps" data-field="gap">vs 2%</th>
+            <th data-field="mom_sa">1-mo % SA</th>
+            <th data-source="gaps" data-field="gap_m" class="hide-narrow">vs 0.17%</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section data-tab="momentum" role="tabpanel" aria-labelledby="tab-momentum" id="momentum" class="cp-panel" hidden>
+    <div class="cp-card" id="roc-card">
+      <h2 id="roc">Rolling rate of change</h2>
+      <p class="cp-note">Annualized change in the seasonally adjusted index over the chosen window. Shorter windows show turns sooner but are noisier. *Supercore (core services excluding shelter) is estimated; see Methodology. Oct 2025 was not published, so windows that touch it have a gap.</p>
+      <div class="cp-controls">
+        <span class="lbl">Window</span>
+        <div class="cp-seg" role="group" aria-label="Window" id="winseg">
+          <button type="button" data-win="1M">1M</button><button type="button" data-win="3M">3M</button><button type="button" data-win="6M">6M</button><button type="button" data-win="12M">12M</button>
+        </div>
+        <span class="lbl">Range</span>
+        <div class="cp-seg" role="group" aria-label="Range" id="rangeseg">
+          <button type="button" data-range="2Y">2Y</button><button type="button" data-range="5Y">5Y</button><button type="button" data-range="All">Since 2019</button>
+        </div>
+      </div>
+      <div class="cp-chart" id="rocchart" data-source="roc" style="min-height:300px"></div>
+      <div class="cp-tip" id="tip-roc"></div>
+      <h3 style="margin-top:var(--cds-gap-md)">Latest, annualized (%)</h3>
+      <table id="roctable" data-source="roc_latest" data-row-key="series">
+        <thead><tr><th data-field="series">Series</th><th data-field="date">Month</th><th data-field="m1">1M</th><th data-field="m3">3M</th><th data-field="m6">6M</th><th data-field="m12">12M</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="cp-grid">
+      <div class="cp-card">
+        <h2 id="monthgrid">Monthly changes by component</h2>
+        <p class="cp-note">Seasonally adjusted month-over-month % change over the last seven months (BLS Table A; food away from home and medical care commodities are not seasonally adjusted). Shaded against 0.17% a month, the pace that compounds to 2% a year.</p>
+        <div class="cp-chart" id="grid" data-source="components_monthly" role="img" aria-label="Grid of monthly price changes by component" style="min-height:560px"></div>
+        <div class="cp-tip" id="tip-grid"></div>
+      </div>
+      <div class="cp-card">
+        <h2 id="comprolling">Component momentum, annualized</h2>
+        <p class="cp-note">Annualized rates compounded from the published monthly changes. Those are rounded to 0.1%, so these can be off by a few tenths; compare with the 12-month column to see what's speeding up or cooling.</p>
+        <div class="cp-tablebox">
+          <table id="rolltable" data-source="comp_rolling" data-row-key="item">
+            <thead><tr><th data-field="item">Component</th><th data-field="latest">Latest m/m</th><th data-field="ann1">1M ann.</th><th data-field="ann3">3M ann.</th><th data-field="ann6">6M ann.</th><th data-source="components" data-field="yoy" class="hide-narrow">12-mo</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-tab="regions" role="tabpanel" aria-labelledby="tab-regions" id="regions" class="cp-panel" hidden>
+    <div class="cp-card">
+      <h2 id="regionmap">Regional map vs target</h2>
+      <p class="cp-note" id="region-note"></p>
+      <div class="cp-legend" id="legend-b"></div>
+      <div class="cp-grid">
+        <div><div class="cp-chart" id="tilemap" data-source="regions" role="img" aria-label="Map of US states shaded by their census division's inflation" style="min-height:300px"></div></div>
+        <div>
+          <h3>Metro areas</h3>
+          <p class="cp-note" id="metro-note"></p>
+          <div class="cp-chart" id="metrobars" data-source="regions" role="img" aria-label="Bars of inflation by metro area" style="min-height:300px"></div>
+        </div>
+      </div>
+      <div class="cp-tip" id="tip-map"></div>
+    </div>
+  </section>
+
+  <section data-tab="method" role="tabpanel" aria-labelledby="tab-method" id="method" class="cp-panel" hidden>
+    <div class="cp-card cp-prose">
+      <h2 id="methodology">Methodology</h2>
+      <h3>Sources</h3>
+      <p>Component prices, basket weights (relative importance), area indexes and contributions come from the latest BLS <a href="https://www.bls.gov/news.release/cpi.htm">CPI news release</a> (Tables A, 1–4, 6 and 7). Monthly index history since 2019 comes from FRED: <a href="https://fred.stlouisfed.org/series/CPIAUCSL">CPIAUCSL</a> (all items), <a href="https://fred.stlouisfed.org/series/CPILFESL">CPILFESL</a> (core), <a href="https://fred.stlouisfed.org/series/CPIUFDSL">CPIUFDSL</a> (food), <a href="https://fred.stlouisfed.org/series/CPIENGSL">CPIENGSL</a> (energy), <a href="https://fred.stlouisfed.org/series/CUSR0000SACL1E">CUSR0000SACL1E</a> (core goods) and <a href="https://fred.stlouisfed.org/series/CUSR0000SAH1">CUSR0000SAH1</a> (shelter), all seasonally adjusted.</p>
+      <h3>12-month and monthly views</h3>
+      <p>The 12-month view uses changes from the same month a year earlier, not seasonally adjusted, as BLS headlines them. The monthly view uses seasonally adjusted changes from the previous month. The monthly benchmark is 0.165%, the pace that compounds to 2% over a year.</p>
+      <h3>Contributions</h3>
+      <p>A contribution is how many percentage points an item adds to the headline rate: BLS's "effect on all items" (Tables 6 and 7). Official BLS figures are used for food, energy, every goods category, shelter and household services. The release pages available when this was built cut off before the detail for medical, transportation, recreation, education and communication, and personal services. Those are estimated as basket weight × price change, then scaled so that together they match BLS's official total for core services exactly. The Drivers tab marks every row as official or estimated. Shares of inflation are each part's share of the sum of all parts, so they add to 100%; that sum differs from the published headline only by rounding.</p>
+      <h3>Contributions over time and supercore</h3>
+      <p>The history chart is estimated from the FRED indexes. Each group's weight is taken from BLS's latest relative importance and moved back in time by how its price changed relative to the overall index, then multiplied by the group's change. Core services is the remainder, so the groups always add to the headline. BLS re-weights the basket each January, which this simple back-cast doesn't capture, so older months are approximate. The table below compares the method with BLS's official figures for the latest month. Supercore (core services excluding shelter) is built the same way: core services minus shelter, by weight, chained into an index.</p>
+      <table id="checktable" data-source="method_check" data-row-key="view,group" class="cp-check">
+        <thead><tr><th data-field="group">Group</th><th data-field="estimated">This method (pts)</th><th data-field="official">BLS official (pts)</th><th>Difference</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <h3>Rolling rates of change</h3>
+      <p>Annualized rate over k months = (index now ÷ index k months earlier)<sup>12/k</sup> − 1, using seasonally adjusted indexes. October 2025 CPI was not collected because of the 2025 lapse in federal appropriations, so any window that starts or ends there is left blank.</p>
+      <h3>Regions</h3>
+      <p>Regional and division figures are BLS area indexes. They aren't seasonally adjusted and come from smaller samples than the national index, so they are noisier. Most metro areas are priced every other month, so their latest figure may be a month older. States are shaded by their census division; BLS doesn't publish state CPIs.</p>
+      <h3>Accuracy</h3>
+      <p>When this page was built (October 2026), every figure was checked against its source: food, energy and core, weighted together, reproduce the headline index within 0.04 points in every month since 2019. The FRED headline series agrees with the BLS unadjusted series within 0.14 points on a 12-month basis.</p>
+    </div>
+
+    <div class="cp-card cp-prose">
+      <h2 id="glossary">Glossary</h2>
+      <dl class="cp-gloss">
+        <dt>CPI-U</dt><dd>The Consumer Price Index for All Urban Consumers: the average change in prices paid by urban households (over 90% of the US population) for a fixed basket of goods and services. Published monthly by the Bureau of Labor Statistics (BLS).</dd>
+        <dt>Headline CPI</dt><dd>The all-items index, including volatile food and energy prices.</dd>
+        <dt>Core CPI</dt><dd>All items less food and energy. It strips out the most volatile prices to show the underlying trend.</dd>
+        <dt>Supercore</dt><dd>Core services excluding shelter (medical care, transportation services, recreation, education and so on). Watched as a gauge of wage-driven inflation. BLS doesn't publish it directly, so it's estimated here (see Methodology).</dd>
+        <dt>Shelter</dt><dd>The cost of housing services: rent, owners' equivalent rent, hotels and home insurance. About a third of the basket.</dd>
+        <dt>Owners' equivalent rent (OER)</dt><dd>What homeowners would pay to rent their own home. It measures the cost of housing services, not house prices, and is the largest single item in the CPI.</dd>
+        <dt>Relative importance (basket share)</dt><dd>Each item's share of total consumer spending in the CPI, in percent. The shares add to 100.</dd>
+        <dt>Contribution / effect</dt><dd>How many percentage points an item adds to the headline rate: roughly its basket share × its price change. BLS calls this the item's 'effect on all items'. Contributions add up to the headline.</dd>
+        <dt>Percentage point (pt)</dt><dd>The difference between two percentages. If inflation is 3% and energy contributes 1 point, energy accounts for one of those three points.</dd>
+        <dt>Share of inflation</dt><dd>An item's contribution as a percent of the sum of all contributions. It can be far larger than its basket share when its price is rising fast.</dd>
+        <dt>12-month change</dt><dd>The change from the same month a year earlier, not seasonally adjusted. The figure usually quoted in the news.</dd>
+        <dt>1-month change (m/m)</dt><dd>The change from the previous month, seasonally adjusted (SA) so normal seasonal patterns don't look like inflation.</dd>
+        <dt>Seasonally adjusted (SA)</dt><dd>Adjusted to remove regular calendar patterns, such as holiday discounts or summer travel prices. Best for comparing month to month.</dd>
+        <dt>Annualized rate</dt><dd>A short-period change scaled up to a yearly pace by compounding: a 0.3% monthly rise is about 3.7% annualized.</dd>
+        <dt>Rolling rate of change</dt><dd>The annualized change over the latest 1, 3, 6 or 12 months, recalculated each month. Short windows show turning points earlier but are noisier.</dd>
+        <dt>2% target</dt><dd>The Federal Reserve's inflation goal. It is formally defined for the PCE price index, which tends to run a little below CPI, so 2% on CPI is a common benchmark rather than the official test.</dd>
+      </dl>
+    </div>
+
+    <div class="cp-card cp-prose">
+      <h2 id="data">Data</h2>
+      <p class="in-dash">Every number on this page cites its source: open Sources to see where a figure comes from or to download a dataset as CSV.</p>
+      <div id="downloads" hidden>
+        <p>Download the data behind this page:</p>
+        <div class="cp-dl">
+          <button type="button" data-ds="components">Components (Table 1)</button>
+          <button type="button" data-ds="tree">Contributions by component</button>
+          <button type="button" data-ds="history">Contributions over time</button>
+          <button type="button" data-ds="roc">Rolling rates of change</button>
+          <button type="button" data-ds="fred">Index history (FRED)</button>
+          <button type="button" data-ds="regions">Regions and metros</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cp-card cp-prose">
+      <h2 id="disclaimer">Disclaimer</h2>
+      <p>This is an independent analysis, not an official BLS or Federal Reserve product. Figures marked as estimated are approximations. Nothing here is financial or investment advice. Source data are public domain (BLS) and courtesy of the Federal Reserve Bank of St. Louis (FRED).</p>
+      <!--ABOUT-->
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  const HOT = 'var(--cds-chart-status-critical)';
+  const COOL = dash.colors[0];
+  const MONTHLY_TARGET = (Math.pow(1.02, 1 / 12) - 1) * 100; // ≈0.165%
+  const CFG = {
+    yoy: { key: 'yoy', target: 2, scale: 5, cap: 36, unit: '12-mo', label: '2%', regionKey: 'yoy' },
+    mom: { key: 'mom_sa', target: MONTHLY_TARGET, scale: 0.5, cap: 4, unit: 'm/m', label: '0.17%/mo', regionKey: 'mom' }
+  };
+  const f1 = d3.format('.1f');
+  const f2 = d3.format('.2f');
+  const signed = (v, f = f1) => (v > 0 ? '+' : '') + f(v);
+  const root = document.querySelector('.cp');
+  const num = (v) => (v === '' || v == null ? null : Number(v));
+
+  dash.calc('gaps', {
+    title: 'Gap to target',
+    description: '12-month change minus 2%, and 1-month SA change minus 0.165% (the monthly pace that compounds to 2% a year), in points.',
+    inputs: ['components'],
+    fn: (components) => components.map((r) => ({
+      item: r.item,
+      gap: Math.round((Number(r.yoy) - 2) * 10) / 10,
+      gap_m: Math.round((Number(r.mom_sa) - (Math.pow(1.02, 1 / 12) - 1) * 100) * 100) / 100
+    }))
+  });
+  dash.calc('target_split', {
+    title: 'Components above vs below target',
+    description: 'Lowest-level tracked components above target (2% 12-month, or 0.165% monthly), with their share of tracked basket weight.',
+    inputs: ['components'],
+    fn: (components) => {
+      const leaves = components.filter((r) => r.level === 'leaf');
+      const total = leaves.reduce((s, r) => s + Number(r.weight), 0);
+      const monthly = (Math.pow(1.02, 1 / 12) - 1) * 100;
+      const out = [];
+      [['yoy', 'yoy', 2], ['mom', 'mom_sa', monthly]].forEach(([view, col, t]) => {
+        [['Above', (r) => Number(r[col]) > t], ['At or below', (r) => Number(r[col]) <= t]].forEach(([status, test]) => {
+          const s = leaves.filter(test);
+          out.push({ status, view, count: s.length, weight_share: Math.round(s.reduce((a, r) => a + Number(r.weight), 0) / total * 100) });
+        });
+      });
+      return out;
+    }
+  });
+
+  // contributions: official BLS effects (Tables 6–7) where published, scaled estimates elsewhere
+  dash.calc('tree', {
+    title: 'Contribution by component and subcomponent',
+    description: 'Points each component and subcomponent adds to headline CPI (BLS "effect on all items"), with each one\'s share of the sum of all parts.',
+    inputs: ['effects'],
+    fn: (effects) => {
+      const out = effects.map((r) => ({ view: r.view, parent: r.parent, item: r.item, group: r.group, level: r.level, weight: num(r.weight), change: num(r.change), contrib: Number(r.contrib), basis: r.basis }));
+      ['yoy', 'mom'].forEach((view) => {
+        const mine = out.filter((r) => r.view === view);
+        const S = mine.filter((r) => r.level === 'parent').reduce((a, r) => a + r.contrib, 0);
+        mine.forEach((r) => { r.share = Math.round(r.contrib / S * 1000) / 10; });
+      });
+      return out;
+    }
+  });
+  dash.calc('contrib', {
+    title: 'Contribution by group',
+    description: 'Food, energy, core goods and core services contributions (sum of their components), every subcomponent, the sum of all parts and the published headline.',
+    inputs: ['tree', 'components'],
+    fn: (tree, components) => {
+      const out = [];
+      const all = components.find((r) => r.item === 'All items');
+      [['yoy', 'yoy'], ['mom', 'mom_sa']].forEach(([view, col]) => {
+        const P = tree.filter((r) => r.view === view && r.level === 'parent');
+        let total = 0;
+        ['Food', 'Energy', 'Core goods', 'Core services'].forEach((g) => {
+          const ps = P.filter((r) => r.group === g);
+          const c = ps.reduce((a, r) => a + r.contrib, 0);
+          total += c;
+          const agg = components.find((r) => r.item === g);
+          out.push({ view, kind: 'group', item: g, group: g, contrib: Math.round(c * 1000) / 1000, change: agg ? Number(agg[col]) : null, weight: Math.round(ps.reduce((a, r) => a + (r.weight || 0), 0) * 1000) / 1000 });
+        });
+        tree.filter((r) => r.view === view && r.level === 'sub').forEach((r) => out.push({ ...r, kind: 'item' }));
+        out.push({ view, kind: 'total', item: 'Sum of contributions', group: '', contrib: Math.round(total * 1000) / 1000, change: null, weight: null });
+        out.push({ view, kind: 'published', item: 'Published headline', group: '', contrib: Number(all[col]), change: null, weight: null });
+      });
+      return out;
+    }
+  });
+  dash.calc('contrib_top', {
+    title: 'Biggest push and drag',
+    description: 'The subcomponent adding the most to headline CPI, and the one subtracting the most, in each view.',
+    inputs: ['contrib'],
+    fn: (contrib) => {
+      const out = [];
+      ['yoy', 'mom'].forEach((view) => {
+        const items = contrib.filter((r) => r.view === view && r.kind === 'item' && r.weight != null);
+        const up = items.reduce((a, b) => (b.contrib > a.contrib ? b : a));
+        const down = items.reduce((a, b) => (b.contrib < a.contrib ? b : a));
+        out.push({ rank: 'up', view, item: up.item, contrib: up.contrib }, { rank: 'down', view, item: down.item, contrib: down.contrib });
+      });
+      return out;
+    }
+  });
+  dash.calc('tree_summary', {
+    title: 'Top contributors summary',
+    description: 'The three largest components, five largest and three most negative subcomponents in each view, and the five largest subcomponents\' combined share of the headline and of the basket.',
+    inputs: ['tree'],
+    fn: (tree) => {
+      const out = [];
+      ['yoy', 'mom'].forEach((view) => {
+        const named = (r) => r.view === view && r.weight != null;
+        const parents = tree.filter((r) => named(r) && r.level === 'parent').sort((a, b) => b.contrib - a.contrib);
+        const subs = tree.filter((r) => named(r) && r.level === 'sub' && r.weight != null).sort((a, b) => b.contrib - a.contrib);
+        const pick = (r, stat) => ({ view, stat, item: r.item, parent: r.parent, contrib: r.contrib, share: r.share, weight: r.weight });
+        parents.slice(0, 3).forEach((r, i) => out.push(pick(r, 'p' + (i + 1))));
+        subs.slice(0, 5).forEach((r, i) => out.push(pick(r, 's' + (i + 1))));
+        subs.slice(-3).reverse().forEach((r, i) => out.push(pick(r, 'd' + (i + 1))));
+        out.push({ view, stat: 'top5', item: null, parent: null, contrib: Math.round(subs.slice(0, 5).reduce((a, r) => a + r.contrib, 0) * 100) / 100, share: Math.round(subs.slice(0, 5).reduce((a, r) => a + r.share, 0) * 10) / 10, weight: Math.round(subs.slice(0, 5).reduce((a, r) => a + r.weight, 0) * 10) / 10 });
+      });
+      return out;
+    }
+  });
+
+  // relative importance at month t, back-cast from the Aug 2026 weights by each group's price relative to the all-items index
+  const backcast = (fred, components) => {
+    const dates = fred.filter((r) => num(r.headline) != null).map((r) => r.date);
+    const ref = fred.find((r) => r.date === dates[dates.length - 2]); // weights are as of the month before the latest data
+    const w = { food: 'Food', energy: 'Energy', core_goods: 'Core goods', shelter: 'Shelter' };
+    const W = Object.fromEntries(Object.entries(w).map(([k, item]) => [k, Number(components.find((c) => c.item === item).weight)]));
+    return (r, k) => (num(r[k]) == null || num(r.headline) == null ? null : W[k] * (num(r[k]) / num(ref[k])) / (num(r.headline) / num(ref.headline)));
+  };
+  dash.calc('history', {
+    title: 'Contributions over time (estimated)',
+    description: 'Monthly contribution of food, energy, core goods and core services to the 12-month and 1-month headline, from FRED seasonally adjusted indexes and BLS weights back-cast from Aug 2026. Core services is the remainder, so the groups add to the headline.',
+    inputs: ['fred', 'components'],
+    fn: (fred, components) => {
+      const ri = backcast(fred, components);
+      const out = [];
+      fred.forEach((r, i) => {
+        [['yoy', 12], ['mom', 1]].forEach(([view, k]) => {
+          const p = fred[i - k];
+          if (!p || ['headline', 'food', 'energy', 'core_goods'].some((c) => num(r[c]) == null || num(p[c]) == null)) return;
+          const h = (num(r.headline) / num(p.headline) - 1) * 100;
+          const g = (c) => ri(p, c) * (num(r[c]) / num(p[c]) - 1);
+          const c = { Food: g('food'), Energy: g('energy'), 'Core goods': g('core_goods') };
+          c['Core services'] = h - c.Food - c.Energy - c['Core goods'];
+          Object.entries(c).forEach(([series, v]) => out.push({ date: r.date, view, series, value: Math.round(v * 1000) / 1000 }));
+          out.push({ date: r.date, view, series: 'Headline', value: Math.round(h * 100) / 100 });
+        });
+      });
+      return out;
+    }
+  });
+  dash.calc('derived', {
+    title: 'Core services and supercore index (estimated)',
+    description: 'Chained index of core services (headline minus food, energy and core goods, by weight) and supercore (core services minus shelter), built from FRED SA indexes and back-cast BLS weights.',
+    inputs: ['fred', 'components'],
+    fn: (fred, components) => {
+      const ri = backcast(fred, components);
+      const ok = (r) => ['headline', 'food', 'energy', 'core_goods', 'shelter'].every((c) => num(r[c]) != null);
+      const out = [];
+      let last = null, svc = 100, sc = 100;
+      fred.forEach((r) => {
+        if (!ok(r)) { out.push({ date: r.date, core_services: null, supercore: null }); return; }
+        if (last) {
+          const g = (c) => num(r[c]) / num(last[c]) - 1;
+          const wF = ri(last, 'food'), wE = ri(last, 'energy'), wG = ri(last, 'core_goods'), wS = ri(last, 'shelter');
+          const wSvc = 100 - wF - wE - wG;
+          const gSvc = (g('headline') * 100 - wF * g('food') - wE * g('energy') - wG * g('core_goods')) / wSvc;
+          const gSc = (wSvc * gSvc - wS * g('shelter')) / (wSvc - wS);
+          svc *= 1 + gSvc; sc *= 1 + gSc;
+        }
+        out.push({ date: r.date, core_services: Math.round(svc * 1000) / 1000, supercore: Math.round(sc * 1000) / 1000 });
+        last = r;
+      });
+      return out;
+    }
+  });
+  dash.calc('roc', {
+    title: 'Rolling rate of change',
+    description: 'Annualized % change over 1, 3, 6 and 12 months of the SA headline and core CPI indexes (FRED) and the estimated supercore index.',
+    inputs: ['fred', 'derived'],
+    fn: (fred, derived) => {
+      const out = [];
+      const series = [
+        ['Headline', fred.map((r) => num(r.headline))],
+        ['Core', fred.map((r) => num(r.core))],
+        ['Supercore', derived.map((r) => num(r.supercore))]
+      ];
+      series.forEach(([name, v]) => {
+        fred.forEach((r, i) => {
+          [1, 3, 6, 12].forEach((k) => {
+            const a = v[i], b = i >= k ? v[i - k] : null;
+            out.push({ date: r.date, series: name, window: k + 'M', roc: a && b ? Math.round((Math.pow(a / b, 12 / k) - 1) * 10000) / 100 : null });
+          });
+        });
+      });
+      return out;
+    }
+  });
+  dash.calc('roc_latest', {
+    title: 'Latest rolling rates',
+    description: 'The most recent month of each rolling window per series, plus the plain (not annualized) 1-month change.',
+    inputs: ['roc'],
+    fn: (roc) => ['Headline', 'Core', 'Supercore'].map((series) => {
+      const rows = roc.filter((r) => r.series === series && r.roc != null);
+      const date = rows.reduce((m, r) => (r.date > m ? r.date : m), '');
+      const pick = (w) => (rows.find((r) => r.date === date && r.window === w) || {}).roc ?? null;
+      const m1 = pick('1M');
+      return { series, date, mom: m1 == null ? null : Math.round((Math.pow(1 + m1 / 100, 1 / 12) - 1) * 1000) / 10, m1, m3: pick('3M'), m6: pick('6M'), m12: pick('12M') };
+    })
+  });
+  dash.calc('method_check', {
+    title: 'Method check: estimated vs official',
+    description: 'For the latest month, the history method\'s group contributions next to the BLS official figures.',
+    inputs: ['history', 'contrib'],
+    fn: (history, contrib) => {
+      const out = [];
+      ['yoy', 'mom'].forEach((view) => {
+        const latest = history.filter((r) => r.view === view).reduce((m, r) => (r.date > m ? r.date : m), '');
+        ['Food', 'Energy', 'Core goods', 'Core services'].forEach((g) => {
+          const est = history.find((r) => r.view === view && r.date === latest && r.series === g);
+          const off = contrib.find((r) => r.view === view && r.kind === 'group' && r.item === g);
+          out.push({ view, group: g, estimated: est ? Math.round(est.value * 100) / 100 : null, official: off ? Math.round(off.contrib * 100) / 100 : null });
+        });
+      });
+      return out;
+    }
+  });
+  dash.calc('comp_rolling', {
+    title: 'Component momentum',
+    description: 'Annualized rates compounded from the last 1, 3 and 6 published SA monthly changes for each Table A component.',
+    inputs: ['components_monthly'],
+    fn: (components_monthly) => {
+      const items = [...new Set(components_monthly.map((r) => r.item))];
+      return items.map((item) => {
+        const m = components_monthly.filter((r) => r.item === item).sort((a, b) => (a.month < b.month ? -1 : 1)).map((r) => Number(r.mom_sa));
+        const ann = (k) => Math.round((Math.pow(m.slice(-k).reduce((p, x) => p * (1 + x / 100), 1), 12 / k) - 1) * 1000) / 10;
+        return { item, latest: m[m.length - 1], ann1: ann(1), ann3: ann(3), ann6: ann(6) };
+      });
+    }
+  });
+  dash.calc('takeaways', {
+    title: 'Key takeaways',
+    description: 'The figures and names quoted in the takeaways at the top of the page, worked out from the other sources and formatted as shown.',
+    inputs: ['components', 'contrib', 'tree', 'roc_latest', 'fred'],
+    fn: (components, contrib, tree, roc_latest, fred) => {
+      const c = (item, col) => Number(components.find((r) => r.item === item)[col]);
+      const sumParts = (view) => contrib.find((r) => r.view === view && r.kind === 'total').contrib;
+      const core = roc_latest.find((r) => r.series === 'Core');
+      const head = roc_latest.find((r) => r.series === 'Headline');
+      const f1 = (x) => (Math.round(x * 10) / 10).toFixed(1), f2 = (x) => (Math.round(x * 100) / 100).toFixed(2);
+      const dir = core.m3 > core.m12 + 0.3 ? 'faster than its 12-month pace, so underlying inflation is picking up'
+        : core.m3 < core.m12 - 0.3 ? 'slower than its 12-month pace, so underlying inflation is cooling' : 'close to its 12-month pace, so underlying inflation is holding steady';
+      const latest = fred.filter((r) => r.headline !== '' && r.headline != null).map((r) => r.date).sort().at(-1);
+      const month = new Date(latest + 'T00:00:00Z').toLocaleString('en-US', { month: 'long', timeZone: 'UTC' });
+      const leaders = (view) => {
+        const P = tree.filter((r) => r.view === view && r.level === 'parent').sort((a, b) => b.contrib - a.contrib);
+        const top = P[0], second = P[1];
+        const sub = tree.filter((r) => r.view === view && r.level === 'sub' && r.parent === top.item && r.weight != null).sort((a, b) => b.contrib - a.contrib)[0];
+        return { top: top.item, top_pts: f2(top.contrib), top_share: f1(top.contrib / sumParts(view) * 100), top_weight: f1(top.weight),
+          top_sub: sub.item.replace(/ \(.*\)$/, '').charAt(0).toLowerCase() + sub.item.replace(/ \(.*\)$/, '').slice(1), top_sub_pts: f2(sub.contrib),
+          second: second.item.charAt(0).toLowerCase() + second.item.slice(1), second_pts: f2(second.contrib), second_share: f1(second.contrib / sumParts(view) * 100) };
+      };
+      const gap = c('All items', 'yoy') - 2;
+      const rows = {
+        yoy: { headline: f1(c('All items', 'yoy')), gap: f1(Math.abs(gap)), gap_word: gap >= 0 ? 'above' : 'below', core: f1(c('All items less food and energy', 'yoy')), ...leaders('yoy') },
+        mom: { headline: f1(c('All items', 'mom_sa')), ann: f1(head.m1), core: f1(c('All items less food and energy', 'mom_sa')), ...leaders('mom') },
+        all: { month, core3: f1(core.m3), core12: f1(core.m12), direction: dir }
+      };
+      return Object.entries(rows).flatMap(([view, kv]) => Object.entries(kv).map(([key, value]) => ({ view, key, value })));
+    }
+  });
+
+  // ---------- helpers
+  const fillOf = (v, c) => (v > c.target ? HOT : v < c.target ? COOL : 'var(--cds-chart-muted)');
+  const opOf = (v, c) => 0.14 + 0.66 * Math.min(1, Math.abs(v - c.target) / c.scale);
+
+  function legend(el, c) {
+    el.textContent = '';
+    const steps = [-1, -0.6, -0.2, 0, 0.2, 0.6, 1, 1.6].map((s) => s * c.scale);
+    d3.select(el).append('span').text('Below ' + c.label);
+    const svg = d3.select(el).append('svg').attr('width', steps.length * 22).attr('height', 14);
+    steps.forEach((d, i) => svg.append('rect').attr('x', i * 22).attr('width', 20).attr('height', 14).attr('rx', 3)
+      .attr('fill', fillOf(c.target + d, c)).attr('fill-opacity', d === 0 ? 0.35 : opOf(c.target + d, c)));
+    d3.select(el).append('span').text('Above ' + c.label);
+  }
+
+  function tipper(tipId, card) {
+    const tip = document.getElementById(tipId);
+    return {
+      show(ev, title, lines) {
+        tip.textContent = '';
+        const t = document.createElement('div'); t.className = 't'; t.textContent = title; tip.appendChild(t);
+        lines.forEach((l) => { const d = document.createElement('div'); d.textContent = l; tip.appendChild(d); });
+        const box = card.getBoundingClientRect();
+        let x = ev.clientX - box.left + 12; const y = ev.clientY - box.top + 12;
+        tip.style.opacity = 1;
+        const tw = tip.offsetWidth;
+        if (x + tw > box.width - 8) x = Math.max(8, ev.clientX - box.left - tw - 12);
+        tip.style.left = x + 'px'; tip.style.top = y + 'px';
+      },
+      hide() { tip.style.opacity = 0; }
+    };
+  }
+
+  function stateBox(el, d) {
+    el.textContent = '';
+    if (d.status === 'ok') { el.classList.remove('dash-skeleton'); return true; }
+    if (d.status === 'loading') { el.classList.add('dash-skeleton'); return false; }
+    el.classList.remove('dash-skeleton');
+    const f = document.createElement('div'); f.className = 'cp-fail'; f.textContent = 'Failed to load'; el.appendChild(f);
+    return false;
+  }
+
+  function measure(svg, texts, size = 12) {
+    const t = svg.append('text').attr('font-size', size);
+    let m = 0; texts.forEach((s) => { t.text(s); m = Math.max(m, t.node().getComputedTextLength()); });
+    t.remove(); return m;
+  }
+
+  // ---------- bars diverging from the target line
+  function targetBars(el, rows, tp, c) {
+    const w = Math.max(280, el.clientWidth);
+    const rowH = 22, top = 24, bottom = 8;
+    const h = top + rows.length * rowH + bottom;
+    el.style.minHeight = h + 'px';
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('font-size', 12);
+    const labW = Math.min(w * 0.45, measure(svg, rows.map((r) => r.label)) + 10);
+    const lo = Math.min(c.target - c.scale * 0.4, d3.min(rows, (r) => r.v) - c.scale * 0.1);
+    const hi = Math.min(c.cap, Math.max(c.target + c.scale * 0.4, d3.max(rows, (r) => r.v) + c.scale * 0.1));
+    const x = d3.scaleLinear([lo, hi], [labW, w - 48]).nice();
+    const ticks = x.ticks(Math.max(3, Math.floor((w - labW) / 70)));
+    svg.append('g').selectAll('line').data(ticks).join('line').attr('x1', (d) => x(d)).attr('x2', (d) => x(d))
+      .attr('y1', top - 4).attr('y2', h - bottom).attr('stroke', 'var(--cds-chart-grid)');
+    svg.append('g').selectAll('text').data(ticks).join('text').attr('x', (d) => x(d)).attr('y', top - 10)
+      .attr('text-anchor', 'middle').attr('fill', 'var(--color-fg-muted)').attr('font-size', 11).text((d) => d + '%');
+    const hiD = x.domain()[1];
+    const g = svg.append('g').selectAll('g').data(rows).join('g').attr('transform', (d, i) => `translate(0,${top + i * rowH})`);
+    g.append('text').attr('x', labW - 8).attr('y', rowH / 2 + 4).attr('text-anchor', 'end').attr('fill', 'var(--color-fg)').text((d) => d.label);
+    g.append('rect').attr('y', 4).attr('height', rowH - 8).attr('rx', 4)
+      .attr('x', (d) => x(Math.min(c.target, Math.min(d.v, hiD))))
+      .attr('width', (d) => Math.max(2, Math.abs(x(Math.min(d.v, hiD)) - x(c.target))))
+      .attr('fill', (d) => fillOf(d.v, c)).attr('fill-opacity', (d) => Math.max(0.45, opOf(d.v, c)));
+    g.append('text').attr('y', rowH / 2 + 4).attr('fill', 'var(--color-fg-muted)').attr('font-size', 11)
+      .attr('x', (d) => (d.v >= c.target ? x(Math.min(d.v, hiD)) + 4 : x(c.target) + 4))
+      .text((d) => f1(d.v) + '%' + (d.v > hiD ? ' →' : ''));
+    g.append('rect').attr('x', 0).attr('width', w).attr('height', rowH).attr('fill', 'transparent')
+      .on('mousemove', (ev, d) => tp.show(ev, d.label, d.lines)).on('mouseleave', () => tp.hide());
+    svg.append('line').attr('x1', x(c.target)).attr('x2', x(c.target)).attr('y1', top - 4).attr('y2', h - bottom)
+      .attr('stroke', 'var(--cds-chart-reference)').attr('stroke-width', 1.5).attr('stroke-dasharray', '4 3');
+  }
+
+  // ---------- state tile grid [state, col, row, division]
+  const TILES = [
+    ['AK',0,0,'Pacific'],['ME',11,0,'New England'],['VT',10,1,'New England'],['NH',11,1,'New England'],
+    ['WA',1,2,'Pacific'],['ID',2,2,'Mountain'],['MT',3,2,'Mountain'],['ND',4,2,'West North Central'],['MN',5,2,'West North Central'],['IL',6,2,'East North Central'],['WI',7,2,'East North Central'],['MI',8,2,'East North Central'],['NY',9,2,'Middle Atlantic'],['RI',10,2,'New England'],['MA',11,2,'New England'],
+    ['OR',1,3,'Pacific'],['NV',2,3,'Mountain'],['WY',3,3,'Mountain'],['SD',4,3,'West North Central'],['IA',5,3,'West North Central'],['IN',6,3,'East North Central'],['OH',7,3,'East North Central'],['PA',8,3,'Middle Atlantic'],['NJ',9,3,'Middle Atlantic'],['CT',10,3,'New England'],
+    ['CA',1,4,'Pacific'],['UT',2,4,'Mountain'],['CO',3,4,'Mountain'],['NE',4,4,'West North Central'],['MO',5,4,'West North Central'],['KY',6,4,'East South Central'],['WV',7,4,'South Atlantic'],['VA',8,4,'South Atlantic'],['MD',9,4,'South Atlantic'],['DE',10,4,'South Atlantic'],
+    ['AZ',2,5,'Mountain'],['NM',3,5,'Mountain'],['KS',4,5,'West North Central'],['AR',5,5,'West South Central'],['TN',6,5,'East South Central'],['NC',7,5,'South Atlantic'],['SC',8,5,'South Atlantic'],['DC',9,5,'South Atlantic'],
+    ['OK',4,6,'West South Central'],['LA',5,6,'West South Central'],['MS',6,6,'East South Central'],['AL',7,6,'East South Central'],['GA',8,6,'South Atlantic'],
+    ['HI',0,7,'Pacific'],['TX',4,7,'West South Central'],['FL',9,7,'South Atlantic']
+  ];
+
+  function drawTileMap(el, regions, tp, c, view) {
+    const div = new Map(regions.filter((r) => r.type === 'division' && r.v != null).map((r) => [r.area, r]));
+    const w = Math.max(280, el.clientWidth);
+    const cell = Math.min(46, (w - 4) / 12);
+    const h = cell * 8 + 4;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`);
+    const g = svg.append('g').selectAll('g').data(TILES).join('g').attr('transform', (d) => `translate(${d[1] * cell + 2},${d[2] * cell + 2})`);
+    g.append('rect').attr('width', cell - 3).attr('height', cell - 3).attr('rx', 4)
+      .attr('fill', (d) => (div.get(d[3]) ? fillOf(div.get(d[3]).v, c) : 'var(--cds-chart-muted)'))
+      .attr('fill-opacity', (d) => (div.get(d[3]) ? opOf(div.get(d[3]).v, c) : 0.2))
+      .attr('stroke', 'var(--color-border-line)');
+    g.append('text').attr('x', (cell - 3) / 2).attr('y', (cell - 3) / 2 - (cell > 34 ? 3 : -4)).attr('text-anchor', 'middle')
+      .attr('font-size', Math.max(9, cell * 0.26)).attr('fill', 'var(--color-fg)').text((d) => d[0]);
+    if (cell > 34) {
+      g.append('text').attr('x', (cell - 3) / 2).attr('y', (cell - 3) / 2 + 11).attr('text-anchor', 'middle')
+        .attr('font-size', 10).attr('fill', 'var(--color-fg-muted)').text((d) => (div.get(d[3]) ? f1(div.get(d[3]).v) : ''));
+    }
+    g.on('mousemove', (ev, d) => {
+      const r = div.get(d[3]);
+      if (r) tp.show(ev, d[0] + ' · ' + d[3] + ' division', [
+        f1(r.v) + '% ' + (view === 'yoy' ? '12-mo' : '1-mo, not SA') + ' (' + r.period + ')',
+        signed(r.v - c.target, view === 'yoy' ? f1 : f2) + ' pts vs ' + c.label, 'Region: ' + r.region]);
+    }).on('mouseleave', () => tp.hide());
+  }
+
+  function drawTreemap(el, leaves, tp, c) {
+    const w = Math.max(280, el.clientWidth);
+    const h = w < 560 ? 460 : 380;
+    el.style.minHeight = h + 'px';
+    const groups = d3.groups(leaves, (r) => r.group).map(([name, kids]) => ({ name, children: kids }));
+    const rt = d3.hierarchy({ children: groups }).sum((d) => (d.children ? 0 : d.w)).sort((a, b) => b.value - a.value);
+    d3.treemap().size([w, h]).paddingOuter(2).paddingTop((n) => (n.depth === 1 ? 20 : 2)).paddingInner(2).round(true)(rt);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`);
+    svg.selectAll('text.grp').data(rt.children).join('text').attr('class', 'grp').attr('x', (d) => d.x0 + 4).attr('y', (d) => d.y0 + 14)
+      .attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text((d) => ((d.x1 - d.x0) > 70 ? d.data.name : ''));
+    const cell = svg.selectAll('g.leaf').data(rt.leaves()).join('g').attr('class', 'leaf').attr('transform', (d) => `translate(${d.x0},${d.y0})`);
+    cell.append('rect').attr('width', (d) => Math.max(0, d.x1 - d.x0)).attr('height', (d) => Math.max(0, d.y1 - d.y0)).attr('rx', 4)
+      .attr('fill', (d) => fillOf(d.data.v, c)).attr('fill-opacity', (d) => opOf(d.data.v, c));
+    cell.each(function (d) {
+      const cw = d.x1 - d.x0, ch = d.y1 - d.y0;
+      if (cw < 46 || ch < 30) return;
+      const s = d3.select(this);
+      const name = s.append('text').attr('x', 6).attr('y', 16).attr('font-size', 12).attr('fill', 'var(--color-fg)').text(d.data.label);
+      let txt = d.data.label;
+      while (name.node().getComputedTextLength() > cw - 10 && txt.length > 3) { txt = txt.slice(0, -2); name.text(txt + '…'); }
+      s.append('text').attr('x', 6).attr('y', 32).attr('font-size', 12).attr('font-weight', 600).attr('fill', 'var(--color-fg)').text(f1(d.data.v) + '%');
+    });
+    cell.append('rect').attr('width', (d) => Math.max(0, d.x1 - d.x0)).attr('height', (d) => Math.max(0, d.y1 - d.y0)).attr('fill', 'transparent')
+      .on('mousemove', (ev, d) => tp.show(ev, d.data.label, d.data.lines)).on('mouseleave', () => tp.hide());
+  }
+
+  // ---------- component × month heat grid
+  function drawGrid(el, rows, tp, c) {
+    const w = Math.max(280, el.clientWidth);
+    const items = [...new Set(rows.map((r) => r.item))];
+    const months = [...new Set(rows.map((r) => r.month))].sort();
+    const depth = new Map(rows.map((r) => [r.item, Number(r.depth)]));
+    const cellH = 24, top = 20;
+    const h = top + items.length * cellH + 4;
+    el.style.minHeight = h + 'px';
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('font-size', 12);
+    const labW = Math.min(w * 0.45, measure(svg, items) + 10 + 10 * d3.max(items, (i) => depth.get(i)));
+    const cw = (w - labW) / months.length;
+    const mfmt = d3.utcFormat('%b');
+    svg.selectAll('text.mh').data(months).join('text').attr('class', 'mh').attr('x', (d, i) => labW + i * cw + cw / 2).attr('y', 13)
+      .attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text((d) => mfmt(new Date(d + '-01T00:00:00Z')));
+    const by = new Map(rows.map((r) => [r.item + '|' + r.month, Number(r.mom_sa)]));
+    items.forEach((it, j) => {
+      const yy = top + j * cellH;
+      svg.append('text').attr('x', 4 + depth.get(it) * 10).attr('y', yy + cellH / 2 + 4).attr('fill', 'var(--color-fg)')
+        .attr('font-weight', depth.get(it) <= 1 ? 600 : 400).text(it);
+      months.forEach((mo, i) => {
+        const v = by.get(it + '|' + mo);
+        const g = svg.append('g').attr('transform', `translate(${labW + i * cw},${yy})`);
+        g.append('rect').attr('x', 1).attr('y', 1).attr('width', Math.max(0, cw - 2)).attr('height', cellH - 2).attr('rx', 3)
+          .attr('fill', fillOf(v, c)).attr('fill-opacity', opOf(v, c));
+        if (cw > 30) g.append('text').attr('x', cw / 2).attr('y', cellH / 2 + 4).attr('text-anchor', 'middle').attr('font-size', 11)
+          .attr('fill', 'var(--color-fg)').text(f1(v));
+        g.append('rect').attr('width', cw).attr('height', cellH).attr('fill', 'transparent')
+          .on('mousemove', (ev) => tp.show(ev, it + ' · ' + d3.utcFormat('%b %Y')(new Date(mo + '-01T00:00:00Z')),
+            [f1(v) + '% m/m SA', f1((Math.pow(1 + v / 100, 12) - 1) * 100) + '% annualized', signed(v - c.target, f2) + ' pts vs 0.17%']))
+          .on('mouseleave', () => tp.hide());
+      });
+    });
+  }
+
+  // ---------- contributions: group stack + item bars
+  const GROUP_COLORS = { 'Core services': dash.colors[0], 'Core goods': dash.colors[1], 'Food': dash.colors[2], 'Energy': dash.colors[3] };
+  const fpts = (v) => (v > 0 ? '+' : v < 0 ? '−' : '') + f2(Math.abs(v));
+
+  function drawContribStack(el, rows, tp, view) {
+    const groups = rows.filter((r) => r.view === view && r.kind === 'group');
+    const total = rows.find((r) => r.view === view && r.kind === 'total');
+    const pub = rows.find((r) => r.view === view && r.kind === 'published');
+    const w = Math.max(280, el.clientWidth), h = 62, barY = 22, barH = 30;
+    const order = ['Core services', 'Core goods', 'Food', 'Energy'];
+    groups.sort((a, b) => order.indexOf(a.item) - order.indexOf(b.item));
+    let pos = 0, neg = 0;
+    const segs = groups.map((g) => {
+      const s = g.contrib >= 0 ? { ...g, a: pos, b: pos + g.contrib } : { ...g, a: neg + g.contrib, b: neg };
+      if (g.contrib >= 0) pos += g.contrib; else neg += g.contrib;
+      return s;
+    });
+    const x = d3.scaleLinear([Math.min(0, neg), Math.max(pos, pub.contrib) * 1.04], [8, w - 8]);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('font-size', 12);
+    const g = svg.selectAll('g.seg').data(segs).join('g').attr('class', 'seg');
+    g.append('rect').attr('x', (d) => x(d.a) + 1).attr('y', barY).attr('width', (d) => Math.max(1, x(d.b) - x(d.a) - 2)).attr('height', barH).attr('rx', 4)
+      .attr('fill', (d) => GROUP_COLORS[d.item]).attr('fill-opacity', 0.85);
+    g.each(function (d) {
+      const ww = x(d.b) - x(d.a);
+      const s = d3.select(this);
+      const t = s.append('text').attr('x', x(d.a) + 6).attr('y', barY + barH / 2 + 4).attr('fill', 'var(--color-bg)').attr('font-weight', 600).text(d.item + ' ' + fpts(d.contrib));
+      if (t.node().getComputedTextLength() > ww - 10) { t.text(fpts(d.contrib)); if (t.node().getComputedTextLength() > ww - 10) t.remove(); }
+    });
+    g.append('rect').attr('x', (d) => x(d.a)).attr('y', barY).attr('width', (d) => Math.max(1, x(d.b) - x(d.a))).attr('height', barH).attr('fill', 'transparent')
+      .on('mousemove', (ev, d) => tp.show(ev, d.item, [fpts(d.contrib) + ' pts of ' + f1(pub.contrib) + '% headline', Math.round(d.contrib / pub.contrib * 100) + '% of the total', f1(d.change) + '% ' + (view === 'yoy' ? '12-mo' : 'm/m SA') + ', weight ' + f2(d.weight) + '%']))
+      .on('mouseleave', () => tp.hide());
+    svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', barY - 6).attr('y2', barY + barH + 6).attr('stroke', 'var(--cds-chart-axis)');
+    svg.append('line').attr('x1', x(pub.contrib)).attr('x2', x(pub.contrib)).attr('y1', barY - 8).attr('y2', barY + barH + 8)
+      .attr('stroke', 'var(--color-fg)').attr('stroke-width', 1.5).attr('stroke-dasharray', '3 2');
+    const lab = svg.append('text').attr('y', barY - 10).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text('Published ' + f1(pub.contrib) + '%');
+    const lw = lab.node().getComputedTextLength();
+    lab.attr('x', Math.min(w - lw - 2, Math.max(2, x(pub.contrib) - lw / 2)));
+    const sumEl = document.getElementById('stack-sum');
+    if (sumEl) sumEl.textContent = 'Parts sum to ' + f2(total.contrib) + ' pts against the published ' + f1(pub.contrib) + '%: BLS rounds each figure' + (view === 'yoy' ? '.' : ', and seasonally adjusted parts need not add exactly to the whole.');
+  }
+
+  function drawContribItems(el, rows, tp, view) {
+    const pub = rows.find((r) => r.view === view && r.kind === 'published');
+    const items = rows.filter((r) => r.view === view && r.kind === 'item').sort((a, b) => b.contrib - a.contrib);
+    const w = Math.max(280, el.clientWidth);
+    const rowH = 22, top = 24, bottom = 8;
+    const h = top + items.length * rowH + bottom;
+    el.style.minHeight = h + 'px';
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('font-size', 12);
+    const labW = Math.min(w * 0.45, measure(svg, items.map((r) => r.item)) + 10);
+    const valW = measure(svg, items.map((r) => fpts(r.contrib)), 11) + 8;
+    const x = d3.scaleLinear([Math.min(0, d3.min(items, (r) => r.contrib)), Math.max(0, d3.max(items, (r) => r.contrib))], [labW + valW, w - valW]).nice();
+    const ticks = x.ticks(Math.max(3, Math.floor((w - labW) / 80)));
+    svg.append('g').selectAll('line').data(ticks).join('line').attr('x1', (d) => x(d)).attr('x2', (d) => x(d)).attr('y1', top - 4).attr('y2', h - bottom)
+      .attr('stroke', (d) => (d === 0 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)'));
+    svg.append('g').selectAll('text').data(ticks).join('text').attr('x', (d) => x(d)).attr('y', top - 10).attr('text-anchor', 'middle')
+      .attr('fill', 'var(--color-fg-muted)').attr('font-size', 11).text((d) => d + ' pts');
+    const g = svg.append('g').selectAll('g').data(items).join('g').attr('transform', (d, i) => `translate(0,${top + i * rowH})`);
+    const isOther = (d) => d.weight == null;
+    g.append('text').attr('x', labW - 8).attr('y', rowH / 2 + 4).attr('text-anchor', 'end').attr('fill', (d) => (isOther(d) ? 'var(--color-fg-muted)' : 'var(--color-fg)'))
+      .attr('font-style', (d) => (isOther(d) ? 'italic' : null)).text((d) => d.item);
+    g.append('rect').attr('y', 4).attr('height', rowH - 8).attr('rx', 4)
+      .attr('x', (d) => x(Math.min(0, d.contrib))).attr('width', (d) => Math.max(1.5, Math.abs(x(d.contrib) - x(0))))
+      .attr('fill', (d) => (d.contrib >= 0 ? HOT : COOL)).attr('fill-opacity', (d) => (isOther(d) ? 0.35 : 0.8));
+    g.append('text').attr('y', rowH / 2 + 4).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)')
+      .attr('x', (d) => (d.contrib >= 0 ? x(d.contrib) + 4 : x(d.contrib) - 4)).attr('text-anchor', (d) => (d.contrib >= 0 ? 'start' : 'end'))
+      .text((d) => fpts(d.contrib));
+    g.append('rect').attr('width', w).attr('height', rowH).attr('fill', 'transparent')
+      .on('mousemove', (ev, d) => tp.show(ev, d.item + ' · ' + d.group, [
+        fpts(d.contrib) + ' pts (' + Math.round(d.contrib / pub.contrib * 100) + '% of ' + f1(pub.contrib) + '% headline)',
+        d.change == null ? 'Sub-items not tracked separately' : f1(d.change) + '% ' + (view === 'yoy' ? '12-mo' : 'm/m') + ', weight ' + f2(d.weight) + '%'
+      ]))
+      .on('mouseleave', () => tp.hide());
+  }
+
+  // ---------- writes every marked value (data-source + data-field) from its dataset or calculation
+  const FMT = { contrib: f2, share: f1, weight: f1, m1: f1, m3: f1, m6: f1, m12: f1, gap: f1, gap_m: f2, weight_share: d3.format('d'), count: d3.format('d') };
+  function fillMarks() {
+    document.querySelectorAll('#dash-root [data-source][data-field]').forEach((el) => {
+      if (el.matches('th, table, .cp-chart')) return;
+      const d = dash.data(el.dataset.source);
+      if (d.status !== 'ok' || !Array.isArray(d.data)) { el.textContent = '—'; return; }
+      let row;
+      if (el.dataset.row != null) row = d.data[Number(el.dataset.row)];
+      else if (el.dataset.where) {
+        const conds = el.dataset.where.split('&').map((pair) => pair.split('=').map(decodeURIComponent));
+        row = d.data.find((r) => conds.every(([k, v]) => String(r[k]) === v));
+      } else row = d.data[0];
+      const v = row ? row[el.dataset.field] : null;
+      el.textContent = v == null || v === '' ? '—' : typeof v === 'number' ? (FMT[el.dataset.field] || f1)(v) : String(v);
+    });
+  }
+
+  // ---------- Sankey: CPI → groups → components → inside the selected component
+  let flowSel = null;
+  let flowArgs = null;
+  const band = (xs, s0, s1, xt, t0, t1) => {
+    const xm = (xs + xt) / 2;
+    return `M${xs},${s0}C${xm},${s0} ${xm},${t0} ${xt},${t0}L${xt},${t1}C${xm},${t1} ${xm},${s1} ${xs},${s1}Z`;
+  };
+  function relax(items, gap, lo, hi) {
+    items.sort((a, b) => a.ly - b.ly);
+    for (let i = 1; i < items.length; i++) if (items[i].ly < items[i - 1].ly + gap) items[i].ly = items[i - 1].ly + gap;
+    const over = items.length ? items[items.length - 1].ly - hi : 0;
+    if (over > 0) {
+      items[items.length - 1].ly -= over;
+      for (let i = items.length - 2; i >= 0; i--) if (items[i].ly > items[i + 1].ly - gap) items[i].ly = items[i + 1].ly - gap;
+    }
+    items.forEach((it) => { if (it.ly < lo) it.ly = lo; });
+  }
+
+  function drawSankey(el, rows, tp, view, measure, c, compRows, offEl) {
+    flowArgs = [el, rows, tp, view, measure, c, compRows, offEl];
+    el.textContent = '';
+    offEl.textContent = '';
+    const col = view === 'yoy' ? 'yoy' : 'mom_sa';
+    const unit = view === 'yoy' ? '12-mo' : 'm/m';
+    const R = rows.filter((r) => r.view === view);
+    const headline = Number(compRows.find((r) => r.item === 'All items')[col]);
+    const val = (r) => (measure === 'weight' ? (r.weight ?? 0) : r.contrib);
+    const parents = R.filter((r) => r.level === 'parent' && val(r) > 0);
+    const groups = ['Core services', 'Energy', 'Food', 'Core goods']
+      .map((g) => ({ kind: 'group', name: g, group: g, value: d3.sum(parents.filter((p) => p.group === g), val), change: Number(compRows.find((r) => r.item === g)[col]),
+        weight: d3.sum(R.filter((r) => r.level === 'parent' && r.group === g), (r) => r.weight), contrib: d3.sum(R.filter((r) => r.level === 'parent' && r.group === g), (r) => r.contrib) }))
+      .filter((g) => g.value > 0).sort((a, b) => b.value - a.value);
+    const total = d3.sum(groups, (g) => g.value);
+    const comps = groups.flatMap((g) => parents.filter((p) => p.group === g.name).sort((a, b) => val(b) - val(a))
+      .map((p) => ({ kind: 'comp', name: p.item, group: p.group, value: val(p), change: p.change, weight: p.weight, contrib: p.contrib, share: p.share })));
+    if (!flowSel || !comps.find((n) => n.name === flowSel)) flowSel = comps.slice().sort((a, b) => b.value - a.value)[0].name;
+    const sel = comps.find((n) => n.name === flowSel);
+
+    const subsAll = R.filter((r) => r.level === 'sub' && r.parent === flowSel && val(r) > 0 && (measure !== 'weight' || r.weight != null)).sort((a, b) => val(b) - val(a));
+    const subSum = d3.sum(subsAll, val);
+    const keep = subsAll.filter((s, i) => i < 7 && val(s) >= subSum * 0.03);
+    const rest = subsAll.filter((s) => !keep.includes(s));
+    const subs = keep.map((s) => ({ kind: 'sub', name: s.item, group: s.group, value: val(s), change: s.change, weight: s.weight, contrib: s.contrib, share: s.share }));
+    if (rest.length) subs.push({ kind: 'sub', name: rest.length + ' smaller parts', group: sel.group, value: d3.sum(rest, val), change: null,
+      weight: d3.sum(rest, (s) => s.weight ?? 0), contrib: d3.sum(rest, (s) => s.contrib), share: d3.sum(rest, (s) => s.share), restNames: rest.map((s) => s.item) });
+    if (measure === 'weight') {
+      const unlisted = sel.value - d3.sum(subs, (s) => s.value);
+      if (unlisted > 0.02) subs.push({ kind: 'sub', name: 'Not listed separately', group: sel.group, value: unlisted, change: null, weight: unlisted, contrib: null, share: null });
+    }
+    const zoomSum = d3.sum(subs, (s) => s.value);
+
+    const w = Math.max(320, el.clientWidth);
+    const narrow = w < 620;
+    const top = 30, bottom = 8;
+    const H = Math.max(440, comps.length * 24 + top + bottom);
+    el.style.minHeight = H + 'px';
+    const nodeW = 12;
+    const X = narrow ? [0, w * 0.2, w * 0.45, null] : [0, w * 0.17, w * 0.43, w * 0.71];
+    const avail = H - top - bottom;
+    const padC = 7, padG = 16, padS = 10;
+    const k = (avail - padC * (comps.length - 1)) / total;
+    const stack = (nodes, pad, kk) => {
+      nodes.forEach((n) => { n.h = Math.max(1.5, n.value * kk); });
+      const tot = d3.sum(nodes, (n) => n.h) + pad * (nodes.length - 1);
+      let y = top + Math.max(0, (avail - tot) / 2);
+      nodes.forEach((n) => { n.y0 = y; n.y1 = y + n.h; y = n.y1 + pad; n.out = n.y0; });
+    };
+    const totalNode = { kind: 'total', name: narrow ? 'CPI' : view === 'yoy' ? 'All items CPI' : 'All items, m/m', value: total, change: headline, weight: 100, contrib: d3.sum(R.filter((r) => r.level === 'parent'), (r) => r.contrib) };
+    stack([totalNode], 0, k);
+    stack(groups, padG, k);
+    stack(comps, padC, k);
+    if (!narrow) stack(subs, padS, Math.min((avail - padS * Math.max(0, subs.length - 1)) / zoomSum, k * 40));
+
+    const colorOf = (n) => {
+      if (measure === 'contrib') return n.kind === 'total' ? 'var(--color-fg-muted)' : GROUP_COLORS[n.group];
+      return n.change == null ? 'var(--cds-chart-muted)' : fillOf(n.change, c);
+    };
+    const opacityOf = (n) => (measure === 'contrib' || n.change == null ? 0.9 : Math.max(0.45, opOf(n.change, c)));
+    const valText = (n) => {
+      if (n.kind === 'total') return measure === 'contrib' ? 'published ' + f1(headline) + '%' : '100% of basket · ' + signed(headline) + '%';
+      if (measure === 'contrib') return fpts(n.value) + ' pts' + (narrow ? '' : ' · ' + f1(n.value / totalNode.contrib * 100) + '%');
+      return f1(n.value) + '%' + (narrow ? '' : ' of basket') + (n.change != null && !narrow ? ' · ' + signed(n.change) + '%' : '');
+    };
+    const tipLines = (n) => [
+      n.contrib != null ? fpts(n.contrib) + ' pts of the ' + f1(headline) + '% ' + (view === 'yoy' ? 'headline' : 'monthly change') + ' (' + f1(n.contrib / totalNode.contrib * 100) + '% of inflation)' : 'Contribution not available',
+      n.weight != null ? f1(n.weight) + '% of the CPI basket' : 'Weight not available',
+      n.change != null ? f1(n.change) + '% ' + unit : (n.kind === 'comp' ? 'Remainder of core services; detail not available' : 'Change not available'),
+      ...(n.restNames ? ['Includes: ' + n.restNames.slice(0, 4).join(', ') + (n.restNames.length > 4 ? '…' : '')] : []),
+      ...(n.kind === 'comp' ? ['Click to look inside'] : [])
+    ];
+
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${H}`).attr('font-size', 11.5);
+    const heads = [['CPI', X[0]], ['Group', X[1]], ['Component', X[2]]];
+    if (!narrow) heads.push(['Inside: ' + sel.name, X[3]]);
+    heads.forEach(([t, x]) => svg.append('text').attr('x', x).attr('y', 12).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(t));
+
+    const linkG = svg.append('g');
+    const addLink = (d, src, tgt, cls) => linkG.append('path').attr('d', d).attr('fill', colorOf(tgt)).attr('fill-opacity', cls === 'zoom' ? 0.16 : 0.28)
+      .on('mousemove', (ev) => { d3.select(ev.currentTarget).attr('fill-opacity', 0.5); tp.show(ev, src.name + ' → ' + tgt.name, tipLines(tgt)); })
+      .on('mouseleave', (ev) => { d3.select(ev.currentTarget).attr('fill-opacity', cls === 'zoom' ? 0.16 : 0.28); tp.hide(); });
+    groups.forEach((g) => { const s0 = totalNode.out; totalNode.out += g.h; addLink(band(X[0] + nodeW, s0, totalNode.out, X[1], g.y0, g.y1), totalNode, g); });
+    comps.forEach((cn) => { const g = groups.find((q) => q.name === cn.group); const s0 = g.out; g.out += cn.h; addLink(band(X[1] + nodeW, s0, g.out, X[2], cn.y0, cn.y1), g, cn); });
+    if (!narrow) {
+      let o = sel.y0;
+      subs.forEach((s) => { const hh = sel.h * (s.value / zoomSum); addLink(band(X[2] + nodeW, o, o + hh, X[3], s.y0, s.y1), sel, s, 'zoom'); o += hh; });
+    }
+
+    const nodeG = svg.append('g');
+    const drawNodes = (nodes, x) => nodes.forEach((n) => {
+      nodeG.append('rect').attr('x', x).attr('y', n.y0).attr('width', nodeW).attr('height', n.h).attr('rx', 2)
+        .attr('fill', colorOf(n)).attr('fill-opacity', opacityOf(n))
+        .attr('stroke', n === sel ? 'var(--color-fg)' : 'none').attr('stroke-width', 1.5)
+        .attr('class', n.kind === 'comp' ? 'clickable' : null)
+        .on('mousemove', (ev) => tp.show(ev, n.name, tipLines(n))).on('mouseleave', () => tp.hide())
+        .on('click', () => { if (n.kind !== 'comp') return; flowSel = n.name; drawSankey(...flowArgs); });
+    });
+    drawNodes([totalNode], X[0]); drawNodes(groups, X[1]); drawNodes(comps, X[2]); if (!narrow) drawNodes(subs, X[3]);
+
+    const fit = (sel_, text, maxW) => { sel_.text(text); let t = text; while (sel_.node().getComputedTextLength() > maxW && t.length > 4) { t = t.slice(0, -2); sel_.text(t + '…'); } };
+    const labelCol = (nodes, x, maxW, twoLine) => {
+      const items = nodes.map((n) => ({ n, ly: (n.y0 + n.y1) / 2 }));
+      relax(items, twoLine ? 27 : 14, top + 6, H - bottom - (twoLine ? 14 : 4));
+      items.forEach(({ n, ly }) => {
+        const lx = x + nodeW + 5;
+        const g = svg.append('g').attr('class', n.kind === 'comp' ? 'clickable' : null)
+          .on('mousemove', (ev) => tp.show(ev, n.name, tipLines(n))).on('mouseleave', () => tp.hide())
+          .on('click', () => { if (n.kind !== 'comp') return; flowSel = n.name; drawSankey(...flowArgs); });
+        if (Math.abs(ly - (n.y0 + n.y1) / 2) > 3) g.append('line').attr('x1', x + nodeW).attr('x2', lx - 1).attr('y1', (n.y0 + n.y1) / 2).attr('y2', ly - 4).attr('stroke', 'var(--cds-chart-axis)');
+        if (twoLine) {
+          const a = g.append('text').attr('class', 'lab').attr('x', lx).attr('y', ly - 2).attr('font-weight', 600).attr('fill', 'var(--color-fg)');
+          fit(a, n.name, maxW);
+          g.append('text').attr('class', 'lab').attr('x', lx).attr('y', ly + 11).attr('fill', 'var(--color-fg-muted)').text(valText(n));
+        } else {
+          const t = g.append('text').attr('class', 'lab').attr('x', lx).attr('y', ly + 4).attr('fill', 'var(--color-fg)').attr('font-weight', n === sel ? 600 : 400);
+          const name = t.append('tspan');
+          const v = t.append('tspan').attr('fill', 'var(--color-fg-muted)').attr('font-weight', 400).text('  ' + valText(n));
+          const vw = v.node().getComputedTextLength();
+          name.text(n.name); let tt = n.name;
+          while (name.node().getComputedTextLength() + vw > maxW && tt.length > 4) { tt = tt.slice(0, -2); name.text(tt + '…'); }
+        }
+      });
+    };
+    labelCol([totalNode], X[0], X[1] - X[0] - nodeW - 10, true);
+    labelCol(groups, X[1], X[2] - X[1] - nodeW - 10, true);
+    labelCol(comps, X[2], (narrow ? w : X[3]) - X[2] - nodeW - 10, false);
+    if (!narrow) labelCol(subs, X[3], w - X[3] - nodeW - 6, false);
+
+    // what isn't drawn
+    if (measure === 'contrib') {
+      const negP = R.filter((r) => r.level === 'parent' && r.contrib < 0).sort((a, b) => a.contrib - b.contrib);
+      const negS = R.filter((r) => r.level === 'sub' && r.parent === flowSel && r.contrib < 0).sort((a, b) => a.contrib - b.contrib);
+      const parts = [];
+      parts.push('Flows add up to +' + f2(total) + ' pts. Components pulling the other way aren’t drawn: ' +
+        (negP.length ? negP.map((r) => r.item + ' ' + fpts(r.contrib)).join(', ') : 'none') + '.');
+      if (negS.length) parts.push('Inside ' + flowSel + ', also pulling down: ' + negS.map((r) => r.item + ' ' + fpts(r.contrib)).join(', ') + '.');
+      parts.push('Net of these, the parts add up to ' + f2(totalNode.contrib) + ' pts against the published ' + f1(headline) + '%.');
+      if (narrow) parts.push('Widen the window to see inside a component.');
+      offEl.textContent = parts.join(' ');
+    } else {
+      offEl.textContent = 'Flows add up to ' + f1(total) + '% of the basket. Colour shows each item’s ' + (view === 'yoy' ? '12-month' : 'monthly') + ' change against ' + c.label + ': red runs hotter, blue cooler, grey has no published change.' + (narrow ? ' Widen the window to see inside a component.' : '');
+    }
+  }
+
+  function fillTable(tbody, rows, cols) {
+    tbody.textContent = '';
+    rows.forEach((r) => {
+      const tr = document.createElement('tr');
+      if (r._cls) tr.className = r._cls;
+      cols.forEach((col, i) => {
+        const td = document.createElement('td');
+        const [text, cls] = col(r);
+        td.textContent = text; if (cls) td.className = cls;
+        if (i === 0 && r._indent != null) td.style.paddingLeft = `calc(var(--cds-pad-sm) + ${r._indent * 12}px)`;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ---------- rolling ROC line chart (headline, core, supercore)
+  const SERIES_COLORS = { Headline: dash.colors[0], Core: dash.colors[1], Supercore: dash.colors[4] };
+  function drawRoc(el, rows, tp, win, range) {
+    const w = Math.max(280, el.clientWidth), h = 300;
+    const parse = (s) => new Date(String(s).slice(0, 10) + 'T00:00:00Z');
+    const all = rows.filter((r) => r.window === win).map((r) => ({ ...r, d: parse(r.date) }));
+    const valid = all.filter((r) => r.roc != null);
+    const last = d3.max(valid, (r) => r.d);
+    const first = d3.min(valid, (r) => r.d);
+    const start = range === 'All' ? first : d3.max([first, d3.utcMonth.offset(last, range === '2Y' ? -24 : -60)]);
+    const data = all.filter((r) => r.d >= start && r.d <= last);
+    const names = ['Headline', 'Core', 'Supercore'];
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('role', 'img')
+      .attr('aria-label', `Rolling ${win} annualized rate of change of headline, core and supercore CPI`);
+    const lastOf = (s) => data.filter((r) => r.series === s && r.roc != null).at(-1);
+    const endLabels = names.map((s) => (s === 'Supercore' ? 'Supercore*' : s) + ' ' + f1(lastOf(s).roc) + '%');
+    const m = { t: 12, r: Math.min(w * 0.32, measure(svg, endLabels) + 14), b: 26, l: 40 };
+    const vals = data.filter((r) => r.roc != null).map((r) => r.roc);
+    const y = d3.scaleLinear([Math.min(0, d3.min(vals)), Math.max(3, d3.max(vals))], [h - m.b, m.t]).nice();
+    const x = d3.scaleUtc([start, last], [m.l, w - m.r]);
+    const yt = y.ticks(6);
+    svg.append('g').selectAll('line').data(yt).join('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', (d) => y(d)).attr('y2', (d) => y(d))
+      .attr('stroke', (d) => (d === 0 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)'));
+    svg.append('g').selectAll('text').data(yt).join('text').attr('x', m.l - 6).attr('y', (d) => y(d) + 4).attr('text-anchor', 'end')
+      .attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text((d) => d + '%');
+    const xa = svg.append('g').attr('transform', `translate(0,${h - m.b})`)
+      .call(d3.axisBottom(x).ticks(w < 480 ? 3 : 6).tickFormat(d3.utcFormat("%b '%y")).tickSizeOuter(0));
+    xa.attr('font-size', null).attr('font-family', null);
+    xa.selectAll('text').attr('fill', 'var(--color-fg-muted)').attr('font-size', 11);
+    xa.selectAll('line,path').attr('stroke', 'var(--cds-chart-axis)');
+    svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(2)).attr('y2', y(2))
+      .attr('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 3');
+    svg.append('text').attr('x', m.l + 4).attr('y', y(2) - 4).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text('2% target');
+    const line = d3.line().defined((d) => d.roc != null).x((d) => x(d.d)).y((d) => y(d.roc));
+    const ends = names.map((s, i) => ({ s, p: lastOf(s), label: endLabels[i], ly: y(lastOf(s).roc) + 4 }));
+    relax(ends, 14, m.t + 6, h - m.b);
+    names.forEach((s, i) => {
+      svg.append('path').datum(data.filter((r) => r.series === s)).attr('fill', 'none').attr('stroke', SERIES_COLORS[s]).attr('stroke-width', s === 'Supercore' ? 1.6 : 2)
+        .attr('stroke-dasharray', s === 'Supercore' ? '5 3' : null).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round').attr('d', line);
+    });
+    ends.forEach((e) => {
+      svg.append('circle').attr('cx', x(e.p.d)).attr('cy', y(e.p.roc)).attr('r', 3).attr('fill', SERIES_COLORS[e.s]);
+      svg.append('text').attr('x', x(e.p.d) + 7).attr('y', e.ly).attr('font-size', 12).attr('fill', 'var(--color-fg)').text(e.label);
+    });
+    const dates = [...new Set(data.map((r) => +r.d))].sort((a, b) => a - b).map((t) => new Date(t));
+    const rule = svg.append('line').attr('y1', m.t).attr('y2', h - m.b).attr('stroke', 'var(--cds-chart-axis)').attr('opacity', 0);
+    const dots = names.map((s) => svg.append('circle').attr('r', 4).attr('fill', SERIES_COLORS[s]).attr('opacity', 0));
+    const bis = d3.bisector((d) => d).center;
+    svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', Math.max(0, w - m.l - m.r)).attr('height', h - m.t - m.b).attr('fill', 'transparent')
+      .on('mousemove', (ev) => {
+        const [px] = d3.pointer(ev);
+        const d = dates[bis(dates, x.invert(px))];
+        if (!d) return;
+        rule.attr('x1', x(d)).attr('x2', x(d)).attr('opacity', 1);
+        const lines = names.map((s, i) => {
+          const r = data.find((q) => q.series === s && +q.d === +d);
+          if (r && r.roc != null) dots[i].attr('cx', x(d)).attr('cy', y(r.roc)).attr('opacity', 1); else dots[i].attr('opacity', 0);
+          return (s === 'Supercore' ? 'Supercore*' : s) + ': ' + (r && r.roc != null ? f1(r.roc) + '%' : 'n/a');
+        });
+        tp.show(ev, d3.utcFormat('%b %Y')(d) + ' · ' + win + ' annualized', lines);
+      })
+      .on('mouseleave', () => { rule.attr('opacity', 0); dots.forEach((dd) => dd.attr('opacity', 0)); tp.hide(); });
+  }
+
+  // ---------- contributions over time: stacked bars by group with the headline as dots
+  function drawHistory(el, rows, tp, view, range) {
+    const w = Math.max(280, el.clientWidth), h = 320;
+    const R = rows.filter((r) => r.view === view);
+    const allDates = [...new Set(R.map((r) => r.date))].sort();
+    const lastD = allDates.at(-1);
+    const n = range === '2Y' ? 24 : range === '5Y' ? 60 : 999;
+    // a continuous run of months, including ones with no data (e.g. Oct 2025) so gaps show
+    const months = [];
+    const startD = new Date(allDates[Math.max(0, allDates.length - n)] + 'T00:00:00Z');
+    for (let d = startD; d3.utcFormat('%Y-%m-%d')(d) <= lastD; d = d3.utcMonth.offset(d, 1)) months.push(d3.utcFormat('%Y-%m-%d')(d));
+    const groups = ['Core services', 'Core goods', 'Food', 'Energy'];
+    const by = d3.group(R, (r) => r.date);
+    const stacks = months.map((date) => {
+      const rr = by.get(date) || [];
+      let pos = 0, neg = 0;
+      const segs = groups.map((gname) => {
+        const v = (rr.find((r) => r.series === gname) || {}).value;
+        if (v == null) return null;
+        const s = v >= 0 ? { g: gname, v, a: pos, b: pos + v } : { g: gname, v, a: neg + v, b: neg };
+        if (v >= 0) pos += v; else neg += v;
+        return s;
+      }).filter(Boolean);
+      const head = (rr.find((r) => r.series === 'Headline') || {}).value;
+      return { date, segs, head, pos, neg };
+    });
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('role', 'img')
+      .attr('aria-label', 'Stacked bars of how much food, energy, core goods and core services contributed to CPI inflation each month');
+    const m = { t: 12, r: 8, b: 26, l: 44 };
+    const x = d3.scaleBand(months, [m.l, w - m.r]).paddingInner(months.length > 40 ? 0.15 : 0.25);
+    const lo = Math.min(0, d3.min(stacks, (s) => s.neg)), hi = Math.max(view === 'yoy' ? 2.5 : 0.3, d3.max(stacks, (s) => Math.max(s.pos, s.head ?? 0)));
+    const y = d3.scaleLinear([lo, hi], [h - m.b, m.t]).nice();
+    const yt = y.ticks(6);
+    svg.append('g').selectAll('line').data(yt).join('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', (d) => y(d)).attr('y2', (d) => y(d))
+      .attr('stroke', (d) => (d === 0 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)'));
+    svg.append('g').selectAll('text').data(yt).join('text').attr('x', m.l - 6).attr('y', (d) => y(d) + 4).attr('text-anchor', 'end')
+      .attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text((d) => (view === 'yoy' ? d + '%' : d3.format('.1f')(d) + '%'));
+    const janTicks = months.filter((d) => d.slice(5, 7) === '01' || (months.length <= 30 && ['04', '07', '10'].includes(d.slice(5, 7))));
+    svg.append('g').selectAll('text').data(janTicks).join('text').attr('x', (d) => x(d) + x.bandwidth() / 2).attr('y', h - 8).attr('text-anchor', 'middle')
+      .attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text((d) => d3.utcFormat(months.length <= 30 ? "%b '%y" : '%Y')(new Date(d + 'T00:00:00Z')));
+    if (view === 'yoy') {
+      svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(2)).attr('y2', y(2)).attr('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 3');
+      svg.append('text').attr('x', m.l + 4).attr('y', y(2) - 4).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text('2% target');
+    }
+    const col = svg.selectAll('g.col').data(stacks).join('g').attr('class', 'col').attr('transform', (d) => `translate(${x(d.date)},0)`);
+    col.selectAll('rect.seg').data((d) => d.segs).join('rect').attr('class', 'seg').attr('x', 0).attr('width', x.bandwidth())
+      .attr('y', (s) => y(s.b)).attr('height', (s) => Math.max(0, y(s.a) - y(s.b))).attr('fill', (s) => GROUP_COLORS[s.g]).attr('fill-opacity', 0.85);
+    const withHead = stacks.filter((s) => s.head != null);
+    svg.append('path').datum(withHead).attr('fill', 'none').attr('stroke', 'var(--color-fg)').attr('stroke-width', 1.5).attr('stroke-linejoin', 'round')
+      .attr('d', d3.line().defined((d, i) => i === 0 || months.indexOf(d.date) === months.indexOf(withHead[i - 1].date) + 1).x((d) => x(d.date) + x.bandwidth() / 2).y((d) => y(d.head)));
+    svg.append('g').selectAll('circle').data(withHead).join('circle').attr('cx', (d) => x(d.date) + x.bandwidth() / 2).attr('cy', (d) => y(d.head))
+      .attr('r', months.length > 40 ? 1.8 : 2.6).attr('fill', 'var(--color-fg)');
+    col.append('rect').attr('x', 0).attr('y', m.t).attr('width', x.bandwidth()).attr('height', h - m.t - m.b).attr('fill', 'transparent')
+      .on('mousemove', (ev, d) => {
+        const title = d3.utcFormat('%b %Y')(new Date(d.date + 'T00:00:00Z'));
+        if (d.head == null) { tp.show(ev, title, ['Not published']); return; }
+        tp.show(ev, title, ['Headline ' + f1(d.head) + '%' + (view === 'yoy' ? ' over 12 months' : ' on the month'),
+          ...groups.slice().reverse().map((gname) => { const s = d.segs.find((q) => q.g === gname); return gname + ' ' + (s ? fpts(s.v) : '—') + ' pts'; })]);
+      })
+      .on('mouseleave', () => tp.hide());
+  }
+
+  // ---------- touch: a tap shows the same tooltip a hover does; scrolling hides tooltips
+  document.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse' || !e.target.closest('.cp-chart')) return;
+    e.target.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: e.clientX, clientY: e.clientY }));
+  }, { passive: true });
+  window.addEventListener('scroll', () => document.querySelectorAll('.cp-tip').forEach((t) => { t.style.opacity = 0; }), { passive: true });
+
+  // ---------- controls
+  const TABS = ['overview', 'drivers', 'components', 'momentum', 'regions', 'method'];
+  const cardOf = (id) => document.getElementById(id).closest('.cp-card');
+  const tpTree = tipper('tip-treemap', cardOf('treemap'));
+  const tpBars = tipper('tip-bars', cardOf('bars'));
+  const tpRoc = tipper('tip-roc', cardOf('rocchart'));
+  const tpGrid = tipper('tip-grid', cardOf('grid'));
+  const tpMap = tipper('tip-map', cardOf('tilemap'));
+  const tpStack = tipper('tip-stack', cardOf('contribstack'));
+  const tpHist = tipper('tip-hist', cardOf('histchart'));
+  const tpContrib = tipper('tip-contrib', cardOf('contribitems'));
+  const tpFlow = tipper('tip-flow', cardOf('sankey'));
+  const P = () => ({ tab: 'overview', view: 'yoy', roc_window: '3M', roc_range: '5Y', hist_range: '5Y', flow_measure: 'contrib', ...dash.params() });
+  const seg = (id, key, attr) => document.getElementById(id).addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) dash.setParams({ [key]: b.dataset[attr] }); });
+  seg('viewseg', 'view', 'view'); seg('winseg', 'roc_window', 'win'); seg('rangeseg', 'roc_range', 'range'); seg('histseg', 'hist_range', 'range'); seg('flowseg', 'flow_measure', 'measure');
+  document.getElementById('tabs').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-tab]');
+    if (!b) return;
+    dash.setParams({ tab: b.dataset.tab });
+    dash.setLink(b.dataset.tab);
+  });
+  document.getElementById('tabs').addEventListener('keydown', (e) => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+    const i = TABS.indexOf(P().tab), j = (i + (e.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length;
+    dash.setParams({ tab: TABS[j] }); dash.setLink(TABS[j]);
+    document.querySelector(`#tabs button[data-tab="${TABS[j]}"]`).focus();
+  });
+  document.querySelectorAll('[data-goto]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); dash.setParams({ tab: a.dataset.goto }); dash.setLink(a.dataset.goto); window.scrollTo(0, 0); }));
+  const linked = location.hash.slice(1);
+  if (TABS.includes(linked)) dash.setParams({ tab: linked });
+
+  // downloads (standalone site only: the dashboard offers CSV downloads from Sources)
+  const DL = document.getElementById('downloads');
+  if (window.__STANDALONE__) {
+    DL.hidden = false;
+    DL.querySelectorAll('button[data-ds]').forEach((b) => b.addEventListener('click', () => {
+      const d = dash.data(b.dataset.ds);
+      if (d.status !== 'ok') return;
+      const cols = Object.keys(d.data[0]);
+      const esc = (v) => (v == null ? '' : /[",\n]/.test(String(v)) ? '"' + String(v).replace(/"/g, '""') + '"' : String(v));
+      const text = [cols.join(','), ...d.data.map((r) => cols.map((k) => esc(r[k])).join(','))].join('\n');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv' }));
+      a.download = b.dataset.ds + '.csv';
+      document.body.appendChild(a); a.click(); a.remove();
+    }));
+  }
+
+  const shown = (el) => !el.closest('[data-tab]').hidden;
+
+  dash.onData(() => {
+    fillMarks();
+    const p = P();
+    const tab = TABS.includes(p.tab) ? p.tab : 'overview';
+    const view = p.view === 'mom' ? 'mom' : 'yoy';
+    const c = CFG[view];
+    root.dataset.view = view;
+    document.querySelectorAll('#tabs button[data-tab]').forEach((b) => { const on = b.dataset.tab === tab; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; });
+    document.querySelectorAll('section[data-tab]').forEach((s) => { s.hidden = s.dataset.tab !== tab; });
+    const press = (id, attr, v) => document.querySelectorAll(`#${id} button`).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset[attr] === v)));
+    press('viewseg', 'view', view); press('winseg', 'win', p.roc_window); press('rangeseg', 'range', p.roc_range); press('histseg', 'range', p.hist_range);
+    const measureSel = p.flow_measure === 'weight' ? 'weight' : 'contrib';
+    press('flowseg', 'measure', measureSel);
+    const fd = dash.data('fred');
+    const latestDate = fd.status === 'ok' ? fd.data.filter((r) => num(r.headline) != null).map((r) => r.date).sort().at(-1) : null;
+    const asDate = (s) => new Date(s + 'T00:00:00Z');
+    const monthName = latestDate ? d3.utcFormat('%B')(asDate(latestDate)) : 'latest';
+    const latestLbl = latestDate ? d3.utcFormat('%b %Y')(asDate(latestDate)) : '';
+    const refLbl = latestDate ? d3.utcFormat('%b %Y')(d3.utcMonth.offset(asDate(latestDate), -1)) : '';
+    const prevMonth = latestDate ? d3.utcFormat('%B')(d3.utcMonth.offset(asDate(latestDate), -1)) : 'previous';
+    document.getElementById('dateline').textContent = latestDate ? d3.utcFormat('%B %Y')(asDate(latestDate)) + ' CPI' : '';
+    const label = view === 'yoy' ? '12-month headline' : monthName + ' monthly change';
+
+    const cd = dash.data('components');
+    const comps = cd.status === 'ok' ? cd.data.map((r) => ({ ...r, yoyN: Number(r.yoy), momN: Number(r.mom_sa), w: Number(r.weight), dp: Number(r.depth) })) : [];
+    const ct = dash.data('contrib');
+    const tr = dash.data('tree');
+
+    // KPI colouring: each value against its own target
+    document.querySelectorAll('.cp-kpi .big > span').forEach((s) => {
+      const v = parseFloat(s.textContent);
+      const t = s.classList.contains('v-mom') ? MONTHLY_TARGET : 2;
+      s.style.color = isNaN(v) ? '' : v > t ? 'var(--color-bad)' : 'var(--color-ok)';
+    });
+
+    // ---- overview
+    if (tab === 'overview') {
+      document.getElementById('stack-note').textContent = 'Percentage points each group adds to the ' + label + ' (BLS "effect on all items"; a few services items are estimated, see Methodology). Hover or tap a segment for details.';
+      const cs = document.getElementById('contribstack');
+      if (stateBox(cs, ct)) drawContribStack(cs, ct.data, tpStack, view);
+      const hd = dash.data('history');
+      const he = document.getElementById('histchart');
+      document.getElementById('hist-note').textContent = view === 'yoy'
+        ? 'How much each group added to 12-month inflation each month, in percentage points; the dotted line is the headline rate. Estimated from FRED indexes and BLS weights; core services is the remainder.'
+        : 'How much each group added to each month’s seasonally adjusted change, in percentage points; the dotted line is the headline monthly change. Estimated from FRED indexes and BLS weights; core services is the remainder.';
+      if (stateBox(he, hd)) drawHistory(he, hd.data, tpHist, view, p.hist_range);
+      const hl = document.getElementById('hist-legend');
+      hl.textContent = '';
+      [['Energy', GROUP_COLORS.Energy], ['Food', GROUP_COLORS.Food], ['Core goods', GROUP_COLORS['Core goods']], ['Core services', GROUP_COLORS['Core services']], ['Headline', 'var(--color-fg)']].forEach(([n, col]) => {
+        const s = document.createElement('span'); const sw = document.createElement('span');
+        sw.style.cssText = `display:inline-block;width:10px;height:10px;border-radius:${n === 'Headline' ? '50%' : '2px'};background:${col};margin-right:4px;vertical-align:-1px`;
+        s.appendChild(sw); s.appendChild(document.createTextNode(n)); hl.appendChild(s);
+      });
+    }
+
+    // ---- drivers
+    if (tab === 'drivers') {
+      document.getElementById('flow-note').textContent = measureSel === 'contrib'
+        ? 'Band widths are each part’s contribution to the ' + label + ', in percentage points (BLS effect on all items). Click a component to see what’s inside it.'
+        : 'Band widths are each part’s share of the CPI basket: how much of a typical urban household’s spending it represents (BLS relative importance, ' + refLbl + '). Click a component to see what’s inside it.';
+      const sk = document.getElementById('sankey');
+      const offEl = document.getElementById('flow-offsets');
+      if (stateBox(sk, tr) && cd.status === 'ok') drawSankey(sk, tr.data, tpFlow, view, measureSel, c, cd.data, offEl);
+      else offEl.textContent = '';
+
+      document.getElementById('items-note').textContent = 'The 20 subcomponents adding or subtracting the most from the ' + label + ', in percentage points. Red pushes inflation up, blue pulls it down.';
+      const ci = document.getElementById('contribitems');
+      if (stateBox(ci, ct)) {
+        const items = ct.data.filter((r) => r.view === view && r.kind === 'item' && r.weight != null)
+          .sort((a, b) => Math.abs(b.contrib) - Math.abs(a.contrib)).slice(0, 20);
+        drawContribItems(ci, [...items, ...ct.data.filter((r) => r.view === view && r.kind === 'published')], tpContrib, view);
+      }
+
+      document.getElementById('share-note').textContent = 'Share of basket is how much of household spending each component represents; share of inflation is how much of the '
+        + label + ' it accounts for. Bars compare the two: grey is basket, coloured is inflation (red adds, blue subtracts). Basis says whether the contribution is BLS’s official figure or an estimate.';
+      const stb = document.querySelector('#sharetable tbody');
+      stb.textContent = '';
+      if (tr.status === 'ok') {
+        const prow = tr.data.filter((r) => r.view === view && r.level === 'parent').sort((a, b) => b.weight - a.weight);
+        const maxPct = d3.max(prow, (r) => Math.max(r.weight, Math.abs(r.share))) || 1;
+        prow.forEach((r) => {
+          const trEl = document.createElement('tr');
+          trEl.dataset.key = encodeURIComponent(r.view) + ',' + encodeURIComponent(r.item);
+          const cell = (text, cls) => { const td = document.createElement('td'); td.textContent = text; if (cls) td.className = cls; trEl.appendChild(td); return td; };
+          const nameTd = cell(r.item);
+          const sw = document.createElement('span');
+          sw.style.cssText = `display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;background:${GROUP_COLORS[r.group]}`;
+          nameTd.prepend(sw);
+          cell(r.basis, 'hide-narrow muted');
+          cell(f1(r.weight));
+          cell(r.change == null ? '—' : f1(r.change), r.change == null ? '' : r.change > c.target ? 'hot' : 'cool');
+          cell(fpts(r.contrib), r.contrib >= 0 ? 'hot' : 'cool');
+          cell(f1(r.share), r.contrib >= 0 ? 'hot' : 'cool');
+          const barTd = cell('', 'hide-narrow');
+          barTd.style.minWidth = '120px';
+          const mk = (pct, color, op) => { const b = document.createElement('div'); b.style.cssText = `height:5px;border-radius:3px;margin:2px 0;width:${Math.max(1, Math.abs(pct) / maxPct * 100)}%;background:${color};opacity:${op}`; return b; };
+          barTd.appendChild(mk(r.weight, 'var(--cds-chart-muted)', 1));
+          barTd.appendChild(mk(r.share, r.contrib >= 0 ? HOT : COOL, 0.85));
+          stb.appendChild(trEl);
+        });
+      }
+    }
+
+    // ---- components
+    if (tab === 'components') {
+      legend(document.getElementById('legend-a'), c);
+      document.getElementById('heatmap-note').textContent = view === 'yoy'
+        ? 'Each tile is a CPI component, sized by its share of the basket (relative importance, ' + refLbl + ') and shaded by how far its 12-month change (' + latestLbl + ', not seasonally adjusted) sits from 2%.'
+        : 'Each tile is a CPI component, sized by its share of the basket and shaded by how far its ' + monthName + ' month-over-month change (seasonally adjusted where BLS adjusts it) sits from 0.17%, the monthly pace that compounds to 2% a year.';
+      document.getElementById('bars-note').textContent = view === 'yoy'
+        ? 'Bars start at the 2% line: right is hotter than target, left is cooler. Axis capped at 36%; longer bars are labelled with their true value.'
+        : monthName + ' m/m change, bars starting at 0.17% a month. Axis capped at 4%; longer bars (fuel oil, gasoline) are labelled with their true value.';
+      const val = (r) => (view === 'yoy' ? r.yoyN : r.momN);
+      const lines = (r) => [f1(r.yoyN) + '% 12-mo · ' + signed(r.yoyN - 2) + ' pts vs 2%', f1(r.momN) + '% m/m SA · ' + signed(r.momN - MONTHLY_TARGET, f2) + ' vs 0.17%', 'Weight ' + f2(r.w) + '% of basket'];
+      const leaves = comps.filter((r) => r.level === 'leaf').map((r) => ({ label: r.item, group: r.group, v: val(r), w: r.w, lines: lines(r) }));
+      const tm = document.getElementById('treemap');
+      if (stateBox(tm, cd)) drawTreemap(tm, leaves, tpTree, c);
+      const bars = document.getElementById('bars');
+      if (stateBox(bars, cd)) targetBars(bars, leaves.slice().sort((a, b) => b.v - a.v), tpBars, c);
+      const g = dash.data('gaps');
+      const gm = new Map(g.status === 'ok' ? g.data.map((r) => [r.item, r]) : []);
+      fillTable(document.querySelector('#comptable tbody'),
+        comps.map((r) => ({ ...r, _cls: r.level === 'aggregate' || r.level === 'total' ? 'agg' : '', _indent: r.dp })),
+        [
+          (r) => [r.item],
+          (r) => [d3.format('.3f')(r.w), 'hide-narrow'],
+          (r) => [f1(r.yoyN), r.yoyN > 2 ? 'hot' : 'cool'],
+          (r) => [gm.has(r.item) ? f1(gm.get(r.item).gap) : '—', r.yoyN > 2 ? 'hot' : 'cool'],
+          (r) => [f1(r.momN), r.momN > MONTHLY_TARGET ? 'hot' : 'cool'],
+          (r) => [gm.has(r.item) ? f2(gm.get(r.item).gap_m) : '—', 'hide-narrow ' + (r.momN > MONTHLY_TARGET ? 'hot' : 'cool')]
+        ]);
+    }
+
+    // ---- momentum
+    const cls = (v) => (v == null ? '' : v > 2 ? 'hot' : 'cool');
+    const fv = (v) => (v == null ? '—' : f1(v));
+    if (tab === 'momentum') {
+      const rd = dash.data('roc');
+      const rc = document.getElementById('rocchart');
+      if (stateBox(rc, rd)) drawRoc(rc, rd.data, tpRoc, p.roc_window, p.roc_range);
+      const rl = dash.data('roc_latest');
+      fillTable(document.querySelector('#roctable tbody'), rl.status === 'ok' ? rl.data : [], [
+        (r) => [r.series === 'Supercore' ? 'Supercore*' : r.series],
+        (r) => [r.date ? d3.utcFormat('%b %Y')(new Date(String(r.date).slice(0, 10) + 'T00:00:00Z')) : '—'],
+        (r) => [fv(r.m1), cls(r.m1)], (r) => [fv(r.m3), cls(r.m3)], (r) => [fv(r.m6), cls(r.m6)], (r) => [fv(r.m12), cls(r.m12)]
+      ]);
+      const mg = dash.data('components_monthly');
+      const ge = document.getElementById('grid');
+      if (stateBox(ge, mg)) drawGrid(ge, mg.data, tpGrid, CFG.mom);
+      const cr = dash.data('comp_rolling');
+      const yoyOf = new Map(comps.map((r) => [r.item, r.yoyN]));
+      const depthOf = new Map((mg.status === 'ok' ? mg.data : []).map((r) => [r.item, Number(r.depth)]));
+      fillTable(document.querySelector('#rolltable tbody'),
+        (cr.status === 'ok' ? cr.data : []).map((r) => ({ ...r, _indent: depthOf.get(r.item) ?? 0, _cls: (depthOf.get(r.item) ?? 0) <= 1 ? 'agg' : '' })),
+        [
+          (r) => [r.item],
+          (r) => [f1(r.latest), r.latest > MONTHLY_TARGET ? 'hot' : 'cool'],
+          (r) => [f1(r.ann1), cls(r.ann1)], (r) => [f1(r.ann3), cls(r.ann3)], (r) => [f1(r.ann6), cls(r.ann6)],
+          (r) => [yoyOf.has(r.item) ? f1(yoyOf.get(r.item)) : '—', 'hide-narrow ' + cls(yoyOf.get(r.item))]
+        ]);
+    }
+
+    // ---- regions
+    if (tab === 'regions') {
+      legend(document.getElementById('legend-b'), c);
+      document.getElementById('region-note').textContent = view === 'yoy'
+        ? "States are shaded by their census division's all-items 12-month change to ' + latestLbl + '. Local indexes carry more sampling error than the national one."
+        : "States are shaded by their division's ' + prevMonth + '→' + monthName + ' change. BLS doesn't seasonally adjust area indexes, so these monthly moves include seasonal swings.";
+      document.getElementById('metro-note').textContent = view === 'yoy'
+        ? 'Metros priced every month or in the latest pricing cycle are through ' + latestLbl + '; the others are through ' + refLbl + '.'
+        : 'Only New York, Los Angeles and Chicago are priced every month; the rest are bimonthly, so they have no 1-month change.';
+      const rg = dash.data('regions');
+      const regs = rg.status === 'ok' ? rg.data.map((r) => ({ ...r, v: num(r[c.regionKey]) })) : [];
+      const tmEl = document.getElementById('tilemap');
+      if (stateBox(tmEl, rg)) drawTileMap(tmEl, regs, tpMap, c, view);
+      const mb = document.getElementById('metrobars');
+      if (stateBox(mb, rg)) {
+        const metros = regs.filter((r) => r.type === 'metro' && r.v != null).sort((a, b) => b.v - a.v)
+          .map((r) => ({ label: r.area, v: r.v, lines: [f1(r.v) + '% ' + (view === 'yoy' ? '12-mo (' + r.period + ')' : '1-mo, not SA (' + latestLbl + ')'), signed(r.v - c.target, view === 'yoy' ? f1 : f2) + ' pts vs ' + c.label, 'Region: ' + r.region] }));
+        targetBars(mb, metros, tpMap, c);
+      }
+    }
+
+    // ---- methodology: method check table
+    if (tab === 'method') {
+      const mc = dash.data('method_check');
+      fillTable(document.querySelector('#checktable tbody'), mc.status === 'ok' ? mc.data.filter((r) => r.view === view) : [], [
+        (r) => [r.group], (r) => [r.estimated == null ? '—' : f2(r.estimated)], (r) => [r.official == null ? '—' : f2(r.official)],
+        (r) => [r.estimated == null || r.official == null ? '—' : signed(r.estimated - r.official, f2)]
+      ]);
+      document.querySelectorAll('#checktable tbody tr').forEach((row, i) => { const r = mc.data.filter((q) => q.view === view)[i]; if (r) row.dataset.key = encodeURIComponent(view) + ',' + encodeURIComponent(r.group); });
+    }
+  });
+})();
+
+</script>

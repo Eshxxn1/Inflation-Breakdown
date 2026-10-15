@@ -1,0 +1,38 @@
+item,group,level,depth,weight,yoy,mom_sa
+All items,Headline,total,0,100.000,3.7,0.6
+Food,Food,aggregate,1,13.507,2.5,0.0
+Food at home,Food,aggregate,2,8.203,1.8,-0.1
+Cereals and bakery products,Food,leaf,3,1.021,2.1,0.1
+"Meats, poultry, fish, and eggs",Food,leaf,3,1.956,0.3,-0.5
+Dairy and related products,Food,leaf,3,0.741,-0.7,-0.9
+Fruits and vegetables,Food,leaf,3,1.270,3.7,0.5
+Nonalcoholic beverages,Food,leaf,3,0.986,3.8,0.9
+Other food at home,Food,leaf,3,2.227,1.8,-0.2
+Food away from home,Food,leaf,2,5.304,3.5,0.2
+Energy,Energy,aggregate,1,7.418,20.4,5.2
+Energy commodities,Energy,aggregate,2,4.146,35.3,9.3
+Fuel oil,Energy,leaf,3,0.115,74.2,15.3
+Motor fuel,Energy,leaf,3,3.976,34.9,9.3
+Gasoline (all types),Energy,detail,4,3.853,34.2,9.1
+Energy services,Energy,aggregate,2,3.272,4.6,0.1
+Electricity,Energy,leaf,3,2.529,4.4,0.2
+Utility (piped) gas service,Energy,leaf,3,0.743,5.0,-0.3
+All items less food and energy,Core,aggregate,1,79.075,2.6,0.3
+Core goods,Core goods,aggregate,2,18.835,0.7,0.3
+Apparel,Core goods,leaf,3,2.445,3.4,0.3
+New vehicles,Core goods,leaf,3,3.748,0.6,0.2
+Used cars and trucks,Core goods,leaf,3,2.688,-1.5,0.7
+Medical care commodities,Core goods,leaf,3,1.396,-3.3,-0.7
+Alcoholic beverages,Core goods,leaf,3,0.823,1.4,0.0
+Tobacco and smoking products,Core goods,leaf,3,0.449,6.4,0.7
+Core services,Core services,aggregate,2,60.240,3.1,0.4
+Shelter,Core services,aggregate,3,35.323,3.2,0.4
+Rent of primary residence,Core services,leaf,4,7.728,2.8,0.2
+Owners' equivalent rent,Core services,leaf,4,25.902,3.3,0.3
+Medical care services,Core services,aggregate,3,6.834,2.5,0.3
+Physicians' services,Core services,leaf,4,1.658,2.1,0.0
+Hospital services,Core services,leaf,4,2.160,5.6,0.7
+Transportation services,Core services,aggregate,3,6.261,2.7,0.6
+Motor vehicle maintenance and repair,Core services,leaf,4,1.063,5.8,0.7
+Motor vehicle insurance,Core services,leaf,4,2.531,-5.0,0.1
+Airline fares,Core services,leaf,4,1.040,22.4,1.2

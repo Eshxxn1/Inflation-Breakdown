@@ -1,0 +1,56 @@
+name: Update CPI data and publish
+
+on:
+  schedule:
+    # Every day at 13:45 UTC (after the 8:30 a.m. ET BLS release). Days with no new release change nothing.
+    - cron: "45 13 * * *"
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: ["template/**", "site.config.json", "scripts/build_site.py"]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas lxml requests
+      - name: Fetch latest BLS and FRED data
+        # A run that finds no new release, or data that fails the checks, keeps the current data.
+        continue-on-error: true
+        env:
+          BLS_USER_AGENT: ${{ secrets.BLS_USER_AGENT }}
+        run: python scripts/update_data.py
+      - name: Build the site
+        run: python scripts/build_site.py
+      - name: Save new data to the repository
+        run: |
+          git config user.name "cpi-bot"
+          git config user.email "cpi-bot@users.noreply.github.com"
+          git add data site
+          git diff --cached --quiet || (git commit -m "Update CPI data" && git push)
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

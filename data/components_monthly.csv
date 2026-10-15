@@ -1,0 +1,148 @@
+item,group,depth,month,mom_sa
+All items,Headline,0,2026-03,0.9
+All items,Headline,0,2026-04,0.6
+All items,Headline,0,2026-05,0.5
+All items,Headline,0,2026-06,-0.4
+All items,Headline,0,2026-07,0.1
+All items,Headline,0,2026-08,0.4
+All items,Headline,0,2026-09,0.6
+Food,Food,1,2026-03,0.0
+Food,Food,1,2026-04,0.5
+Food,Food,1,2026-05,0.2
+Food,Food,1,2026-06,0.2
+Food,Food,1,2026-07,0.1
+Food,Food,1,2026-08,0.1
+Food,Food,1,2026-09,0.0
+Food at home,Food,2,2026-03,-0.2
+Food at home,Food,2,2026-04,0.7
+Food at home,Food,2,2026-05,0.1
+Food at home,Food,2,2026-06,0.2
+Food at home,Food,2,2026-07,-0.1
+Food at home,Food,2,2026-08,0.0
+Food at home,Food,2,2026-09,-0.1
+Food away from home,Food,2,2026-03,0.2
+Food away from home,Food,2,2026-04,0.2
+Food away from home,Food,2,2026-05,0.3
+Food away from home,Food,2,2026-06,0.2
+Food away from home,Food,2,2026-07,0.3
+Food away from home,Food,2,2026-08,0.3
+Food away from home,Food,2,2026-09,0.2
+Energy,Energy,1,2026-03,10.9
+Energy,Energy,1,2026-04,3.8
+Energy,Energy,1,2026-05,3.9
+Energy,Energy,1,2026-06,-5.7
+Energy,Energy,1,2026-07,-1.5
+Energy,Energy,1,2026-08,2.1
+Energy,Energy,1,2026-09,5.2
+Energy commodities,Energy,2,2026-03,21.3
+Energy commodities,Energy,2,2026-04,5.6
+Energy commodities,Energy,2,2026-05,6.7
+Energy commodities,Energy,2,2026-06,-9.5
+Energy commodities,Energy,2,2026-07,-2.9
+Energy commodities,Energy,2,2026-08,4.2
+Energy commodities,Energy,2,2026-09,9.3
+Gasoline (all types),Energy,3,2026-03,21.2
+Gasoline (all types),Energy,3,2026-04,5.4
+Gasoline (all types),Energy,3,2026-05,7.0
+Gasoline (all types),Energy,3,2026-06,-9.7
+Gasoline (all types),Energy,3,2026-07,-2.9
+Gasoline (all types),Energy,3,2026-08,3.9
+Gasoline (all types),Energy,3,2026-09,9.1
+Fuel oil,Energy,3,2026-03,30.7
+Fuel oil,Energy,3,2026-04,5.8
+Fuel oil,Energy,3,2026-05,3.8
+Fuel oil,Energy,3,2026-06,-9.2
+Fuel oil,Energy,3,2026-07,-1.7
+Fuel oil,Energy,3,2026-08,10.1
+Fuel oil,Energy,3,2026-09,15.3
+Energy services,Energy,2,2026-03,0.4
+Energy services,Energy,2,2026-04,1.6
+Energy services,Energy,2,2026-05,0.4
+Energy services,Energy,2,2026-06,-0.7
+Energy services,Energy,2,2026-07,0.3
+Energy services,Energy,2,2026-08,-0.4
+Energy services,Energy,2,2026-09,0.1
+Electricity,Energy,3,2026-03,0.8
+Electricity,Energy,3,2026-04,2.1
+Electricity,Energy,3,2026-05,0.6
+Electricity,Energy,3,2026-06,-1.0
+Electricity,Energy,3,2026-07,0.1
+Electricity,Energy,3,2026-08,-0.2
+Electricity,Energy,3,2026-09,0.2
+Utility (piped) gas service,Energy,3,2026-03,-0.9
+Utility (piped) gas service,Energy,3,2026-04,-0.1
+Utility (piped) gas service,Energy,3,2026-05,-0.5
+Utility (piped) gas service,Energy,3,2026-06,0.5
+Utility (piped) gas service,Energy,3,2026-07,0.7
+Utility (piped) gas service,Energy,3,2026-08,-1.1
+Utility (piped) gas service,Energy,3,2026-09,-0.3
+All items less food and energy,Core,1,2026-03,0.2
+All items less food and energy,Core,1,2026-04,0.4
+All items less food and energy,Core,1,2026-05,0.2
+All items less food and energy,Core,1,2026-06,0.0
+All items less food and energy,Core,1,2026-07,0.2
+All items less food and energy,Core,1,2026-08,0.3
+All items less food and energy,Core,1,2026-09,0.3
+Core goods,Core goods,2,2026-03,0.1
+Core goods,Core goods,2,2026-04,0.0
+Core goods,Core goods,2,2026-05,-0.1
+Core goods,Core goods,2,2026-06,-0.1
+Core goods,Core goods,2,2026-07,0.2
+Core goods,Core goods,2,2026-08,0.1
+Core goods,Core goods,2,2026-09,0.3
+New vehicles,Core goods,3,2026-03,0.1
+New vehicles,Core goods,3,2026-04,-0.2
+New vehicles,Core goods,3,2026-05,-0.3
+New vehicles,Core goods,3,2026-06,0.0
+New vehicles,Core goods,3,2026-07,0.1
+New vehicles,Core goods,3,2026-08,0.3
+New vehicles,Core goods,3,2026-09,0.2
+Used cars and trucks,Core goods,3,2026-03,-0.4
+Used cars and trucks,Core goods,3,2026-04,0.0
+Used cars and trucks,Core goods,3,2026-05,0.1
+Used cars and trucks,Core goods,3,2026-06,-0.2
+Used cars and trucks,Core goods,3,2026-07,0.4
+Used cars and trucks,Core goods,3,2026-08,0.4
+Used cars and trucks,Core goods,3,2026-09,0.7
+Apparel,Core goods,3,2026-03,1.0
+Apparel,Core goods,3,2026-04,0.6
+Apparel,Core goods,3,2026-05,0.3
+Apparel,Core goods,3,2026-06,-0.6
+Apparel,Core goods,3,2026-07,0.1
+Apparel,Core goods,3,2026-08,0.0
+Apparel,Core goods,3,2026-09,0.3
+Medical care commodities,Core goods,3,2026-03,-1.0
+Medical care commodities,Core goods,3,2026-04,-0.4
+Medical care commodities,Core goods,3,2026-05,-0.7
+Medical care commodities,Core goods,3,2026-06,-0.2
+Medical care commodities,Core goods,3,2026-07,-0.6
+Medical care commodities,Core goods,3,2026-08,-0.2
+Medical care commodities,Core goods,3,2026-09,-0.7
+Core services,Core services,2,2026-03,0.2
+Core services,Core services,2,2026-04,0.5
+Core services,Core services,2,2026-05,0.3
+Core services,Core services,2,2026-06,0.0
+Core services,Core services,2,2026-07,0.2
+Core services,Core services,2,2026-08,0.3
+Core services,Core services,2,2026-09,0.4
+Shelter,Core services,3,2026-03,0.3
+Shelter,Core services,3,2026-04,0.6
+Shelter,Core services,3,2026-05,0.3
+Shelter,Core services,3,2026-06,0.1
+Shelter,Core services,3,2026-07,0.1
+Shelter,Core services,3,2026-08,0.3
+Shelter,Core services,3,2026-09,0.4
+Transportation services,Core services,3,2026-03,0.6
+Transportation services,Core services,3,2026-04,0.3
+Transportation services,Core services,3,2026-05,-0.6
+Transportation services,Core services,3,2026-06,-0.3
+Transportation services,Core services,3,2026-07,0.3
+Transportation services,Core services,3,2026-08,0.5
+Transportation services,Core services,3,2026-09,0.6
+Medical care services,Core services,3,2026-03,0.0
+Medical care services,Core services,3,2026-04,0.0
+Medical care services,Core services,3,2026-05,0.5
+Medical care services,Core services,3,2026-06,-0.1
+Medical care services,Core services,3,2026-07,0.6
+Medical care services,Core services,3,2026-08,-0.2
+Medical care services,Core services,3,2026-09,0.3
