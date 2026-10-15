@@ -283,6 +283,8 @@ def update_fred():
     out = []
     for _, r in df.iterrows():
         row = {"date": str(r["date"])[:10]}
+        if row["date"] < "2019-01-01":  # FRED may ignore cosd and send full history; the page starts in 2019
+            continue
         for k, v in FRED_IDS.items():
             row[k] = fmt(None if pd.isna(r[v]) else float(r[v]), 3)
         out.append(row)
