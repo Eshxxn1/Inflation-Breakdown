@@ -42,6 +42,15 @@
 .cp-sum b { font-weight: 600; }
 #sankey .clickable { cursor: pointer; }
 #sankey text.lab { paint-order: stroke; stroke: var(--color-panel); stroke-width: 3px; stroke-linejoin: round; }
+.sk-drill { margin-top: var(--cds-gap-md, 16px); padding-top: var(--cds-gap-sm, 10px); border-top: 1px solid var(--color-border-line); }
+.sk-drill-head { font-size: 14px; color: var(--color-fg); }
+.sk-drill-hint { font-size: 12.5px; color: var(--color-fg-muted); margin: 2px 0 10px; }
+.sk-drill-row { margin-bottom: 10px; }
+.sk-drill-line { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; color: var(--color-fg); }
+.sk-drill-val { color: var(--color-fg-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sk-drill-track { height: 8px; margin-top: 4px; border-radius: 4px; background: color-mix(in srgb, var(--color-fg) 6%, transparent); }
+.sk-drill-bar { height: 100%; border-radius: 4px; }
+.sk-drill-sub { font-size: 11.5px; color: var(--color-fg-muted); margin-top: 3px; }
 .cp-sum .k { color: var(--color-fg-muted); }
 .cp[data-view=yoy] ul.v-mom, .cp[data-view=mom] ul.v-yoy { display: none; }
 #tree .clickable { cursor: pointer; }
@@ -722,7 +731,7 @@
 
   // ---------- bars diverging from the target line
   function targetBars(el, rows, tp, c) {
-    const w = Math.max(280, el.clientWidth);
+    const w = Math.max(240, el.clientWidth);
     const rowH = 22, top = 24, bottom = 8;
     const h = top + rows.length * rowH + bottom;
     el.style.minHeight = h + 'px';
@@ -765,7 +774,7 @@
 
   function drawTileMap(el, regions, tp, c, view) {
     const div = new Map(regions.filter((r) => r.type === 'division' && r.v != null).map((r) => [r.area, r]));
-    const w = Math.max(280, el.clientWidth);
+    const w = Math.max(240, el.clientWidth);
     const cell = Math.min(46, (w - 4) / 12);
     const h = cell * 8 + 4;
     const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`);
@@ -789,7 +798,7 @@
   }
 
   function drawTreemap(el, leaves, tp, c) {
-    const w = Math.max(280, el.clientWidth);
+    const w = Math.max(240, el.clientWidth);
     const h = w < 560 ? 460 : 380;
     el.style.minHeight = h + 'px';
     const groups = d3.groups(leaves, (r) => r.group).map(([name, kids]) => ({ name, children: kids }));
@@ -816,7 +825,7 @@
 
   // ---------- component × month heat grid
   function drawGrid(el, rows, tp, c) {
-    const w = Math.max(280, el.clientWidth);
+    const w = Math.max(240, el.clientWidth);
     const items = [...new Set(rows.map((r) => r.item))];
     const months = [...new Set(rows.map((r) => r.month))].sort();
     const depth = new Map(rows.map((r) => [r.item, Number(r.depth)]));
@@ -893,7 +902,7 @@
   function drawContribItems(el, rows, tp, view) {
     const pub = rows.find((r) => r.view === view && r.kind === 'published');
     const items = rows.filter((r) => r.view === view && r.kind === 'item').sort((a, b) => b.contrib - a.contrib);
-    const w = Math.max(280, el.clientWidth);
+    const w = Math.max(240, el.clientWidth);
     const rowH = 22, top = 24, bottom = 8;
     const h = top + items.length * rowH + bottom;
     el.style.minHeight = h + 'px';
@@ -949,15 +958,18 @@
     const xm = (xs + xt) / 2;
     return `M${xs},${s0}C${xm},${s0} ${xm},${t0} ${xt},${t0}L${xt},${t1}C${xm},${t1} ${xm},${s1} ${xs},${s1}Z`;
   };
-  function relax(items, gap, lo, hi) {
+  // spread labels (centre ly, height h) so none overlap, keeping them inside lo..hi
+  function relax(items, pad, lo, hi) {
     items.sort((a, b) => a.ly - b.ly);
-    for (let i = 1; i < items.length; i++) if (items[i].ly < items[i - 1].ly + gap) items[i].ly = items[i - 1].ly + gap;
-    const over = items.length ? items[items.length - 1].ly - hi : 0;
+    const n = items.length;
+    if (!n) return;
+    for (let i = 1; i < n; i++) { const min = items[i - 1].ly + ((items[i - 1].h || 0) + (items[i].h || 0)) / 2 + pad; if (items[i].ly < min) items[i].ly = min; }
+    const over = items[n - 1].ly + (items[n - 1].h || 0) / 2 - hi;
     if (over > 0) {
-      items[items.length - 1].ly -= over;
-      for (let i = items.length - 2; i >= 0; i--) if (items[i].ly > items[i + 1].ly - gap) items[i].ly = items[i + 1].ly - gap;
+      items[n - 1].ly -= over;
+      for (let i = n - 2; i >= 0; i--) { const max = items[i + 1].ly - ((items[i + 1].h || 0) + (items[i].h || 0)) / 2 - pad; if (items[i].ly > max) items[i].ly = max; }
     }
-    items.forEach((it) => { if (it.ly < lo) it.ly = lo; });
+    items.forEach((it) => { if (it.ly - (it.h || 0) / 2 < lo) it.ly = lo + (it.h || 0) / 2; });
   }
 
   function drawSankey(el, rows, tp, view, measure, c, compRows, offEl) {
@@ -983,6 +995,7 @@
     const subsAll = R.filter((r) => r.level === 'sub' && r.parent === flowSel && val(r) > 0 && (measure !== 'weight' || r.weight != null)).sort((a, b) => val(b) - val(a));
     const subSum = d3.sum(subsAll, val);
     const keep = subsAll.filter((s, i) => i < 7 && val(s) >= subSum * 0.03);
+    if (subsAll.length - keep.length === 1) keep.push(subsAll.find((s) => !keep.includes(s)));
     const rest = subsAll.filter((s) => !keep.includes(s));
     const subs = keep.map((s) => ({ kind: 'sub', name: s.item, group: s.group, value: val(s), change: s.change, weight: s.weight, contrib: s.contrib, share: s.share }));
     if (rest.length) subs.push({ kind: 'sub', name: rest.length + ' smaller parts', group: sel.group, value: d3.sum(rest, val), change: null,
@@ -993,13 +1006,56 @@
     }
     const zoomSum = d3.sum(subs, (s) => s.value);
 
-    const w = Math.max(320, el.clientWidth);
+    const w = Math.max(240, el.clientWidth);
     const narrow = w < 620;
-    const top = 30, bottom = 8;
-    const H = Math.max(440, comps.length * 24 + top + bottom);
-    el.style.minHeight = H + 'px';
+    const top = narrow ? 42 : 30, bottom = 8;
     const nodeW = 12;
-    const X = narrow ? [0, w * 0.2, w * 0.45, null] : [0, w * 0.17, w * 0.43, w * 0.71];
+    const X = narrow ? [0, w * 0.1, w * 0.4, null] : [0, w * 0.17, w * 0.43, w * 0.71];
+
+    const totalNode = { kind: 'total', name: view === 'yoy' ? 'All items CPI' : 'All items, m/m', value: total, change: headline, weight: 100, contrib: d3.sum(R.filter((r) => r.level === 'parent'), (r) => r.contrib) };
+    const valText = (n) => {
+      if (n.kind === 'total') return measure === 'contrib' ? 'published ' + f1(headline) + '%' : '100% of basket · ' + signed(headline) + '%';
+      if (measure === 'contrib') return fpts(n.value) + ' pts' + (narrow ? '' : ' · ' + f1(n.value / totalNode.contrib * 100) + '%');
+      return f1(n.value) + '%' + (narrow ? '' : ' of basket') + (n.change != null ? ' · ' + signed(n.change) + '%' : '');
+    };
+
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('font-size', 11.5);
+
+    // ---- label layout: names wrap onto a second line rather than being cut; the value follows the name or takes its own line
+    const LH = 13.5;
+    const meas = svg.append('text').attr('class', 'lab').attr('visibility', 'hidden');
+    const tw = (s, bold) => { meas.attr('font-weight', bold ? 600 : 400).text(s); return meas.node().getComputedTextLength(); };
+    const wrap = (text, maxW, bold, maxLines) => {
+      const lines = []; let cur = '';
+      text.split(' ').forEach((wd) => { const t = cur ? cur + ' ' + wd : wd; if (!cur || tw(t, bold) <= maxW) cur = t; else { lines.push(cur); cur = wd; } });
+      lines.push(cur);
+      if (lines.length > maxLines) lines.splice(maxLines - 1, lines.length, lines.slice(maxLines - 1).join(' '));
+      return lines.map((l) => { if (tw(l, bold) <= maxW) return l; let t = l; while (t.length > 3 && tw(t + '…', bold) > maxW) t = t.slice(0, -1); return t.trimEnd() + '…'; });
+    };
+    const layoutLabels = (nodes, maxW, stacked) => nodes.map((n) => {
+      const bold = stacked || n === sel;
+      const v = valText(n);
+      const lines = wrap(n.name, maxW, bold, 2).map((name) => ({ name }));
+      const last = lines[lines.length - 1];
+      if (!stacked && tw(last.name, bold) + 6 + tw(v, false) <= maxW) last.val = v;
+      else if (tw(v, false) <= maxW) lines.push({ val: v });
+      else v.split(' · ').forEach((part) => lines.push({ val: part }));
+      return { n, bold, lines, h: lines.length * LH };
+    });
+    const PADL = 4;
+    const need = (items) => d3.sum(items, (it) => it.h) + PADL * Math.max(0, items.length - 1);
+
+    const colW = (i) => (i === 0 ? X[1] : X[i + 1] ?? w) - X[i] - nodeW - (i === 3 ? 6 : 10);
+    const L = {
+      total: narrow ? null : layoutLabels([totalNode], colW(0), true),
+      groups: layoutLabels(groups, colW(1), true),
+      comps: layoutLabels(comps, narrow ? w - X[2] - nodeW - 6 : colW(2), false),
+      subs: narrow ? null : layoutLabels(subs, colW(3), false)
+    };
+    const H = Math.max(440, comps.length * 24 + top + bottom, need(L.comps) * 1.12 + top + bottom + 4, L.subs ? need(L.subs) * 1.12 + top + bottom + 4 : 0);
+    el.style.minHeight = '';
+    svg.attr('viewBox', `0 0 ${w} ${H}`);
+
     const avail = H - top - bottom;
     const padC = 7, padG = 16, padS = 10;
     const k = (avail - padC * (comps.length - 1)) / total;
@@ -1009,7 +1065,6 @@
       let y = top + Math.max(0, (avail - tot) / 2);
       nodes.forEach((n) => { n.y0 = y; n.y1 = y + n.h; y = n.y1 + pad; n.out = n.y0; });
     };
-    const totalNode = { kind: 'total', name: narrow ? 'CPI' : view === 'yoy' ? 'All items CPI' : 'All items, m/m', value: total, change: headline, weight: 100, contrib: d3.sum(R.filter((r) => r.level === 'parent'), (r) => r.contrib) };
     stack([totalNode], 0, k);
     stack(groups, padG, k);
     stack(comps, padC, k);
@@ -1020,23 +1075,18 @@
       return n.change == null ? 'var(--cds-chart-muted)' : fillOf(n.change, c);
     };
     const opacityOf = (n) => (measure === 'contrib' || n.change == null ? 0.9 : Math.max(0.45, opOf(n.change, c)));
-    const valText = (n) => {
-      if (n.kind === 'total') return measure === 'contrib' ? 'published ' + f1(headline) + '%' : '100% of basket · ' + signed(headline) + '%';
-      if (measure === 'contrib') return fpts(n.value) + ' pts' + (narrow ? '' : ' · ' + f1(n.value / totalNode.contrib * 100) + '%');
-      return f1(n.value) + '%' + (narrow ? '' : ' of basket') + (n.change != null && !narrow ? ' · ' + signed(n.change) + '%' : '');
-    };
     const tipLines = (n) => [
       n.contrib != null ? fpts(n.contrib) + ' pts of the ' + f1(headline) + '% ' + (view === 'yoy' ? 'headline' : 'monthly change') + ' (' + f1(n.contrib / totalNode.contrib * 100) + '% of inflation)' : 'Contribution not available',
       n.weight != null ? f1(n.weight) + '% of the CPI basket' : 'Weight not available',
       n.change != null ? f1(n.change) + '% ' + unit : (n.kind === 'comp' ? 'Remainder of core services; detail not available' : 'Change not available'),
       ...(n.restNames ? ['Includes: ' + n.restNames.slice(0, 4).join(', ') + (n.restNames.length > 4 ? '…' : '')] : []),
-      ...(n.kind === 'comp' ? ['Click to look inside'] : [])
+      ...(n.kind === 'comp' ? [narrow ? 'Tap to see what’s inside, below the chart' : 'Click to look inside'] : [])
     ];
 
-    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${H}`).attr('font-size', 11.5);
-    const heads = [['CPI', X[0]], ['Group', X[1]], ['Component', X[2]]];
-    if (!narrow) heads.push(['Inside: ' + sel.name, X[3]]);
-    heads.forEach(([t, x]) => svg.append('text').attr('x', x).attr('y', 12).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(t));
+    const head = (t, x, y, muted) => svg.append('text').attr('x', x).attr('y', y).attr('font-size', 11).attr('fill', muted ? 'var(--color-fg-muted)' : 'var(--color-fg)').text(t);
+    [['CPI', X[0]], ['Group', X[1]], ['Component', X[2]]].forEach(([t, x]) => head(t, x, 12, true));
+    if (!narrow) head('Inside: ' + sel.name, X[3], 12, true);
+    else head(measure === 'contrib' ? f1(headline) + '%' : '100%', X[0], 28).attr('font-weight', 600);
 
     const linkG = svg.append('g');
     const addLink = (d, src, tgt, cls) => linkG.append('path').attr('d', d).attr('fill', colorOf(tgt)).attr('fill-opacity', cls === 'zoom' ? 0.16 : 0.28)
@@ -1049,6 +1099,7 @@
       subs.forEach((s) => { const hh = sel.h * (s.value / zoomSum); addLink(band(X[2] + nodeW, o, o + hh, X[3], s.y0, s.y1), sel, s, 'zoom'); o += hh; });
     }
 
+    const pick = (n) => { if (n.kind !== 'comp') return; flowSel = n.name; drawSankey(...flowArgs); };
     const nodeG = svg.append('g');
     const drawNodes = (nodes, x) => nodes.forEach((n) => {
       nodeG.append('rect').attr('x', x).attr('y', n.y0).attr('width', nodeW).attr('height', n.h).attr('rx', 2)
@@ -1056,38 +1107,48 @@
         .attr('stroke', n === sel ? 'var(--color-fg)' : 'none').attr('stroke-width', 1.5)
         .attr('class', n.kind === 'comp' ? 'clickable' : null)
         .on('mousemove', (ev) => tp.show(ev, n.name, tipLines(n))).on('mouseleave', () => tp.hide())
-        .on('click', () => { if (n.kind !== 'comp') return; flowSel = n.name; drawSankey(...flowArgs); });
+        .on('click', () => pick(n));
     });
     drawNodes([totalNode], X[0]); drawNodes(groups, X[1]); drawNodes(comps, X[2]); if (!narrow) drawNodes(subs, X[3]);
 
-    const fit = (sel_, text, maxW) => { sel_.text(text); let t = text; while (sel_.node().getComputedTextLength() > maxW && t.length > 4) { t = t.slice(0, -2); sel_.text(t + '…'); } };
-    const labelCol = (nodes, x, maxW, twoLine) => {
-      const items = nodes.map((n) => ({ n, ly: (n.y0 + n.y1) / 2 }));
-      relax(items, twoLine ? 27 : 14, top + 6, H - bottom - (twoLine ? 14 : 4));
-      items.forEach(({ n, ly }) => {
+    const drawLabels = (items, x) => {
+      items.forEach((it) => { it.mid = (it.n.y0 + it.n.y1) / 2; it.ly = it.mid; });
+      relax(items, PADL, top + 2, H - bottom);
+      items.forEach(({ n, bold, lines, h, ly, mid }) => {
         const lx = x + nodeW + 5;
         const g = svg.append('g').attr('class', n.kind === 'comp' ? 'clickable' : null)
           .on('mousemove', (ev) => tp.show(ev, n.name, tipLines(n))).on('mouseleave', () => tp.hide())
-          .on('click', () => { if (n.kind !== 'comp') return; flowSel = n.name; drawSankey(...flowArgs); });
-        if (Math.abs(ly - (n.y0 + n.y1) / 2) > 3) g.append('line').attr('x1', x + nodeW).attr('x2', lx - 1).attr('y1', (n.y0 + n.y1) / 2).attr('y2', ly - 4).attr('stroke', 'var(--cds-chart-axis)');
-        if (twoLine) {
-          const a = g.append('text').attr('class', 'lab').attr('x', lx).attr('y', ly - 2).attr('font-weight', 600).attr('fill', 'var(--color-fg)');
-          fit(a, n.name, maxW);
-          g.append('text').attr('class', 'lab').attr('x', lx).attr('y', ly + 11).attr('fill', 'var(--color-fg-muted)').text(valText(n));
-        } else {
-          const t = g.append('text').attr('class', 'lab').attr('x', lx).attr('y', ly + 4).attr('fill', 'var(--color-fg)').attr('font-weight', n === sel ? 600 : 400);
-          const name = t.append('tspan');
-          const v = t.append('tspan').attr('fill', 'var(--color-fg-muted)').attr('font-weight', 400).text('  ' + valText(n));
-          const vw = v.node().getComputedTextLength();
-          name.text(n.name); let tt = n.name;
-          while (name.node().getComputedTextLength() + vw > maxW && tt.length > 4) { tt = tt.slice(0, -2); name.text(tt + '…'); }
-        }
+          .on('click', () => pick(n));
+        if (Math.abs(ly - mid) > 3) g.append('line').attr('x1', x + nodeW).attr('x2', lx - 1).attr('y1', mid).attr('y2', ly).attr('stroke', 'var(--cds-chart-axis)');
+        lines.forEach((ln, i) => {
+          const t = g.append('text').attr('class', 'lab').attr('x', lx).attr('y', ly - h / 2 + LH * (i + 1) - 3.5);
+          if (ln.name) t.append('tspan').attr('fill', 'var(--color-fg)').attr('font-weight', bold ? 600 : 400).text(ln.name);
+          if (ln.val) t.append('tspan').attr('dx', ln.name ? 6 : 0).attr('fill', 'var(--color-fg-muted)').attr('font-weight', 400).text(ln.val);
+        });
       });
     };
-    labelCol([totalNode], X[0], X[1] - X[0] - nodeW - 10, true);
-    labelCol(groups, X[1], X[2] - X[1] - nodeW - 10, true);
-    labelCol(comps, X[2], (narrow ? w : X[3]) - X[2] - nodeW - 10, false);
-    if (!narrow) labelCol(subs, X[3], w - X[3] - nodeW - 6, false);
+    if (L.total) drawLabels(L.total, X[0]);
+    drawLabels(L.groups, X[1]);
+    drawLabels(L.comps, X[2]);
+    if (L.subs) drawLabels(L.subs, X[3]);
+    meas.remove();
+
+    // phones: the inside of the selected component as a list under the chart
+    if (narrow) {
+      const box = d3.select(el).append('div').attr('class', 'sk-drill');
+      box.append('div').attr('class', 'sk-drill-head').html('Inside <b></b>').select('b').text(sel.name);
+      box.append('div').attr('class', 'sk-drill-hint').text(subs.length ? 'Tap any component in the chart to look inside it.' : 'No published detail inside this component. Tap another component in the chart.');
+      const mx = d3.max(subs, (s) => s.value) || 1;
+      subs.forEach((s) => {
+        const row = box.append('div').attr('class', 'sk-drill-row');
+        const line = row.append('div').attr('class', 'sk-drill-line');
+        line.append('span').attr('class', 'sk-drill-name').text(s.name);
+        line.append('span').attr('class', 'sk-drill-val').text(valText(s));
+        row.append('div').attr('class', 'sk-drill-track').append('div').attr('class', 'sk-drill-bar')
+          .style('width', Math.max(1.5, s.value / mx * 100) + '%').style('background', colorOf(s)).style('opacity', opacityOf(s));
+        if (s.restNames) row.append('div').attr('class', 'sk-drill-sub').text(s.restNames.join(', '));
+      });
+    }
 
     // what isn't drawn
     if (measure === 'contrib') {
@@ -1098,10 +1159,9 @@
         (negP.length ? negP.map((r) => r.item + ' ' + fpts(r.contrib)).join(', ') : 'none') + '.');
       if (negS.length) parts.push('Inside ' + flowSel + ', also pulling down: ' + negS.map((r) => r.item + ' ' + fpts(r.contrib)).join(', ') + '.');
       parts.push('Net of these, the parts add up to ' + f2(totalNode.contrib) + ' pts against the published ' + f1(headline) + '%.');
-      if (narrow) parts.push('Widen the window to see inside a component.');
       offEl.textContent = parts.join(' ');
     } else {
-      offEl.textContent = 'Flows add up to ' + f1(total) + '% of the basket. Colour shows each item’s ' + (view === 'yoy' ? '12-month' : 'monthly') + ' change against ' + c.label + ': red runs hotter, blue cooler, grey has no published change.' + (narrow ? ' Widen the window to see inside a component.' : '');
+      offEl.textContent = 'Flows add up to ' + f1(total) + '% of the basket. Colour shows each item’s ' + (view === 'yoy' ? '12-month' : 'monthly') + ' change against ' + c.label + ': red runs hotter, blue cooler, grey has no published change.';
     }
   }
 
@@ -1363,8 +1423,8 @@
     // ---- drivers
     if (tab === 'drivers') {
       document.getElementById('flow-note').textContent = measureSel === 'contrib'
-        ? 'Band widths are each part’s contribution to the ' + label + ', in percentage points (BLS effect on all items). Click a component to see what’s inside it.'
-        : 'Band widths are each part’s share of the CPI basket: how much of a typical urban household’s spending it represents (BLS relative importance, ' + refLbl + '). Click a component to see what’s inside it.';
+        ? 'Band widths are each part’s contribution to the ' + label + ', in percentage points (BLS effect on all items). Click or tap a component to see what’s inside it.'
+        : 'Band widths are each part’s share of the CPI basket: how much of a typical urban household’s spending it represents (BLS relative importance, ' + refLbl + '). Click or tap a component to see what’s inside it.';
       const sk = document.getElementById('sankey');
       const offEl = document.getElementById('flow-offsets');
       if (stateBox(sk, tr) && cd.status === 'ok') drawSankey(sk, tr.data, tpFlow, view, measureSel, c, cd.data, offEl);
