@@ -10,6 +10,9 @@ import json
 import pathlib
 import sys
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import site_shell  # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATASETS = ["components", "components_monthly", "fred", "regions", "effects"]
 
@@ -42,27 +45,8 @@ def main():
               f'<link rel="canonical" href="{site_url}/">\n'
               '<meta name="twitter:card" content="summary_large_image">\n')
 
-    favicon = ("data:image/svg+xml,"
-               "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E"
-               "%3Crect width='32' height='32' rx='7' fill='%231f1e1d'/%3E"
-               "%3Crect x='6' y='17' width='4' height='9' rx='1' fill='%233b6fb6'/%3E"
-               "%3Crect x='12' y='12' width='4' height='14' rx='1' fill='%234f9a6b'/%3E"
-               "%3Crect x='18' y='8' width='4' height='18' rx='1' fill='%23c27c2c'/%3E"
-               "%3Crect x='24' y='5' width='4' height='21' rx='1' fill='%23d0453a'/%3E%3C/svg%3E")
-
-    light = ("--color-fg:#1f1e1d;--color-fg-muted:#6b6a64;--color-bg:#ffffff;--color-panel:#faf9f5;--color-border-line:#e5e3dc;"
-             "--color-ok:#2f7d4a;--color-warn:#a86b00;--color-bad:#b3261e;--cds-chart-status-critical:#d0453a;--cds-chart-muted:#b9b7ae;"
-             "--cds-chart-grid:#ecebe6;--cds-chart-axis:#c9c7bf;--cds-chart-reference:#6b6a64;--cds-surface-popover:#ffffff;"
-             "--cds-border:#dcdad3;--cds-shadow-popover:0 2px 10px rgba(0,0,0,.14);--cds-text-secondary:#6b6a64;")
-    dark = ("--color-fg:#ecebe6;--color-fg-muted:#a3a19a;--color-bg:#1a1918;--color-panel:#232220;--color-border-line:#3a3936;"
-            "--color-ok:#6cc08b;--color-warn:#e0a84a;--color-bad:#f07a70;--cds-chart-status-critical:#e25f53;--cds-chart-muted:#6e6c66;"
-            "--cds-chart-grid:#2f2e2b;--cds-chart-axis:#4a4945;--cds-chart-reference:#a3a19a;--cds-surface-popover:#2b2a27;"
-            "--cds-border:#45443f;--cds-shadow-popover:0 2px 10px rgba(0,0,0,.5);--cds-text-secondary:#a3a19a;")
-    sizes = ("--cds-radius:8px;--cds-pad-xs:4px;--cds-pad-sm:8px;--cds-pad-md:12px;--cds-pad-lg:16px;--cds-gap-xs:4px;--cds-gap-sm:8px;"
-             "--cds-gap-md:12px;--cds-gap-lg:20px;--cds-gap-xl:28px;--cds-font-size-caption:12px;--cds-font-size-body:14px;"
-             "--cds-font-size-heading:16px;--cds-font-size-title:28px;--cds-font-weight-medium:500;"
-             "--font-anthropic-sans:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--font-anthropic-serif:Georgia,'Times New Roman',serif;"
-             "--cds-dur-slow:.3s;--cds-ease-out:cubic-bezier(.2,.8,.2,1);")
+    light, dark, sizes, favicon = site_shell.LIGHT, site_shell.DARK, site_shell.SIZES, site_shell.FAVICON
+    banner_html, month_name = site_shell.banner(data)
 
     # minimal stand-in for the dashboard runtime: serves the embedded data, runs calculations, redraws on changes
     shim = (
@@ -76,7 +60,7 @@ def main():
         "window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(run,150)});"
         "return{calc:(id,o)=>{calcs[id]=o},data:get,onData:(f)=>{cbs.push(f);setTimeout(()=>{try{f()}catch(e){console.error(e)}},0)},"
         "params:()=>({...params}),setParams:(o)=>{Object.assign(params,o);run()},resetParams(){},"
-        "colors:['#3b6fb6','#c27c2c','#4f9a6b','#8a5cb8','#c4536d','#2d9aa8','#8c8a3a','#6b6a64'],refresh(){},"
+        "colors:['#2F6FB3','#C47A2C','#3E9A6A','#7E5BB5','#C4536D','#2D9AA8','#8C8A3A','#566176'],refresh(){},"
         "setLink:(n)=>{try{history.replaceState(null,'','#'+n)}catch(e){}},loader(){}}})();"
     )
 
@@ -95,28 +79,25 @@ def main():
 <meta property="og:site_name" content="{html.escape(cfg['site_name'])}">
 {og}<link rel="icon" href="{favicon}">
 <meta name="data-latest" content="{latest}">
+{site_shell.FONTS}
 <style>
 :root{{{light}{sizes}}}
 @media (prefers-color-scheme: dark){{:root{{{dark}}}}}
-html,body{{margin:0;background:var(--color-bg);color:var(--color-fg)}}
-#dash-root{{max-width:1240px;margin:0 auto;padding:24px 16px}}
-.site-bar{{max-width:1240px;margin:0 auto;padding:14px 16px 0;font:600 13px/1 var(--font-anthropic-sans);letter-spacing:.02em;color:var(--color-fg-muted)}}
-.site-foot{{max-width:1240px;margin:0 auto;padding:8px 16px 40px;font:12px/1.6 var(--font-anthropic-sans);color:var(--color-fg-muted)}}
-.site-foot a{{color:inherit}}
+{site_shell.CSS}
 </style>
 <script>{d3}</script>
 <script>{shim}</script>
 {cfg.get('analytics_html') or ''}
 </head>
 <body class="standalone">
-<div class="site-bar">{html.escape(cfg['site_name'])}</div>
+{site_shell.header(cfg, banner_html)}
+<main class="wrap">
 <div id="dash-root">
 {page}
 </div>
-<footer class="site-foot">
-Data: <a href="https://www.bls.gov/cpi/">U.S. Bureau of Labor Statistics</a> and <a href="https://fred.stlouisfed.org/">FRED, Federal Reserve Bank of St. Louis</a>.
-Independent analysis; not an official BLS or Federal Reserve product. Latest data: {latest[:7]}.
-</footer>
+</main>
+{site_shell.footer(cfg, month_name)}
+{site_shell.AFTER}
 </body>
 </html>
 """
