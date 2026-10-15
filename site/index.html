@@ -199,7 +199,7 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
 .cp-tip .t { color: var(--cds-text-secondary); }
 .cp-tablebox { max-height: 34rem; overflow: auto; }
 .cp table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
-.cp th { position: sticky; top: 0; background: var(--color-panel); text-align: right; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); }
+.cp th { white-space: nowrap; position: sticky; top: 0; background: var(--color-panel); text-align: right; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); }
 .cp th:first-child, .cp td:first-child { text-align: left; }
 .cp td { text-align: right; padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); }
 .cp tr.agg td { font-weight: 600; }
@@ -212,6 +212,7 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
 .cp-sum { margin: 0 0 var(--cds-gap-md); padding-left: 1.1rem; display: flex; flex-direction: column; gap: var(--cds-gap-xs); font-size: var(--cds-font-size-body); line-height: 1.5; }
 .cp-sum b { font-weight: 600; }
 #sankey .clickable { cursor: pointer; }
+.cp text.lab-halo { paint-order: stroke; stroke: var(--color-panel); stroke-width: 3px; stroke-linejoin: round; }
 #sankey text.lab { paint-order: stroke; stroke: var(--color-panel); stroke-width: 3px; stroke-linejoin: round; }
 .sk-drill { margin-top: var(--cds-gap-md, 16px); padding-top: var(--cds-gap-sm, 10px); border-top: 1px solid var(--color-border-line); }
 .sk-drill-head { font-size: 14px; color: var(--color-fg); }
@@ -223,6 +224,21 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
 .sk-drill-bar { height: 100%; border-radius: 4px; }
 .sk-drill-sub { font-size: 11.5px; color: var(--color-fg-muted); margin-top: 3px; }
 .cp-sum .k { color: var(--color-fg-muted); }
+.sm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--cds-gap-lg); }
+.sm-col h3 { font-size: var(--cds-font-size-caption); font-weight: 500; color: var(--color-fg-muted); margin: 0 0 8px; text-transform: none; }
+.sm-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; align-items: baseline; padding: 7px 0; border-top: 1px solid var(--color-border-line); }
+.sm-name { font-size: 14px; color: var(--color-fg); min-width: 0; }
+.sm-name small { display: block; font-size: 12px; color: var(--color-fg-muted); }
+.sm-val { font-size: 13px; color: var(--color-fg); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sm-val span { color: var(--color-fg-muted); }
+.sm-track { grid-column: 1 / -1; height: 6px; margin-top: 6px; border-radius: 3px; background: color-mix(in srgb, var(--color-fg) 6%, transparent); }
+.sm-bar { height: 100%; border-radius: 3px; }
+.sm-foot { margin: var(--cds-gap-md) 0 0; font-size: 14px; color: var(--color-fg-muted); line-height: 1.5; }
+.sm-foot b { color: var(--color-fg); font-weight: 600; }
+.stack-key { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 13px; color: var(--color-fg); }
+.stack-key i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.stack-key span span { color: var(--color-fg-muted); margin-left: 4px; font-variant-numeric: tabular-nums; }
+.cp-legend .ln { display: inline-block; width: 14px; height: 2px; background: var(--color-fg); margin-right: 5px; vertical-align: 3px; }
 .cp[data-view=yoy] ul.v-mom, .cp[data-view=mom] ul.v-yoy { display: none; }
 #tree .clickable { cursor: pointer; }
 @media (max-width: 640px) { .cp .hide-narrow { display: none; } }
@@ -343,11 +359,10 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
           Biggest drag: <b><span data-source="contrib_top" data-field="item" data-where="rank=down&amp;view=mom">—</span></b>
           (<span data-source="contrib_top" data-field="contrib" data-where="rank=down&amp;view=mom">—</span> pts).</span>
       </p>
-      <p class="cp-note" id="stack-note"></p>
-      <div class="cp-chart" id="contribstack" data-source="contrib" role="img" aria-label="Stacked bar splitting the headline into core services, core goods, food and energy contributions" style="min-height:62px"></div>
-      <p class="cp-note" id="stack-sum" style="margin-top:var(--cds-gap-xs)"></p>
+      <div class="cp-chart" id="contribstack" data-source="contrib" role="img" aria-label="Stacked bar splitting the headline into core services, core goods, food and energy contributions" style="min-height:40px;margin-top:var(--cds-gap-sm)"></div>
+      <div class="stack-key" id="stack-key"></div>
+      <p class="cp-note" id="stack-sum" style="margin:var(--cds-gap-sm) 0 0"></p>
       <div class="cp-tip" id="tip-stack"></div>
-      <p class="cp-note" style="margin-top:var(--cds-gap-sm)">See the <a href="#drivers" data-goto="drivers">Drivers</a> tab for every component and subcomponent.</p>
     </div>
 
     <div class="cp-card" id="hist-card">
@@ -365,19 +380,8 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
     </div>
 
     <div class="cp-card" id="summary-card">
-      <h2 id="summary">Summary: what's adding the most</h2>
-      <ul class="cp-sum v-yoy">
-        <li><span class="k">Largest components of the 12-month headline:</span> <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=p1">—</span></b> +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=p1">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=p1">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=p1">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=p2">—</span></b> +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=p2">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=p2">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=p2">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=p3">—</span></b> +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=p3">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=p3">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=p3">—</span>% of the basket).</li>
-        <li><span class="k">Largest subcomponents:</span> <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=s1">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=yoy&amp;stat=s1">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=s1">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=s1">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=s1">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=s2">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=yoy&amp;stat=s2">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=s2">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=s2">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=s2">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=s3">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=yoy&amp;stat=s3">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=s3">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=s3">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=s3">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=s4">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=yoy&amp;stat=s4">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=s4">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=s4">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=s4">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=s5">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=yoy&amp;stat=s5">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=s5">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=s5">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=s5">—</span>% of the basket).</li>
-        <li><span class="k">Concentration:</span> these five subcomponents are only <b><span data-source="tree_summary" data-field="weight" data-where="view=yoy&amp;stat=top5">—</span>%</b> of the CPI basket but account for <b><span data-source="tree_summary" data-field="share" data-where="view=yoy&amp;stat=top5">—</span>%</b> of the 12-month headline.</li>
-        <li><span class="k">Pulling inflation down:</span> <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=d1">—</span></b> <span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=d1">—</span> pts; <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=d2">—</span></b> <span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=d2">—</span> pts; <b><span data-source="tree_summary" data-field="item" data-where="view=yoy&amp;stat=d3">—</span></b> <span data-source="tree_summary" data-field="contrib" data-where="view=yoy&amp;stat=d3">—</span> pts.</li>
-      </ul>
-      <ul class="cp-sum v-mom">
-        <li><span class="k">Largest components of the latest monthly change:</span> <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=p1">—</span></b> +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=p1">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=p1">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=p1">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=p2">—</span></b> +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=p2">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=p2">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=p2">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=p3">—</span></b> +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=p3">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=p3">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=p3">—</span>% of the basket).</li>
-        <li><span class="k">Largest subcomponents:</span> <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=s1">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=mom&amp;stat=s1">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=s1">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=s1">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=s1">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=s2">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=mom&amp;stat=s2">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=s2">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=s2">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=s2">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=s3">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=mom&amp;stat=s3">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=s3">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=s3">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=s3">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=s4">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=mom&amp;stat=s4">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=s4">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=s4">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=s4">—</span>% of the basket); <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=s5">—</span></b> in <span data-source="tree_summary" data-field="parent" data-where="view=mom&amp;stat=s5">—</span>, +<span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=s5">—</span> pts (<span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=s5">—</span>% of inflation, <span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=s5">—</span>% of the basket).</li>
-        <li><span class="k">Concentration:</span> these five subcomponents are only <b><span data-source="tree_summary" data-field="weight" data-where="view=mom&amp;stat=top5">—</span>%</b> of the CPI basket but account for <b><span data-source="tree_summary" data-field="share" data-where="view=mom&amp;stat=top5">—</span>%</b> of the latest monthly change.</li>
-        <li><span class="k">Pulling inflation down:</span> <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=d1">—</span></b> <span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=d1">—</span> pts; <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=d2">—</span></b> <span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=d2">—</span> pts; <b><span data-source="tree_summary" data-field="item" data-where="view=mom&amp;stat=d3">—</span></b> <span data-source="tree_summary" data-field="contrib" data-where="view=mom&amp;stat=d3">—</span> pts.</li>
-      </ul>
+      <h2 id="summary">What's adding the most</h2>
+      <div id="sumbox"></div>
     </div>
   </section>
 
@@ -410,11 +414,11 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
         <table id="sharetable" data-source="tree" data-row-key="view,item">
           <thead><tr>
             <th data-field="item">Component</th>
-            <th data-field="basis" class="hide-narrow">Basis</th>
-            <th data-field="weight">Share of basket %</th>
-            <th data-field="change">Change %</th>
-            <th data-field="contrib">Contribution (pts)</th>
-            <th data-field="share">Share of inflation %</th>
+            <th data-field="basis" class="hide-narrow col-basis">Basis</th>
+            <th data-field="weight">Basket %</th>
+            <th data-field="change" class="hide-narrow">Change %</th>
+            <th data-field="contrib" class="hide-narrow">Pts</th>
+            <th data-field="share">Inflation %</th>
             <th class="hide-narrow">Basket vs inflation</th>
           </tr></thead>
           <tbody></tbody>
@@ -439,7 +443,7 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
     </div>
     <div class="cp-card">
       <h2 id="table">All tracked components</h2>
-      <p class="cp-note">Relative importance as of the month before the latest data; 12-month change not seasonally adjusted; 1-month change seasonally adjusted where BLS adjusts the series. Gaps are against 2% a year and 0.17% a month.</p>
+      <p class="cp-note">Weight is each item's share of the basket. 1-month changes are seasonally adjusted where BLS adjusts the series.</p>
       <div class="cp-tablebox">
         <table id="comptable" data-source="components" data-row-key="item">
           <thead><tr>
@@ -459,7 +463,7 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
   <section data-tab="momentum" role="tabpanel" aria-labelledby="tab-momentum" id="momentum" class="cp-panel" hidden>
     <div class="cp-card" id="roc-card">
       <h2 id="roc">Rolling rate of change</h2>
-      <p class="cp-note">Annualized change in the seasonally adjusted index over the chosen window. Shorter windows show turns sooner but are noisier. *Supercore (core services excluding shelter) is estimated; see Methodology. Oct 2025 was not published, so windows that touch it have a gap.</p>
+      <p class="cp-note">Annualized change over the chosen window. Shorter windows turn sooner but are noisier. *Supercore is estimated; Oct 2025 was never published, hence the gap.</p>
       <div class="cp-controls">
         <span class="lbl">Window</span>
         <div class="cp-seg" role="group" aria-label="Window" id="winseg">
@@ -472,25 +476,25 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
       </div>
       <div class="cp-chart" id="rocchart" data-source="roc" style="min-height:300px"></div>
       <div class="cp-tip" id="tip-roc"></div>
-      <h3 style="margin-top:var(--cds-gap-md)">Latest, annualized (%)</h3>
+      <h3 style="margin-top:var(--cds-gap-md)">Latest annualized rates, % <span id="roc-month" style="font-weight:400;color:var(--color-fg-muted)"></span></h3>
       <table id="roctable" data-source="roc_latest" data-row-key="series">
-        <thead><tr><th data-field="series">Series</th><th data-field="date">Month</th><th data-field="m1">1M</th><th data-field="m3">3M</th><th data-field="m6">6M</th><th data-field="m12">12M</th></tr></thead>
+        <thead><tr><th data-field="series">Series</th><th data-field="m1">1M</th><th data-field="m3">3M</th><th data-field="m6">6M</th><th data-field="m12">12M</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
     <div class="cp-grid">
       <div class="cp-card">
         <h2 id="monthgrid">Monthly changes by component</h2>
-        <p class="cp-note">Seasonally adjusted month-over-month % change over the last seven months (BLS Table A; food away from home and medical care commodities are not seasonally adjusted). Shaded against 0.17% a month, the pace that compounds to 2% a year.</p>
+        <p class="cp-note">Seasonally adjusted % change each month, shaded against 0.17% a month (2% a year).</p>
         <div class="cp-chart" id="grid" data-source="components_monthly" role="img" aria-label="Grid of monthly price changes by component" style="min-height:560px"></div>
         <div class="cp-tip" id="tip-grid"></div>
       </div>
       <div class="cp-card">
         <h2 id="comprolling">Component momentum, annualized</h2>
-        <p class="cp-note">Annualized rates compounded from the published monthly changes. Those are rounded to 0.1%, so these can be off by a few tenths; compare with the 12-month column to see what's speeding up or cooling.</p>
+        <p class="cp-note">Monthly changes compounded to an annual pace. Compare with the 12-month column to see what's speeding up or cooling.</p>
         <div class="cp-tablebox">
           <table id="rolltable" data-source="comp_rolling" data-row-key="item">
-            <thead><tr><th data-field="item">Component</th><th data-field="latest">Latest m/m</th><th data-field="ann1">1M ann.</th><th data-field="ann3">3M ann.</th><th data-field="ann6">6M ann.</th><th data-source="components" data-field="yoy" class="hide-narrow">12-mo</th></tr></thead>
+            <thead><tr><th data-field="item">Component</th><th data-field="latest">m/m</th><th data-field="ann1">1M</th><th data-field="ann3">3M</th><th data-field="ann6">6M</th><th data-source="components" data-field="yoy" class="hide-narrow">12M</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -900,36 +904,39 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
     t.remove(); return m;
   }
 
+  const view_fmt = (c) => (c.target < 1 ? f2 : f1);
   // ---------- bars diverging from the target line
   function targetBars(el, rows, tp, c) {
     const w = Math.max(240, el.clientWidth);
-    const rowH = 22, top = 24, bottom = 8;
+    const probe = d3.select(el).append('svg').attr('width', 0).attr('height', 0);
+    const nameW = measure(probe, rows.map((r) => r.label)) + 10; probe.remove();
+    const stacked = nameW > w * 0.42;
+    const rowH = stacked ? 34 : 22, top = 22, bottom = 4, by = stacked ? 18 : 5, bh = stacked ? 10 : 12;
     const h = top + rows.length * rowH + bottom;
     el.style.minHeight = h + 'px';
     const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('font-size', 12);
-    const labW = Math.min(w * 0.45, measure(svg, rows.map((r) => r.label)) + 10);
+    const labW = stacked ? 0 : nameW;
     const lo = Math.min(c.target - c.scale * 0.4, d3.min(rows, (r) => r.v) - c.scale * 0.1);
     const hi = Math.min(c.cap, Math.max(c.target + c.scale * 0.4, d3.max(rows, (r) => r.v) + c.scale * 0.1));
-    const x = d3.scaleLinear([lo, hi], [labW, w - 48]).nice();
-    const ticks = x.ticks(Math.max(3, Math.floor((w - labW) / 70)));
-    svg.append('g').selectAll('line').data(ticks).join('line').attr('x1', (d) => x(d)).attr('x2', (d) => x(d))
-      .attr('y1', top - 4).attr('y2', h - bottom).attr('stroke', 'var(--cds-chart-grid)');
-    svg.append('g').selectAll('text').data(ticks).join('text').attr('x', (d) => x(d)).attr('y', top - 10)
-      .attr('text-anchor', 'middle').attr('fill', 'var(--color-fg-muted)').attr('font-size', 11).text((d) => d + '%');
+    const vw = measure(svg, rows.map((r) => (view_fmt(c))(r.v) + '% →'), 11) + 6;
+    const x = d3.scaleLinear([lo, hi], [labW + vw, w - vw]).nice();
     const hiD = x.domain()[1];
     const g = svg.append('g').selectAll('g').data(rows).join('g').attr('transform', (d, i) => `translate(0,${top + i * rowH})`);
-    g.append('text').attr('x', labW - 8).attr('y', rowH / 2 + 4).attr('text-anchor', 'end').attr('fill', 'var(--color-fg)').text((d) => d.label);
-    g.append('rect').attr('y', 4).attr('height', rowH - 8).attr('rx', 4)
+    if (stacked) g.append('text').attr('x', 0).attr('y', 12).attr('fill', 'var(--color-fg)').text((d) => d.label);
+    else g.append('text').attr('x', labW - 8).attr('y', rowH / 2 + 4).attr('text-anchor', 'end').attr('fill', 'var(--color-fg)').text((d) => d.label);
+    g.append('rect').attr('y', by).attr('height', bh).attr('rx', 3)
       .attr('x', (d) => x(Math.min(c.target, Math.min(d.v, hiD))))
       .attr('width', (d) => Math.max(2, Math.abs(x(Math.min(d.v, hiD)) - x(c.target))))
       .attr('fill', (d) => fillOf(d.v, c)).attr('fill-opacity', (d) => Math.max(0.45, opOf(d.v, c)));
-    g.append('text').attr('y', rowH / 2 + 4).attr('fill', 'var(--color-fg-muted)').attr('font-size', 11)
-      .attr('x', (d) => (d.v >= c.target ? x(Math.min(d.v, hiD)) + 4 : x(c.target) + 4))
-      .text((d) => f1(d.v) + '%' + (d.v > hiD ? ' →' : ''));
+    g.append('text').attr('y', by + bh / 2 + 4).attr('fill', 'var(--color-fg-muted)').attr('font-size', 11)
+      .attr('x', (d) => (d.v >= c.target ? x(Math.min(d.v, hiD)) + 4 : x(d.v) - 4)).attr('text-anchor', (d) => (d.v >= c.target ? 'start' : 'end'))
+      .text((d) => (view_fmt(c))(d.v) + '%' + (d.v > hiD ? ' →' : ''));
     g.append('rect').attr('x', 0).attr('width', w).attr('height', rowH).attr('fill', 'transparent')
       .on('mousemove', (ev, d) => tp.show(ev, d.label, d.lines)).on('mouseleave', () => tp.hide());
-    svg.append('line').attr('x1', x(c.target)).attr('x2', x(c.target)).attr('y1', top - 4).attr('y2', h - bottom)
-      .attr('stroke', 'var(--cds-chart-reference)').attr('stroke-width', 1.5).attr('stroke-dasharray', '4 3');
+    if (stacked) rows.forEach((r, i) => svg.append('line').attr('x1', x(c.target)).attr('x2', x(c.target)).attr('y1', top + i * rowH + by - 3).attr('y2', top + i * rowH + by + bh + 3).attr('stroke', 'var(--cds-chart-reference)'));
+    else svg.append('line').attr('x1', x(c.target)).attr('x2', x(c.target)).attr('y1', top - 6).attr('y2', h - bottom)
+      .attr('stroke', 'var(--cds-chart-reference)').attr('stroke-width', 1);
+    svg.append('text').attr('x', x(c.target)).attr('y', top - 10).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(c.label + ' target');
   }
 
   // ---------- state tile grid [state, col, row, division]
@@ -948,12 +955,12 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
     const w = Math.max(240, el.clientWidth);
     const cell = Math.min(46, (w - 4) / 12);
     const h = cell * 8 + 4;
+    el.style.minHeight = '0px';
     const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`);
     const g = svg.append('g').selectAll('g').data(TILES).join('g').attr('transform', (d) => `translate(${d[1] * cell + 2},${d[2] * cell + 2})`);
     g.append('rect').attr('width', cell - 3).attr('height', cell - 3).attr('rx', 4)
       .attr('fill', (d) => (div.get(d[3]) ? fillOf(div.get(d[3]).v, c) : 'var(--cds-chart-muted)'))
-      .attr('fill-opacity', (d) => (div.get(d[3]) ? opOf(div.get(d[3]).v, c) : 0.2))
-      .attr('stroke', 'var(--color-border-line)');
+      .attr('fill-opacity', (d) => (div.get(d[3]) ? opOf(div.get(d[3]).v, c) : 0.2));
     g.append('text').attr('x', (cell - 3) / 2).attr('y', (cell - 3) / 2 - (cell > 34 ? 3 : -4)).attr('text-anchor', 'middle')
       .attr('font-size', Math.max(9, cell * 0.26)).attr('fill', 'var(--color-fg)').text((d) => d[0]);
     if (cell > 34) {
@@ -974,21 +981,28 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
     el.style.minHeight = h + 'px';
     const groups = d3.groups(leaves, (r) => r.group).map(([name, kids]) => ({ name, children: kids }));
     const rt = d3.hierarchy({ children: groups }).sum((d) => (d.children ? 0 : d.w)).sort((a, b) => b.value - a.value);
-    d3.treemap().size([w, h]).paddingOuter(2).paddingTop((n) => (n.depth === 1 ? 20 : 2)).paddingInner(2).round(true)(rt);
+    d3.treemap().size([w, h]).paddingOuter(0).paddingTop((n) => (n.depth === 1 ? 20 : 0)).paddingInner(2).paddingRight((n) => (n.depth === 1 ? 6 : 0)).round(true)(rt);
     const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`);
-    svg.selectAll('text.grp').data(rt.children).join('text').attr('class', 'grp').attr('x', (d) => d.x0 + 4).attr('y', (d) => d.y0 + 14)
-      .attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text((d) => ((d.x1 - d.x0) > 70 ? d.data.name : ''));
+    svg.selectAll('text.grp').data(rt.children).join('text').attr('class', 'grp').attr('x', (d) => d.x0 + 1).attr('y', (d) => d.y0 + 14)
+      .attr('font-size', 11).attr('font-weight', 500).attr('fill', 'var(--color-fg-muted)').text((d) => ((d.x1 - d.x0) > 70 ? d.data.name : ''));
     const cell = svg.selectAll('g.leaf').data(rt.leaves()).join('g').attr('class', 'leaf').attr('transform', (d) => `translate(${d.x0},${d.y0})`);
     cell.append('rect').attr('width', (d) => Math.max(0, d.x1 - d.x0)).attr('height', (d) => Math.max(0, d.y1 - d.y0)).attr('rx', 4)
       .attr('fill', (d) => fillOf(d.data.v, c)).attr('fill-opacity', (d) => opOf(d.data.v, c));
     cell.each(function (d) {
       const cw = d.x1 - d.x0, ch = d.y1 - d.y0;
-      if (cw < 46 || ch < 30) return;
+      if (cw < 40 || ch < 38) return;
       const s = d3.select(this);
-      const name = s.append('text').attr('x', 6).attr('y', 16).attr('font-size', 12).attr('fill', 'var(--color-fg)').text(d.data.label);
-      let txt = d.data.label;
-      while (name.node().getComputedTextLength() > cw - 10 && txt.length > 3) { txt = txt.slice(0, -2); name.text(txt + '…'); }
-      s.append('text').attr('x', 6).attr('y', 32).attr('font-size', 12).attr('font-weight', 600).attr('fill', 'var(--color-fg)').text(f1(d.data.v) + '%');
+      const t = s.append('text').attr('font-size', 12).attr('fill', 'var(--color-fg)');
+      const fits = (str) => { t.text(str); return t.node().getComputedTextLength() <= cw - 12; };
+      const lines = []; let cur = '';
+      d.data.label.split(' ').forEach((wd) => { const nx = cur ? cur + ' ' + wd : wd; if (!cur || fits(nx)) cur = nx; else { lines.push(cur); cur = wd; } });
+      lines.push(cur);
+      const maxLines = Math.min(3, Math.floor((ch - 22) / 15));
+      const ok = lines.length <= maxLines && lines.every((l) => fits(l));
+      t.remove();
+      if (!ok) return;
+      lines.forEach((l, i) => s.append('text').attr('x', 7).attr('y', 17 + i * 15).attr('font-size', 12).attr('fill', 'var(--color-fg)').text(l));
+      s.append('text').attr('x', 7).attr('y', 17 + lines.length * 15 + 1).attr('font-size', 12).attr('font-weight', 600).attr('fill', 'var(--color-fg)').text(f1(d.data.v) + '%');
     });
     cell.append('rect').attr('width', (d) => Math.max(0, d.x1 - d.x0)).attr('height', (d) => Math.max(0, d.y1 - d.y0)).attr('fill', 'transparent')
       .on('mousemove', (ev, d) => tp.show(ev, d.data.label, d.data.lines)).on('mouseleave', () => tp.hide());
@@ -1017,7 +1031,7 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
       months.forEach((mo, i) => {
         const v = by.get(it + '|' + mo);
         const g = svg.append('g').attr('transform', `translate(${labW + i * cw},${yy})`);
-        g.append('rect').attr('x', 1).attr('y', 1).attr('width', Math.max(0, cw - 2)).attr('height', cellH - 2).attr('rx', 3)
+        g.append('rect').attr('x', 1).attr('y', 1).attr('width', Math.max(0, cw - 2)).attr('height', cellH - 2).attr('rx', 2)
           .attr('fill', fillOf(v, c)).attr('fill-opacity', opOf(v, c));
         if (cw > 30) g.append('text').attr('x', cw / 2).attr('y', cellH / 2 + 4).attr('text-anchor', 'middle').attr('font-size', 11)
           .attr('fill', 'var(--color-fg)').text(f1(v));
@@ -1037,7 +1051,7 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
     const groups = rows.filter((r) => r.view === view && r.kind === 'group');
     const total = rows.find((r) => r.view === view && r.kind === 'total');
     const pub = rows.find((r) => r.view === view && r.kind === 'published');
-    const w = Math.max(280, el.clientWidth), h = 62, barY = 22, barH = 30;
+    const w = Math.max(240, el.clientWidth), barH = 28, h = barH;
     const order = ['Core services', 'Core goods', 'Food', 'Energy'];
     groups.sort((a, b) => order.indexOf(a.item) - order.indexOf(b.item));
     let pos = 0, neg = 0;
@@ -1046,54 +1060,57 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
       if (g.contrib >= 0) pos += g.contrib; else neg += g.contrib;
       return s;
     });
-    const x = d3.scaleLinear([Math.min(0, neg), Math.max(pos, pub.contrib) * 1.04], [8, w - 8]);
+    const x = d3.scaleLinear([Math.min(0, neg), pos], [0, w]);
     const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('font-size', 12);
     const g = svg.selectAll('g.seg').data(segs).join('g').attr('class', 'seg');
-    g.append('rect').attr('x', (d) => x(d.a) + 1).attr('y', barY).attr('width', (d) => Math.max(1, x(d.b) - x(d.a) - 2)).attr('height', barH).attr('rx', 4)
-      .attr('fill', (d) => GROUP_COLORS[d.item]).attr('fill-opacity', 0.85);
-    g.each(function (d) {
-      const ww = x(d.b) - x(d.a);
-      const s = d3.select(this);
-      const t = s.append('text').attr('x', x(d.a) + 6).attr('y', barY + barH / 2 + 4).attr('fill', 'var(--color-bg)').attr('font-weight', 600).text(d.item + ' ' + fpts(d.contrib));
-      if (t.node().getComputedTextLength() > ww - 10) { t.text(fpts(d.contrib)); if (t.node().getComputedTextLength() > ww - 10) t.remove(); }
-    });
-    g.append('rect').attr('x', (d) => x(d.a)).attr('y', barY).attr('width', (d) => Math.max(1, x(d.b) - x(d.a))).attr('height', barH).attr('fill', 'transparent')
+    g.append('rect').attr('x', (d) => x(d.a) + (d.a === Math.min(0, neg) ? 0 : 1)).attr('y', 0).attr('width', (d) => Math.max(1, x(d.b) - x(d.a) - 2)).attr('height', barH).attr('rx', 4)
+      .attr('fill', (d) => GROUP_COLORS[d.item]).attr('fill-opacity', 0.9);
+    g.append('rect').attr('x', (d) => x(d.a)).attr('y', 0).attr('width', (d) => Math.max(1, x(d.b) - x(d.a))).attr('height', barH).attr('fill', 'transparent')
       .on('mousemove', (ev, d) => tp.show(ev, d.item, [fpts(d.contrib) + ' pts of ' + f1(pub.contrib) + '% headline', Math.round(d.contrib / pub.contrib * 100) + '% of the total', f1(d.change) + '% ' + (view === 'yoy' ? '12-mo' : 'm/m SA') + ', weight ' + f2(d.weight) + '%']))
       .on('mouseleave', () => tp.hide());
-    svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', barY - 6).attr('y2', barY + barH + 6).attr('stroke', 'var(--cds-chart-axis)');
-    svg.append('line').attr('x1', x(pub.contrib)).attr('x2', x(pub.contrib)).attr('y1', barY - 8).attr('y2', barY + barH + 8)
-      .attr('stroke', 'var(--color-fg)').attr('stroke-width', 1.5).attr('stroke-dasharray', '3 2');
-    const lab = svg.append('text').attr('y', barY - 10).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text('Published ' + f1(pub.contrib) + '%');
-    const lw = lab.node().getComputedTextLength();
-    lab.attr('x', Math.min(w - lw - 2, Math.max(2, x(pub.contrib) - lw / 2)));
+    const key = document.getElementById('stack-key');
+    if (key) {
+      key.textContent = '';
+      segs.forEach((d) => {
+        const it = document.createElement('span');
+        const sw = document.createElement('i'); sw.style.background = GROUP_COLORS[d.item];
+        const v = document.createElement('span'); v.textContent = fpts(d.contrib) + ' pts';
+        it.append(sw, d.item, v); key.appendChild(it);
+      });
+    }
     const sumEl = document.getElementById('stack-sum');
-    if (sumEl) sumEl.textContent = 'Parts sum to ' + f2(total.contrib) + ' pts against the published ' + f1(pub.contrib) + '%: BLS rounds each figure' + (view === 'yoy' ? '.' : ', and seasonally adjusted parts need not add exactly to the whole.');
+    if (sumEl) {
+      sumEl.textContent = 'Together ' + f2(total.contrib) + ' pts; BLS publishes ' + f1(pub.contrib) + '% (each part is rounded). ';
+      const a = document.createElement('a'); a.href = '#drivers'; a.textContent = 'Full breakdown on Drivers';
+      a.addEventListener('click', (e) => { e.preventDefault(); dash.setParams({ tab: 'drivers' }); dash.setLink('drivers'); window.scrollTo(0, 0); });
+      sumEl.appendChild(a);
+    }
   }
 
   function drawContribItems(el, rows, tp, view) {
     const pub = rows.find((r) => r.view === view && r.kind === 'published');
     const items = rows.filter((r) => r.view === view && r.kind === 'item').sort((a, b) => b.contrib - a.contrib);
     const w = Math.max(240, el.clientWidth);
-    const rowH = 22, top = 24, bottom = 8;
+    const probe = d3.select(el).append('svg').attr('width', 0).attr('height', 0);
+    const nameW = measure(probe, items.map((r) => r.item)) + 10; probe.remove();
+    const stacked = nameW > w * 0.42;
+    const rowH = stacked ? 34 : 22, top = 6, bottom = 4, by = stacked ? 18 : 5, bh = stacked ? 10 : 12;
     const h = top + items.length * rowH + bottom;
     el.style.minHeight = h + 'px';
     const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('font-size', 12);
-    const labW = Math.min(w * 0.45, measure(svg, items.map((r) => r.item)) + 10);
+    const labW = stacked ? 0 : nameW;
     const valW = measure(svg, items.map((r) => fpts(r.contrib)), 11) + 8;
     const x = d3.scaleLinear([Math.min(0, d3.min(items, (r) => r.contrib)), Math.max(0, d3.max(items, (r) => r.contrib))], [labW + valW, w - valW]).nice();
-    const ticks = x.ticks(Math.max(3, Math.floor((w - labW) / 80)));
-    svg.append('g').selectAll('line').data(ticks).join('line').attr('x1', (d) => x(d)).attr('x2', (d) => x(d)).attr('y1', top - 4).attr('y2', h - bottom)
-      .attr('stroke', (d) => (d === 0 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)'));
-    svg.append('g').selectAll('text').data(ticks).join('text').attr('x', (d) => x(d)).attr('y', top - 10).attr('text-anchor', 'middle')
-      .attr('fill', 'var(--color-fg-muted)').attr('font-size', 11).text((d) => d + ' pts');
+    if (stacked) items.forEach((r, i) => svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', top + i * rowH + by - 3).attr('y2', top + i * rowH + by + bh + 3).attr('stroke', 'var(--cds-chart-axis)'));
+    else svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', top - 4).attr('y2', h - bottom).attr('stroke', 'var(--cds-chart-axis)');
     const g = svg.append('g').selectAll('g').data(items).join('g').attr('transform', (d, i) => `translate(0,${top + i * rowH})`);
     const isOther = (d) => d.weight == null;
-    g.append('text').attr('x', labW - 8).attr('y', rowH / 2 + 4).attr('text-anchor', 'end').attr('fill', (d) => (isOther(d) ? 'var(--color-fg-muted)' : 'var(--color-fg)'))
+    g.append('text').attr('x', stacked ? 0 : labW - 8).attr('y', stacked ? 12 : rowH / 2 + 4).attr('text-anchor', stacked ? 'start' : 'end').attr('fill', (d) => (isOther(d) ? 'var(--color-fg-muted)' : 'var(--color-fg)'))
       .attr('font-style', (d) => (isOther(d) ? 'italic' : null)).text((d) => d.item);
-    g.append('rect').attr('y', 4).attr('height', rowH - 8).attr('rx', 4)
+    g.append('rect').attr('y', by).attr('height', bh).attr('rx', 3)
       .attr('x', (d) => x(Math.min(0, d.contrib))).attr('width', (d) => Math.max(1.5, Math.abs(x(d.contrib) - x(0))))
       .attr('fill', (d) => (d.contrib >= 0 ? HOT : COOL)).attr('fill-opacity', (d) => (isOther(d) ? 0.35 : 0.8));
-    g.append('text').attr('y', rowH / 2 + 4).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)')
+    g.append('text').attr('y', by + bh / 2 + 4).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)')
       .attr('x', (d) => (d.contrib >= 0 ? x(d.contrib) + 4 : x(d.contrib) - 4)).attr('text-anchor', (d) => (d.contrib >= 0 ? 'start' : 'end'))
       .text((d) => fpts(d.contrib));
     g.append('rect').attr('width', w).attr('height', rowH).attr('fill', 'transparent')
@@ -1326,13 +1343,12 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
       const negP = R.filter((r) => r.level === 'parent' && r.contrib < 0).sort((a, b) => a.contrib - b.contrib);
       const negS = R.filter((r) => r.level === 'sub' && r.parent === flowSel && r.contrib < 0).sort((a, b) => a.contrib - b.contrib);
       const parts = [];
-      parts.push('Flows add up to +' + f2(total) + ' pts. Components pulling the other way aren’t drawn: ' +
-        (negP.length ? negP.map((r) => r.item + ' ' + fpts(r.contrib)).join(', ') : 'none') + '.');
+      if (negP.length) parts.push('Not drawn, pulling the other way: ' + negP.map((r) => r.item + ' ' + fpts(r.contrib)).join(', ') + '.');
       if (negS.length) parts.push('Inside ' + flowSel + ', also pulling down: ' + negS.map((r) => r.item + ' ' + fpts(r.contrib)).join(', ') + '.');
-      parts.push('Net of these, the parts add up to ' + f2(totalNode.contrib) + ' pts against the published ' + f1(headline) + '%.');
+      parts.push('Net total ' + f2(totalNode.contrib) + ' pts vs the published ' + f1(headline) + '%.');
       offEl.textContent = parts.join(' ');
     } else {
-      offEl.textContent = 'Flows add up to ' + f1(total) + '% of the basket. Colour shows each item’s ' + (view === 'yoy' ? '12-month' : 'monthly') + ' change against ' + c.label + ': red runs hotter, blue cooler, grey has no published change.';
+      offEl.textContent = 'Colour is each item’s ' + (view === 'yoy' ? '12-month' : 'monthly') + ' change against ' + c.label + ': red hotter, blue cooler, grey not published.';
     }
   }
 
@@ -1355,7 +1371,7 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
   // ---------- rolling ROC line chart (headline, core, supercore)
   const SERIES_COLORS = { Headline: dash.colors[0], Core: dash.colors[1], Supercore: dash.colors[4] };
   function drawRoc(el, rows, tp, win, range) {
-    const w = Math.max(280, el.clientWidth), h = 300;
+    const w = Math.max(240, el.clientWidth), narrowR = w < 520, h = narrowR ? 260 : 300;
     const parse = (s) => new Date(String(s).slice(0, 10) + 'T00:00:00Z');
     const all = rows.filter((r) => r.window === win).map((r) => ({ ...r, d: parse(r.date) }));
     const valid = all.filter((r) => r.roc != null);
@@ -1368,11 +1384,11 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
       .attr('aria-label', `Rolling ${win} annualized rate of change of headline, core and supercore CPI`);
     const lastOf = (s) => data.filter((r) => r.series === s && r.roc != null).at(-1);
     const endLabels = names.map((s) => (s === 'Supercore' ? 'Supercore*' : s) + ' ' + f1(lastOf(s).roc) + '%');
-    const m = { t: 12, r: Math.min(w * 0.32, measure(svg, endLabels) + 14), b: 26, l: 40 };
+    const m = { t: narrowR ? 30 : 12, r: narrowR ? 10 : Math.min(w * 0.32, measure(svg, endLabels) + 14), b: 26, l: 36 };
     const vals = data.filter((r) => r.roc != null).map((r) => r.roc);
     const y = d3.scaleLinear([Math.min(0, d3.min(vals)), Math.max(3, d3.max(vals))], [h - m.b, m.t]).nice();
     const x = d3.scaleUtc([start, last], [m.l, w - m.r]);
-    const yt = y.ticks(6);
+    const yt = y.ticks(4);
     svg.append('g').selectAll('line').data(yt).join('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', (d) => y(d)).attr('y2', (d) => y(d))
       .attr('stroke', (d) => (d === 0 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)'));
     svg.append('g').selectAll('text').data(yt).join('text').attr('x', m.l - 6).attr('y', (d) => y(d) + 4).attr('text-anchor', 'end')
@@ -1382,20 +1398,23 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
     xa.attr('font-size', null).attr('font-family', null);
     xa.selectAll('text').attr('fill', 'var(--color-fg-muted)').attr('font-size', 11);
     xa.selectAll('line,path').attr('stroke', 'var(--cds-chart-axis)');
-    svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(2)).attr('y2', y(2))
-      .attr('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 3');
-    svg.append('text').attr('x', m.l + 4).attr('y', y(2) - 4).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text('2% target');
+    svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(2)).attr('y2', y(2)).attr('stroke', 'var(--cds-chart-reference)').attr('stroke-width', 1).attr('stroke-opacity', 0.7);
+    if (!narrowR) svg.append('text').attr('x', m.l + 4).attr('y', y(2) - 5).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').attr('class', 'lab-halo').text('2% target');
     const line = d3.line().defined((d) => d.roc != null).x((d) => x(d.d)).y((d) => y(d.roc));
     const ends = names.map((s, i) => ({ s, p: lastOf(s), label: endLabels[i], ly: y(lastOf(s).roc) + 4 }));
     relax(ends, 14, m.t + 6, h - m.b);
     names.forEach((s, i) => {
-      svg.append('path').datum(data.filter((r) => r.series === s)).attr('fill', 'none').attr('stroke', SERIES_COLORS[s]).attr('stroke-width', s === 'Supercore' ? 1.6 : 2)
-        .attr('stroke-dasharray', s === 'Supercore' ? '5 3' : null).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round').attr('d', line);
+      svg.append('path').datum(data.filter((r) => r.series === s)).attr('fill', 'none').attr('stroke', SERIES_COLORS[s]).attr('stroke-width', 2).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round').attr('d', line);
     });
-    ends.forEach((e) => {
-      svg.append('circle').attr('cx', x(e.p.d)).attr('cy', y(e.p.roc)).attr('r', 3).attr('fill', SERIES_COLORS[e.s]);
-      svg.append('text').attr('x', x(e.p.d) + 7).attr('y', e.ly).attr('font-size', 12).attr('fill', 'var(--color-fg)').text(e.label);
-    });
+    ends.forEach((e) => svg.append('circle').attr('cx', x(e.p.d)).attr('cy', y(e.p.roc)).attr('r', 3).attr('fill', SERIES_COLORS[e.s]));
+    if (narrowR) {
+      let lx = m.l;
+      ends.forEach((e) => {
+        svg.append('rect').attr('x', lx).attr('y', 8).attr('width', 14).attr('height', 2).attr('fill', SERIES_COLORS[e.s]);
+        const t = svg.append('text').attr('x', lx + 18).attr('y', 13).attr('font-size', 11.5).attr('fill', 'var(--color-fg)').text(e.s === 'Supercore' ? 'Supercore*' : e.s);
+        lx += 18 + t.node().getComputedTextLength() + 12;
+      });
+    } else ends.forEach((e) => svg.append('text').attr('x', x(e.p.d) + 7).attr('y', e.ly).attr('font-size', 12).attr('fill', 'var(--color-fg)').text(e.label));
     const dates = [...new Set(data.map((r) => +r.d))].sort((a, b) => a - b).map((t) => new Date(t));
     const rule = svg.append('line').attr('y1', m.t).attr('y2', h - m.b).attr('stroke', 'var(--cds-chart-axis)').attr('opacity', 0);
     const dots = names.map((s) => svg.append('circle').attr('r', 4).attr('fill', SERIES_COLORS[s]).attr('opacity', 0));
@@ -1445,10 +1464,10 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
     const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('role', 'img')
       .attr('aria-label', 'Stacked bars of how much food, energy, core goods and core services contributed to CPI inflation each month');
     const m = { t: 12, r: 8, b: 26, l: 44 };
-    const x = d3.scaleBand(months, [m.l, w - m.r]).paddingInner(months.length > 40 ? 0.15 : 0.25);
+    const x = d3.scaleBand(months, [m.l, w - m.r]).paddingInner(months.length > 40 ? 0.25 : 0.3);
     const lo = Math.min(0, d3.min(stacks, (s) => s.neg)), hi = Math.max(view === 'yoy' ? 2.5 : 0.3, d3.max(stacks, (s) => Math.max(s.pos, s.head ?? 0)));
     const y = d3.scaleLinear([lo, hi], [h - m.b, m.t]).nice();
-    const yt = y.ticks(6);
+    const yt = y.ticks(4);
     svg.append('g').selectAll('line').data(yt).join('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', (d) => y(d)).attr('y2', (d) => y(d))
       .attr('stroke', (d) => (d === 0 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)'));
     svg.append('g').selectAll('text').data(yt).join('text').attr('x', m.l - 6).attr('y', (d) => y(d) + 4).attr('text-anchor', 'end')
@@ -1457,17 +1476,16 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
     svg.append('g').selectAll('text').data(janTicks).join('text').attr('x', (d) => x(d) + x.bandwidth() / 2).attr('y', h - 8).attr('text-anchor', 'middle')
       .attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text((d) => d3.utcFormat(months.length <= 30 ? "%b '%y" : '%Y')(new Date(d + 'T00:00:00Z')));
     if (view === 'yoy') {
-      svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(2)).attr('y2', y(2)).attr('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 3');
-      svg.append('text').attr('x', m.l + 4).attr('y', y(2) - 4).attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text('2% target');
     }
     const col = svg.selectAll('g.col').data(stacks).join('g').attr('class', 'col').attr('transform', (d) => `translate(${x(d.date)},0)`);
     col.selectAll('rect.seg').data((d) => d.segs).join('rect').attr('class', 'seg').attr('x', 0).attr('width', x.bandwidth())
-      .attr('y', (s) => y(s.b)).attr('height', (s) => Math.max(0, y(s.a) - y(s.b))).attr('fill', (s) => GROUP_COLORS[s.g]).attr('fill-opacity', 0.85);
+      .attr('y', (s) => y(s.b)).attr('height', (s) => Math.max(0, y(s.a) - y(s.b))).attr('fill', (s) => GROUP_COLORS[s.g]).attr('fill-opacity', 0.75);
     const withHead = stacks.filter((s) => s.head != null);
-    svg.append('path').datum(withHead).attr('fill', 'none').attr('stroke', 'var(--color-fg)').attr('stroke-width', 1.5).attr('stroke-linejoin', 'round')
+    svg.append('path').datum(withHead).attr('fill', 'none').attr('stroke', 'var(--color-fg)').attr('stroke-width', 2).attr('stroke-linejoin', 'round').attr('stroke-linecap', 'round')
       .attr('d', d3.line().defined((d, i) => i === 0 || months.indexOf(d.date) === months.indexOf(withHead[i - 1].date) + 1).x((d) => x(d.date) + x.bandwidth() / 2).y((d) => y(d.head)));
-    svg.append('g').selectAll('circle').data(withHead).join('circle').attr('cx', (d) => x(d.date) + x.bandwidth() / 2).attr('cy', (d) => y(d.head))
-      .attr('r', months.length > 40 ? 1.8 : 2.6).attr('fill', 'var(--color-fg)');
+    if (view === 'yoy') {
+      svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(2)).attr('y2', y(2)).attr('stroke', 'var(--color-fg)').attr('stroke-width', 1).attr('stroke-opacity', 0.45).attr('stroke-dasharray', '2 3');
+    }
     col.append('rect').attr('x', 0).attr('y', m.t).attr('width', x.bandwidth()).attr('height', h - m.t - m.b).attr('fill', 'transparent')
       .on('mousemove', (ev, d) => {
         const title = d3.utcFormat('%b %Y')(new Date(d.date + 'T00:00:00Z'));
@@ -1563,45 +1581,82 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
     const ct = dash.data('contrib');
     const tr = dash.data('tree');
 
-    // KPI colouring: each value against its own target
-    document.querySelectorAll('.cp-kpi .big > span').forEach((s) => {
-      const v = parseFloat(s.textContent);
-      const t = s.classList.contains('v-mom') ? MONTHLY_TARGET : 2;
-      s.style.color = isNaN(v) ? '' : v > t ? 'var(--color-bad)' : 'var(--color-ok)';
-    });
 
     // ---- overview
     if (tab === 'overview') {
       const anyEst = tr.status === 'ok' && tr.data.some((r) => r.view === view && r.basis !== 'official');
-      document.getElementById('stack-note').textContent = 'Percentage points each group adds to the ' + label + ' (BLS "effect on all items"' + (anyEst ? '; some items are estimated, see Methodology' : '') + '). Hover or tap a segment for details.';
+      void anyEst;
       const cs = document.getElementById('contribstack');
       if (stateBox(cs, ct)) drawContribStack(cs, ct.data, tpStack, view);
       const hd = dash.data('history');
       const he = document.getElementById('histchart');
       document.getElementById('hist-note').textContent = view === 'yoy'
-        ? 'How much each group added to 12-month inflation each month, in percentage points; the dotted line is the headline rate. Estimated from FRED indexes and BLS weights; core services is the remainder.'
-        : 'How much each group added to each month’s seasonally adjusted change, in percentage points; the dotted line is the headline monthly change. Estimated from FRED indexes and BLS weights; core services is the remainder.';
+        ? 'Points each group added to 12-month inflation. Estimated from FRED indexes and BLS weights.'
+        : 'Points each group added to each month’s change. Estimated from FRED indexes and BLS weights.';
       if (stateBox(he, hd)) drawHistory(he, hd.data, tpHist, view, p.hist_range);
+      // summary: ranked components and subcomponents with bars
+      const sb = document.getElementById('sumbox');
+      const ts = dash.data('tree_summary');
+      sb.textContent = '';
+      if (ts.status === 'ok') {
+        const T = ts.data.filter((r) => r.view === view);
+        const pick = (pre, n) => Array.from({ length: n }, (_, i) => T.find((r) => r.stat === pre + (i + 1))).filter(Boolean);
+        const mk = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+        const cap = mk('p', 'cp-note', 'Points added to the ' + label + ', and each item’s share of it.'); sb.appendChild(cap);
+        const grid = mk('div', 'sm-grid');
+        const mx = d3.max(T.filter((r) => /^[ps]\d/.test(r.stat)), (r) => r.contrib) || 1;
+        const col = (title, rows, withParent) => {
+          const c = mk('div', 'sm-col'); c.appendChild(mk('h3', null, title));
+          rows.forEach((r) => {
+            const row = mk('div', 'sm-row');
+            const nm = mk('div', 'sm-name', r.item);
+            if (withParent && r.parent) nm.appendChild(mk('small', null, r.parent));
+            const v = mk('div', 'sm-val', fpts(r.contrib) + ' pts ');
+            v.appendChild(mk('span', null, '· ' + f1(r.share) + '%'));
+            const track = mk('div', 'sm-track'); const bar = mk('div', 'sm-bar');
+            bar.style.width = Math.max(1.5, r.contrib / mx * 100) + '%'; bar.style.background = HOT; bar.style.opacity = 0.8;
+            track.appendChild(bar); row.append(nm, v, track); c.appendChild(row);
+          });
+          return c;
+        };
+        grid.append(col('Largest components', pick('p', 3), false), col('Largest subcomponents', pick('s', 5), true));
+        sb.appendChild(grid);
+        const top5 = T.find((r) => r.stat === 'top5');
+        const down = pick('d', 3).filter((r) => r.contrib < 0);
+        const foot = mk('p', 'sm-foot');
+        if (top5) {
+          foot.append('These five subcomponents are ');
+          foot.appendChild(mk('b', null, f1(top5.weight) + '%')); foot.append(' of the basket but ');
+          foot.appendChild(mk('b', null, f1(top5.share) + '%')); foot.append(' of the ' + label + '. ');
+        }
+        if (down.length) foot.append('Pulling the other way: ' + down.map((r) => r.item + ' ' + fpts(r.contrib)).join(', ') + ' pts.');
+        sb.appendChild(foot);
+      }
       const hl = document.getElementById('hist-legend');
       hl.textContent = '';
-      [['Energy', GROUP_COLORS.Energy], ['Food', GROUP_COLORS.Food], ['Core goods', GROUP_COLORS['Core goods']], ['Core services', GROUP_COLORS['Core services']], ['Headline', 'var(--color-fg)']].forEach(([n, col]) => {
+      [['Headline', 'var(--color-fg)'], ['Core services', GROUP_COLORS['Core services']], ['Core goods', GROUP_COLORS['Core goods']], ['Food', GROUP_COLORS.Food], ['Energy', GROUP_COLORS.Energy]].forEach(([n, col]) => {
         const s = document.createElement('span'); const sw = document.createElement('span');
-        sw.style.cssText = `display:inline-block;width:10px;height:10px;border-radius:${n === 'Headline' ? '50%' : '2px'};background:${col};margin-right:4px;vertical-align:-1px`;
+        sw.style.cssText = n === 'Headline' ? 'display:inline-block;width:14px;height:2px;background:var(--color-fg);margin-right:5px;vertical-align:3px' : `display:inline-block;width:10px;height:10px;border-radius:2px;background:${col};opacity:.8;margin-right:4px;vertical-align:-1px`;
         s.appendChild(sw); s.appendChild(document.createTextNode(n)); hl.appendChild(s);
       });
+      if (view === 'yoy') {
+        const s = document.createElement('span'); const sw = document.createElement('span');
+        sw.style.cssText = 'display:inline-block;width:14px;height:0;border-top:1px dashed var(--color-fg);opacity:.6;margin-right:5px;vertical-align:3px';
+        s.append(sw, '2% target'); hl.appendChild(s);
+      }
     }
 
     // ---- drivers
     if (tab === 'drivers') {
       document.getElementById('flow-note').textContent = measureSel === 'contrib'
-        ? 'Band widths are each part’s contribution to the ' + label + ', in percentage points (BLS effect on all items). Click or tap a component to see what’s inside it.'
-        : 'Band widths are each part’s share of the CPI basket: how much of a typical urban household’s spending it represents (BLS relative importance, ' + refLbl + '). Click or tap a component to see what’s inside it.';
+        ? 'Band width is each part’s contribution to the ' + label + '. Click or tap a component to look inside.'
+        : 'Band width is each part’s share of household spending (' + refLbl + '). Click or tap a component to look inside.';
       const sk = document.getElementById('sankey');
       const offEl = document.getElementById('flow-offsets');
       if (stateBox(sk, tr) && cd.status === 'ok') drawSankey(sk, tr.data, tpFlow, view, measureSel, c, cd.data, offEl);
       else offEl.textContent = '';
 
-      document.getElementById('items-note').textContent = 'The 20 subcomponents adding or subtracting the most from the ' + label + ', in percentage points. Red pushes inflation up, blue pulls it down.';
+      document.getElementById('items-note').textContent = 'Points each item adds to the ' + label + '. Red pushes it up, blue pulls it down.';
       const ci = document.getElementById('contribitems');
       if (stateBox(ci, ct)) {
         const items = ct.data.filter((r) => r.view === view && r.kind === 'item' && r.weight != null)
@@ -1609,8 +1664,9 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
         drawContribItems(ci, [...items, ...ct.data.filter((r) => r.view === view && r.kind === 'published')], tpContrib, view);
       }
 
-      document.getElementById('share-note').textContent = 'Share of basket is how much of household spending each component represents; share of inflation is how much of the '
-        + label + ' it accounts for. Bars compare the two: grey is basket, coloured is inflation (red adds, blue subtracts). Basis says whether the contribution is BLS’s official figure or an estimate.';
+      const allOfficial = tr.status === 'ok' && tr.data.filter((r) => r.view === view && r.level === 'parent').every((r) => r.basis === 'official');
+      document.querySelectorAll('#sharetable .col-basis').forEach((th) => { th.style.display = allOfficial ? 'none' : ''; });
+      document.getElementById('share-note').textContent = 'Grey bar: share of the basket. Coloured bar: share of the ' + label + '.';
       const stb = document.querySelector('#sharetable tbody');
       stb.textContent = '';
       if (tr.status === 'ok') {
@@ -1624,11 +1680,11 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
           const sw = document.createElement('span');
           sw.style.cssText = `display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;background:${GROUP_COLORS[r.group]}`;
           nameTd.prepend(sw);
-          cell(r.basis, 'hide-narrow muted');
+          if (!allOfficial) cell(r.basis, 'hide-narrow muted');
           cell(f1(r.weight));
-          cell(r.change == null ? '—' : f1(r.change), r.change == null ? '' : r.change > c.target ? 'hot' : 'cool');
-          cell(fpts(r.contrib), r.contrib >= 0 ? 'hot' : 'cool');
-          cell(f1(r.share), r.contrib >= 0 ? 'hot' : 'cool');
+          cell(r.change == null ? '—' : f1(r.change), 'hide-narrow');
+          cell(fpts(r.contrib), 'hide-narrow');
+          cell(f1(r.share));
           const barTd = cell('', 'hide-narrow');
           barTd.style.minWidth = '120px';
           const mk = (pct, color, op) => { const b = document.createElement('div'); b.style.cssText = `height:5px;border-radius:3px;margin:2px 0;width:${Math.max(1, Math.abs(pct) / maxPct * 100)}%;background:${color};opacity:${op}`; return b; };
@@ -1643,11 +1699,11 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
     if (tab === 'components') {
       legend(document.getElementById('legend-a'), c);
       document.getElementById('heatmap-note').textContent = view === 'yoy'
-        ? 'Each tile is a CPI component, sized by its share of the basket (relative importance, ' + refLbl + ') and shaded by how far its 12-month change (' + latestLbl + ', not seasonally adjusted) sits from 2%.'
-        : 'Each tile is a CPI component, sized by its share of the basket and shaded by how far its ' + monthName + ' month-over-month change (seasonally adjusted where BLS adjusts it) sits from 0.17%, the monthly pace that compounds to 2% a year.';
+        ? 'Tile size is share of the basket; colour is the 12-month change against 2%. Hover or tap a tile for details.'
+        : 'Tile size is share of the basket; colour is the ' + monthName + ' change against 0.17% a month (2% a year).';
       document.getElementById('bars-note').textContent = view === 'yoy'
-        ? 'Bars start at the 2% line: right is hotter than target, left is cooler. Axis capped at 36%; longer bars are labelled with their true value.'
-        : monthName + ' m/m change, bars starting at 0.17% a month. Axis capped at 4%; longer bars (fuel oil, gasoline) are labelled with their true value.';
+        ? 'Bars start at the 2% target: right runs hotter, left cooler. Arrows mark bars cut short.'
+        : monthName + ' change, starting at 0.17% a month. Arrows mark bars cut short.';
       const val = (r) => (view === 'yoy' ? r.yoyN : r.momN);
       const lines = (r) => [f1(r.yoyN) + '% 12-mo · ' + signed(r.yoyN - 2) + ' pts vs 2%', f1(r.momN) + '% m/m SA · ' + signed(r.momN - MONTHLY_TARGET, f2) + ' vs 0.17%', 'Weight ' + f2(r.w) + '% of basket'];
       const leaves = comps.filter((r) => r.level === 'leaf').map((r) => ({ label: r.item, group: r.group, v: val(r), w: r.w, lines: lines(r) }));
@@ -1662,15 +1718,15 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
         [
           (r) => [r.item],
           (r) => [d3.format('.3f')(r.w), 'hide-narrow'],
-          (r) => [f1(r.yoyN), r.yoyN > 2 ? 'hot' : 'cool'],
-          (r) => [gm.has(r.item) ? f1(gm.get(r.item).gap) : '—', r.yoyN > 2 ? 'hot' : 'cool'],
-          (r) => [f1(r.momN), r.momN > MONTHLY_TARGET ? 'hot' : 'cool'],
-          (r) => [gm.has(r.item) ? f2(gm.get(r.item).gap_m) : '—', 'hide-narrow ' + (r.momN > MONTHLY_TARGET ? 'hot' : 'cool')]
+          (r) => [f1(r.yoyN)],
+          (r) => [gm.has(r.item) ? signed(gm.get(r.item).gap) : '—', 'muted'],
+          (r) => [f1(r.momN)],
+          (r) => [gm.has(r.item) ? signed(gm.get(r.item).gap_m, f2) : '—', 'hide-narrow muted']
         ]);
     }
 
     // ---- momentum
-    const cls = (v) => (v == null ? '' : v > 2 ? 'hot' : 'cool');
+    const cls = () => '';
     const fv = (v) => (v == null ? '—' : f1(v));
     if (tab === 'momentum') {
       const rd = dash.data('roc');
@@ -1679,9 +1735,10 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
       const rl = dash.data('roc_latest');
       fillTable(document.querySelector('#roctable tbody'), rl.status === 'ok' ? rl.data : [], [
         (r) => [r.series === 'Supercore' ? 'Supercore*' : r.series],
-        (r) => [r.date ? d3.utcFormat('%b %Y')(new Date(String(r.date).slice(0, 10) + 'T00:00:00Z')) : '—'],
         (r) => [fv(r.m1), cls(r.m1)], (r) => [fv(r.m3), cls(r.m3)], (r) => [fv(r.m6), cls(r.m6)], (r) => [fv(r.m12), cls(r.m12)]
       ]);
+      const rm = rl.status === 'ok' && rl.data[0] && rl.data[0].date;
+      document.getElementById('roc-month').textContent = rm ? '· ' + d3.utcFormat('%B %Y')(new Date(String(rm).slice(0, 10) + 'T00:00:00Z')) : '';
       const mg = dash.data('components_monthly');
       const ge = document.getElementById('grid');
       if (stateBox(ge, mg)) drawGrid(ge, mg.data, tpGrid, CFG.mom);
@@ -1692,7 +1749,7 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
         (cr.status === 'ok' ? cr.data : []).map((r) => ({ ...r, _indent: depthOf.get(r.item) ?? 0, _cls: (depthOf.get(r.item) ?? 0) <= 1 ? 'agg' : '' })),
         [
           (r) => [r.item],
-          (r) => [f1(r.latest), r.latest > MONTHLY_TARGET ? 'hot' : 'cool'],
+          (r) => [f1(r.latest)],
           (r) => [f1(r.ann1), cls(r.ann1)], (r) => [f1(r.ann3), cls(r.ann3)], (r) => [f1(r.ann6), cls(r.ann6)],
           (r) => [yoyOf.has(r.item) ? f1(yoyOf.get(r.item)) : '—', 'hide-narrow ' + cls(yoyOf.get(r.item))]
         ]);
@@ -1702,10 +1759,10 @@ window.dash=(()=>{const D={"components":[{"item":"All items","group":"Headline",
     if (tab === 'regions') {
       legend(document.getElementById('legend-b'), c);
       document.getElementById('region-note').textContent = view === 'yoy'
-        ? "States are shaded by their census division's all-items 12-month change to ' + latestLbl + '. Local indexes carry more sampling error than the national one."
-        : "States are shaded by their division's ' + prevMonth + '→' + monthName + ' change. BLS doesn't seasonally adjust area indexes, so these monthly moves include seasonal swings.";
+        ? 'States take their census division’s 12-month change to ' + latestLbl + '. Local figures are noisier than the national one.'
+        : 'States take their division’s ' + prevMonth + '→' + monthName + ' change, not seasonally adjusted.';
       document.getElementById('metro-note').textContent = view === 'yoy'
-        ? 'Metros priced every month or in the latest pricing cycle are through ' + latestLbl + '; the others are through ' + refLbl + '.'
+        ? 'Latest available 12-month change (' + refLbl + ' or ' + latestLbl + ', depending on the metro’s pricing cycle).'
         : 'Only New York, Los Angeles and Chicago are priced every month; the rest are bimonthly, so they have no 1-month change.';
       const rg = dash.data('regions');
       const regs = rg.status === 'ok' ? rg.data.map((r) => ({ ...r, v: num(r[c.regionKey]) })) : [];
