@@ -40,7 +40,13 @@ def fetch(url):
         return (OFFLINE / url.rsplit("/", 1)[-1].split("?")[0]).read_text(encoding="utf-8")
     import requests
     ua = os.environ.get("BLS_USER_AGENT") or "cpi-breakdown-dashboard (set BLS_USER_AGENT with a contact email)"
-    r = requests.get(url, headers={"User-Agent": ua, "Accept": "text/html,text/csv"}, timeout=90)
+    if "bls.gov" in url and not os.environ.get("BLS_USER_AGENT"):
+        raise Bad("BLS refuses anonymous requests: add the BLS_USER_AGENT repository secret (e.g. 'InflationBreakdown (you@example.com)')")
+    headers = {"User-Agent": ua, "Accept": "text/html,application/xhtml+xml,text/csv;q=0.9,*/*;q=0.8",
+               "Accept-Language": "en-US,en;q=0.9", "Accept-Encoding": "gzip, deflate"}
+    r = requests.get(url, headers=headers, timeout=90)
+    if r.status_code == 403 and "bls.gov" in url:
+        raise Bad(f"BLS returned 403 Forbidden for {url} even with BLS_USER_AGENT set; check that it includes a real contact email")
     r.raise_for_status()
     return r.text
 
