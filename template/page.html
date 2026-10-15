@@ -324,7 +324,7 @@
       <h3>12-month and monthly views</h3>
       <p>The 12-month view uses changes from the same month a year earlier, not seasonally adjusted, as BLS headlines them. The monthly view uses seasonally adjusted changes from the previous month. The monthly benchmark is 0.165%, the pace that compounds to 2% over a year.</p>
       <h3>Contributions</h3>
-      <p>A contribution is how many percentage points an item adds to the headline rate: BLS's "effect on all items" (Tables 6 and 7). Official BLS figures are used for food, energy, every goods category, shelter and household services. The release pages available when this was built cut off before the detail for medical, transportation, recreation, education and communication, and personal services. Those are estimated as basket weight × price change, then scaled so that together they match BLS's official total for core services exactly. The Drivers tab marks every row as official or estimated. Shares of inflation are each part's share of the sum of all parts, so they add to 100%; that sum differs from the published headline only by rounding.</p>
+      <p>A contribution is how many percentage points an item adds to the headline rate: BLS's "effect on all items" from Tables 6 (monthly) and 7 (12-month) of each release. The Drivers tab marks every row's basis: <i>official</i> means BLS's published figure; <i>estimated</i> (used only if a release table can't be read) means basket weight × price change, scaled so the parts still add to BLS's official total for their group. "Rest of …" and "Other household operations" rows are the part of a group that BLS doesn't break out separately. Shares of inflation are each part's share of the sum of all parts, so they add to 100%; that sum differs from the published headline only by rounding.</p>
       <h3>Contributions over time and supercore</h3>
       <p>The history chart is estimated from the FRED indexes. Each group's weight is taken from BLS's latest relative importance and moved back in time by how its price changed relative to the overall index, then multiplied by the group's change. Core services is the remainder, so the groups always add to the headline. BLS re-weights the basket each January, which this simple back-cast doesn't capture, so older months are approximate. The table below compares the method with BLS's official figures for the latest month. Supercore (core services excluding shelter) is built the same way: core services minus shelter, by weight, chained into an index.</p>
       <table id="checktable" data-source="method_check" data-row-key="view,group" class="cp-check">
@@ -1322,7 +1322,8 @@
 
     // ---- overview
     if (tab === 'overview') {
-      document.getElementById('stack-note').textContent = 'Percentage points each group adds to the ' + label + ' (BLS "effect on all items"; a few services items are estimated, see Methodology). Hover or tap a segment for details.';
+      const anyEst = tr.status === 'ok' && tr.data.some((r) => r.view === view && r.basis !== 'official');
+      document.getElementById('stack-note').textContent = 'Percentage points each group adds to the ' + label + ' (BLS "effect on all items"' + (anyEst ? '; some items are estimated, see Methodology' : '') + '). Hover or tap a segment for details.';
       const cs = document.getElementById('contribstack');
       if (stateBox(cs, ct)) drawContribStack(cs, ct.data, tpStack, view);
       const hd = dash.data('history');
