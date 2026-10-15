@@ -309,14 +309,25 @@ def main():
         if abs(sa12 - float(head["yoy"])) > 0.4:
             raise Bad(f"FRED 12-month {sa12:.2f} is far from BLS {head['yoy']}")
     except Bad as e:
-        print(f"Not updating: {e}", file=sys.stderr)
+        report("warning", f"Not updating: {e}")
+        sys.exit(1)
+    except Exception as e:  # network errors, unexpected page layouts
+        report("error", f"Update failed: {type(e).__name__}: {e}")
         sys.exit(1)
     write("components", comps)
     write("components_monthly", monthly)
     write("effects", effects)
     write("regions", regions)
     write("fred", fred)
-    print("data/*.csv updated")
+    report("notice", f"Data updated to {month} (contributions add to the published headline within tolerance)")
+
+
+def report(level, msg):
+    """Print a message; inside GitHub Actions it also shows as an annotation on the run's summary page."""
+    msg = str(msg).replace("\n", " ")[:900]
+    print(msg, file=sys.stderr if level != "notice" else sys.stdout)
+    if os.environ.get("GITHUB_ACTIONS"):
+        print(f"::{level} title=CPI data update::{msg}")
 
 
 if __name__ == "__main__":

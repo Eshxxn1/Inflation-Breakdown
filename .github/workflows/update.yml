@@ -7,7 +7,7 @@ on:
   workflow_dispatch: {}
   push:
     branches: [main]
-    paths: ["template/**", "site.config.json", "scripts/build_site.py"]
+    paths: ["template/**", "site.config.json", "scripts/**", ".github/workflows/**"]
 
 permissions:
   contents: write
