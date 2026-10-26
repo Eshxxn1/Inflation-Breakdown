@@ -273,15 +273,15 @@ def header(cfg, banner_html):
 </header>"""
 
 
-def footer(cfg, month_name):
+def footer(cfg, month_name, base=""):
     name = html.escape(cfg["site_name"])
     return f"""<footer class="sitefoot">
   <div class="wrap">
     <div class="cols">
       <div><h4>{name}</h4><p>What's driving US inflation, component by component. Updated automatically after each monthly CPI release. Latest data: {month_name}.</p></div>
       <div><h4>Sources</h4><p><a href="https://www.bls.gov/cpi/">U.S. Bureau of Labor Statistics</a>, CPI news release tables<br><a href="https://fred.stlouisfed.org/">FRED</a>, Federal Reserve Bank of St. Louis</p></div>
-      <div><h4>About the numbers</h4><p>How each figure is calculated is explained in the <a href="#method" data-tab-link>Methodology</a> tab, where you can also download the data.</p></div>
+      <div><h4>About the numbers</h4><p>How each figure is calculated is explained in the <a href="{base}#method" data-tab-link>Methodology</a> tab, where you can also download the data.</p></div>
     </div>
-    <p class="legal">Independent analysis, not an official BLS or Federal Reserve product, and not financial advice. BLS data are public domain; FRED data courtesy of the Federal Reserve Bank of St. Louis.</p>
+    <p class="legal">Independent analysis, not an official BLS or Federal Reserve product, and not financial advice. BLS data are public domain; FRED data courtesy of the Federal Reserve Bank of St. Louis. <a href="/privacy">Privacy policy</a></p>
   </div>
 </footer>"""

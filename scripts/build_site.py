@@ -8,6 +8,7 @@ import csv
 import html
 import json
 import pathlib
+import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
@@ -65,6 +66,12 @@ def main():
         "setLink:(n)=>{try{history.replaceState(null,'','#'+n)}catch(e){}},loader(){}}})();"
     )
 
+    ad_client = (cfg.get("adsense_client") or "").strip()
+    if ad_client and not re.fullmatch(r"ca-pub-\d{10,20}", ad_client):
+        sys.exit("adsense_client in site.config.json should look like ca-pub-1234567890123456")
+    ads_head = (f'<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={ad_client}" crossorigin="anonymous"></script>\n'
+                f'<meta name="google-adsense-account" content="{ad_client}">\n') if ad_client else ""
+
     title = html.escape(cfg["title"])
     desc = html.escape(cfg["description"])
     out = f"""<!doctype html>
@@ -88,7 +95,7 @@ def main():
 </style>
 <script>{d3}</script>
 <script>{shim}</script>
-{cfg.get('analytics_html') or ''}
+{ads_head}{cfg.get('analytics_html') or ''}
 </head>
 <body class="standalone">
 <a class="skip" href="#dash-root">Skip to the dashboard</a>
@@ -114,9 +121,68 @@ def main():
         (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {site_url}/sitemap.xml\n", encoding="utf-8")
         (site / "sitemap.xml").write_text(
             '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-            f"  <url><loc>{site_url}/</loc><lastmod>{latest[:7]}-15</lastmod><changefreq>monthly</changefreq></url>\n</urlset>\n",
+            f"  <url><loc>{site_url}/</loc><lastmod>{latest[:7]}-15</lastmod><changefreq>monthly</changefreq></url>\n"
+            f"  <url><loc>{site_url}/privacy</loc><changefreq>yearly</changefreq></url>\n</urlset>\n",
             encoding="utf-8")
+    ads_txt = site / "ads.txt"
+    if ad_client:
+        ads_txt.write_text(f"google.com, {ad_client.replace('ca-', '')}, DIRECT, f08c47fec0942fa0\n", encoding="utf-8")
+    elif ads_txt.exists():
+        ads_txt.unlink()
+    (site / "privacy.html").write_text(privacy_page(cfg, ads_head, light, dark, sizes, favicon, month_name), encoding="utf-8")
     print(f"site/index.html written ({len(out) // 1024} KB, latest data {latest})")
+
+
+def privacy_page(cfg, ads_head, light, dark, sizes, favicon, month_name):
+    name = html.escape(cfg["site_name"])
+    email = (cfg.get("contact_email") or "").strip()
+    contact = (f'<p>Questions about this policy: <a href="mailto:{html.escape(email)}">{html.escape(email)}</a>.</p>' if email else "")
+    ads = bool(ads_head)
+    ad_section = """
+<h2>Advertising</h2>
+<p>This site shows ads served by Google AdSense. Google and its partners use cookies and similar technologies to show ads and to measure them. Those ads may be based on your previous visits to this and other websites.</p>
+<p>Google’s use of advertising cookies lets it and its partners serve ads based on your visits here and elsewhere on the internet. You can turn off personalized advertising in <a href="https://adssettings.google.com">Google’s Ads Settings</a>, or opt out of some third-party vendors’ cookies at <a href="https://www.aboutads.info/choices/">aboutads.info</a>.</p>
+<p>How Google uses data from sites that use its services: <a href="https://policies.google.com/technologies/partner-sites">policies.google.com/technologies/partner-sites</a>.</p>
+<p>Visitors in the European Economic Area, the UK and Switzerland are asked for consent before personalized ads are shown, through Google’s consent message.</p>""" if ads else ""
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy policy · {name}</title>
+<meta name="description" content="How {name} handles visitor data, cookies and advertising.">
+<link rel="icon" href="{favicon}">
+{site_shell.FONTS}
+<style>
+:root{{{light}{sizes}}}
+@media (prefers-color-scheme: dark){{:root{{{dark}}}}}
+{site_shell.CSS}
+.policy{{max-width:44rem;margin:0 auto;padding:40px 0 56px;font-size:16px;line-height:1.65;color:var(--color-fg)}}
+.policy h1{{font-size:32px;margin:0 0 6px}}
+.policy h2{{font-size:19px;margin:28px 0 8px}}
+.policy p{{margin:0 0 12px}}
+.policy .muted{{color:var(--color-fg-muted)}}
+.policy a{{color:inherit}}
+</style>
+{ads_head}</head>
+<body class="standalone">
+<header class="masthead"><div class="wrap"><nav class="topbar" aria-label="Site"><a class="brand" href="/">{site_shell.LOGO}<span>{name}</span></a>
+<div class="toplinks"><a href="/">Back to the dashboard</a></div></nav></div></header>
+<main class="wrap"><article class="policy">
+<h1>Privacy policy</h1>
+<p class="muted">{name} · inflationbreakdown.com</p>
+<h2>What this site collects</h2>
+<p>There are no accounts, sign-ups or forms, and the site doesn’t ask for any personal information. The dashboard runs in your browser using public data from the U.S. Bureau of Labor Statistics and FRED.</p>
+<p>The site is hosted on Cloudflare, which processes standard request information such as IP addresses to deliver and protect the site. See <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare’s privacy policy</a>.</p>
+{ad_section}
+<h2>Changes</h2>
+<p>If this policy changes, the updated version will be posted on this page.</p>
+{contact}
+</article></main>
+{site_shell.footer(cfg, month_name, base="/")}
+</body>
+</html>
+"""
 
 
 if __name__ == "__main__":
