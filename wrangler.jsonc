@@ -1,13 +1,31 @@
-// Cloudflare Workers static-site settings: serves the built site/ folder.
+// Cloudflare Workers settings. Each push to main is deployed by Workers Builds (npx wrangler deploy).
+// - site/ is served as static files.
+// - worker/index.js handles only /api/* and /stats (first-party analytics); every other request goes straight to site/.
+// - DB is a D1 (SQLite) database for the analytics. On the first deploy Wrangler creates "inflation-analytics"
+//   automatically and links it; later deploys find it by name.
+// - The dashboard at /stats needs a secret named STATS_PASSWORD:
+//   Workers & Pages → inflation-breakdown → Settings → Variables and Secrets → Add → type Secret.
 // Custom domains (inflationbreakdown.com, www) are attached in the Cloudflare dashboard:
 // Workers & Pages → inflation-breakdown → Settings → Domains & Routes.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "inflation-breakdown",
+  "main": "worker/index.js",
   "compatibility_date": "2026-10-12",
   "observability": { "enabled": true },
   "assets": {
     "directory": "site",
-    "not_found_handling": "single-page-application"
-  }
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*", "/stats", "/stats/"]
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "inflation-analytics" }
+  ],
+  "vars": {
+    // Days in the dashboard start and end at midnight in this time zone
+    "TIMEZONE": "America/Edmonton"
+  },
+  // Keeps variables added in the Cloudflare dashboard when deploying
+  "keep_vars": true
 }

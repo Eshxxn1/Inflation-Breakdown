@@ -8,18 +8,25 @@ compares with the 2% target. Data from the U.S. Bureau of Labor Statistics (BLS)
 
 ## Where it lives
 
-- **Website:** https://inflationbreakdown.com, hosted on Cloudflare Pages from the `site` folder of this repository
-- **Updates:** `.github/workflows/update.yml` fetches new data, rebuilds `site/` and commits; Cloudflare republishes on each commit
+- **Website:** https://inflationbreakdown.com, a Cloudflare Worker that serves the `site` folder. Workers Builds runs
+  `npx wrangler deploy` on every push to `main` (settings in `wrangler.jsonc`).
+- **Updates:** `.github/workflows/update.yml` fetches new data, rebuilds `site/` and commits, which redeploys the site.
+- **Analytics:** https://inflationbreakdown.com/stats (private, password protected). See below.
 
-### One-time setup
+## Analytics
 
-1. **GitHub → Settings → Secrets and variables → Actions → New repository secret:** `BLS_USER_AGENT`, value like
-   `InflationBreakdown (you@example.com)`. BLS asks automated tools to identify themselves.
-2. **Cloudflare → Workers & Pages → Create application → Pages → Connect to Git**, pick this repository, then:
-   Framework preset **None**, Build command **(empty)**, Build output directory **`site`**. Save and Deploy.
-3. **Cloudflare → your Pages project → Custom domains → Set up a domain:** `inflationbreakdown.com`, then again for
-   `www.inflationbreakdown.com`. Cloudflare creates the DNS records. Remove any older A/AAAA/CNAME records for
-   `@` and `www` first.
+The site counts its own visits, with no cookies and no third-party service:
+
+- `template/track.js` is built into every page. It sends the pageview, the dashboard tabs opened and the time spent
+  on the page to `/api/collect`. Visitors with Do Not Track or Global Privacy Control turned on aren't counted.
+- `worker/index.js` stores them in a Cloudflare D1 database named `inflation-analytics` (created automatically on
+  the first deploy). A visitor is an anonymous hash of IP + browser that changes daily; the IP itself isn't stored.
+  Rows older than about 13 months are deleted.
+- `/stats` (`worker/dashboard.js`) shows pageviews, visitors, time on page, live visitors, tabs, sources, referrers,
+  countries, devices, browsers and an AdSense earnings estimate from your Page RPM.
+
+**One-time setup:** in Cloudflare, open **Workers & Pages → inflation-breakdown → Settings → Variables and Secrets →
+Add**, choose type **Secret**, name it `STATS_PASSWORD`, and enter a password. That's the password for `/stats`.
 
 ## Make it yours
 
@@ -70,6 +77,8 @@ the name mappings are near the top of each section in `scripts/update_data.py`.
 | `data/*.csv` | The data the page uses |
 | `vendor/d3.min.js` | d3 v7.9.0, the chart library |
 | `scripts/` | Updater and site builder |
+| `worker/` | Cloudflare Worker: analytics collector, stats API and the `/stats` dashboard |
+| `template/track.js` | The analytics snippet built into each page |
 
 ## Data and licence notes
 

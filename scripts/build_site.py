@@ -72,6 +72,10 @@ def main():
     ads_head = (f'<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={ad_client}" crossorigin="anonymous"></script>\n'
                 f'<meta name="google-adsense-account" content="{ad_client}">\n') if ad_client else ""
 
+    # first-party, cookieless analytics (served by worker/index.js, viewed at /stats)
+    tracker = "<script>" + (ROOT / "template" / "track.js").read_text(encoding="utf-8").strip() + "</script>\n"
+    ads_head = ads_head + tracker
+
     title = html.escape(cfg["title"])
     desc = html.escape(cfg["description"])
     out = f"""<!doctype html>
@@ -118,7 +122,7 @@ def main():
     if domain:
         (site / "CNAME").write_text(domain + "\n", encoding="utf-8")
     if site_url:
-        (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {site_url}/sitemap.xml\n", encoding="utf-8")
+        (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\nDisallow: /stats\nDisallow: /api/\nSitemap: {site_url}/sitemap.xml\n", encoding="utf-8")
         (site / "sitemap.xml").write_text(
             '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
             f"  <url><loc>{site_url}/</loc><lastmod>{latest[:7]}-15</lastmod><changefreq>monthly</changefreq></url>\n"
@@ -137,7 +141,7 @@ def privacy_page(cfg, ads_head, light, dark, sizes, favicon, month_name):
     name = html.escape(cfg["site_name"])
     email = (cfg.get("contact_email") or "").strip()
     contact = (f'<p>Questions about this policy: <a href="mailto:{html.escape(email)}">{html.escape(email)}</a>.</p>' if email else "")
-    ads = bool(ads_head)
+    ads = "googlesyndication" in ads_head
     ad_section = """
 <h2>Advertising</h2>
 <p>This site shows ads served by Google AdSense. Google and its partners use cookies and similar technologies to show ads and to measure them. Those ads may be based on your previous visits to this and other websites.</p>
@@ -173,6 +177,7 @@ def privacy_page(cfg, ads_head, light, dark, sizes, favicon, month_name):
 <p class="muted">{name} · inflationbreakdown.com</p>
 <h2>What this site collects</h2>
 <p>There are no accounts, sign-ups or forms, and the site doesn’t ask for any personal information. The dashboard runs in your browser using public data from the U.S. Bureau of Labor Statistics and FRED.</p>
+<p>To understand how the site is used, it counts visits itself: the page viewed, the dashboard tabs opened, time spent, the referring website, the country (worked out from the IP address, which is not stored), and the device and browser type. It uses no cookies for this. Each visitor is represented by an anonymous code built from the IP address and browser that changes every day, so visits can’t be linked across days or to a person. If your browser sends a Do Not Track or Global Privacy Control signal, nothing is counted. These records are kept for about 13 months.</p>
 <p>The site is hosted on Cloudflare, which processes standard request information such as IP addresses to deliver and protect the site. See <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare’s privacy policy</a>.</p>
 {ad_section}
 <h2>Changes</h2>
