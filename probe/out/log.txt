@@ -1,0 +1,10 @@
+18100004: 14977 KB zip, 18100004.csv
+18100004: 1154918 rows, dates 1914-01..2026-09, dims ['Products and product groups'], recent rows 186077
+18100006: 29 KB zip, 18100006.csv
+18100006: 4587 rows, dates 1992-01..2026-09, dims ['Products and product groups'], recent rows 1023
+18100007: 1210 KB zip, 18100007.csv
+18100007: 78014 rows, dates 1986..2025, dims ['Products and product groups', 'Price period of weight', 'Geographic distribution of weight'], recent rows 28871
+18100256: 62 KB zip, 18100256.csv
+18100256: 10329 rows, dates 1949-01..2026-09, dims ['Alternative measures'], recent rows 1209
+BoC CPI_MONTHLY: HTTP 200
+BoC CPI_COMPONENTS: HTTP 404

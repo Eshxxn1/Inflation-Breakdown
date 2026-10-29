@@ -1,0 +1,45 @@
+{
+ "columns": [
+  "REF_DATE",
+  "GEO",
+  "DGUID",
+  "Alternative measures",
+  "UOM",
+  "UOM_ID",
+  "SCALAR_FACTOR",
+  "SCALAR_ID",
+  "VECTOR",
+  "COORDINATE",
+  "VALUE",
+  "STATUS",
+  "SYMBOL",
+  "TERMINATED",
+  "DECIMALS"
+ ],
+ "dim_cols": [
+  "Alternative measures"
+ ],
+ "dates": [
+  "1949-01",
+  "2026-09"
+ ],
+ "n": 10329,
+ "geos": [
+  "Canada"
+ ],
+ "Alternative measures": [
+  "Consumer Price Index (CPI), all-items excluding eight of the most volatile components as defined by the Bank of Canada",
+  "Consumer Price Index (CPI), all-items excluding eight of the most volatile components as defined by the Bank of Canada and excluding the effect of changes in indirect taxes",
+  "Consumer Price Index (CPI), all-items excluding eight of the most volatile components as defined by the Bank of Canada and excluding the effect of changes in indirect taxes, seasonally adjusted",
+  "Consumer Price Index (CPI), all-items excluding eight of the most volatile components as defined by the Bank of Canada, seasonally adjusted",
+  "Consumer Price Index (CPI), all-items excluding food, energy and the effect of indirect taxes",
+  "Consumer Price Index (CPI), all-items excluding food, energy and the effect of indirect taxes, seasonally adjusted",
+  "Consumer Price Index (CPI), all-items excluding the effect of indirect taxes",
+  "Consumer Price Index (CPI), all-items excluding the effect of indirect taxes, seasonally adjusted",
+  "Measure of core inflation based on a factor model, CPI-common (year-over-year percent change)",
+  "Measure of core inflation based on a trimmed mean approach, CPI-trim (index, 198901=100)",
+  "Measure of core inflation based on a trimmed mean approach, CPI-trim (year-over-year percent change)",
+  "Measure of core inflation based on a weighted median approach, CPI-median (index, 198901=100)",
+  "Measure of core inflation based on a weighted median approach, CPI-median (year-over-year percent change)"
+ ]
+}

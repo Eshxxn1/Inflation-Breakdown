@@ -1,0 +1,43 @@
+{
+ "columns": [
+  "REF_DATE",
+  "GEO",
+  "DGUID",
+  "Products and product groups",
+  "UOM",
+  "UOM_ID",
+  "SCALAR_FACTOR",
+  "SCALAR_ID",
+  "VECTOR",
+  "COORDINATE",
+  "VALUE",
+  "STATUS",
+  "SYMBOL",
+  "TERMINATED",
+  "DECIMALS"
+ ],
+ "dim_cols": [
+  "Products and product groups"
+ ],
+ "dates": [
+  "1992-01",
+  "2026-09"
+ ],
+ "n": 4587,
+ "geos": [
+  "Canada"
+ ],
+ "Products and product groups": [
+  "Alcoholic beverages, tobacco products and recreational cannabis",
+  "All-items",
+  "All-items excluding food",
+  "All-items excluding food and energy",
+  "Clothing and footwear",
+  "Food",
+  "Health and personal care",
+  "Household operations, furnishings and equipment",
+  "Recreation, education and reading",
+  "Shelter",
+  "Transportation"
+ ]
+}

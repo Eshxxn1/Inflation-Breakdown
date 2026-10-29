@@ -1,0 +1,3285 @@
+{
+    "terms": {
+        "url": "https://www.bankofcanada.ca/terms/"
+    },
+    "groupDetail": {
+        "label": "Consumer Price Index",
+        "description": "The monthly series group that includes the Consumer Price Index (CPI) and its core inflation measures, such as CPI-trim and CPI-median.",
+        "link": "https://www.bankofcanada.ca/?p=39863",
+        "metadata": {
+            "unit": "Varies by series",
+            "frequency": "Monthly"
+        }
+    },
+    "seriesDetail": {
+        "V41690973": {
+            "label": "Total CPI",
+            "description": "The total Consumer Price Index (CPI) measures the average change over time in prices paid by Canadian consumers for a basket of goods and services. It is the primary inflation indicator, as published by Statistics Canada and tracked by the Bank of Canada.",
+            "dimension": {
+                "key": "d",
+                "name": "Date"
+            },
+            "dateFormat": "monthly",
+            "metadata": {
+                "unit": "Index (2002=100)",
+                "frequency": "Monthly"
+            }
+        },
+        "V41690914": {
+            "label": "Total CPI (seasonally adjusted)",
+            "description": "The total Consumer Price Index (CPI), seasonally adjusted.",
+            "dimension": {
+                "key": "d",
+                "name": "Date"
+            },
+            "dateFormat": "monthly",
+            "metadata": {
+                "unit": "Index (2002=100)",
+                "frequency": "Monthly"
+            }
+        },
+        "STATIC_TOTALCPICHANGE": {
+            "label": "Total CPI, percentage change year-over-year (unadjusted)",
+            "description": "The unadjusted percentage change in the total Consumer Price Index (CPI) compared to the same month one year earlier.",
+            "dimension": {
+                "key": "d",
+                "name": "Date"
+            },
+            "dateFormat": "monthly",
+            "metadata": {
+                "unit": "Percent",
+                "frequency": "Monthly"
+            }
+        },
+        "CPI_TRIM": {
+            "label": "CPI-trim",
+            "description": "The monthly value of the trim component of the Consumer Price Index (CPI). This measure excludes CPI components whose rates of change in a given month are located in the tails of the distribution of price changes.",
+            "dimension": {
+                "key": "d",
+                "name": "Date"
+            },
+            "dateFormat": "monthly",
+            "metadata": {
+                "unit": "Percent",
+                "frequency": "Monthly"
+            }
+        },
+        "CPI_MEDIAN": {
+            "label": "CPI-median",
+            "description": "The monthly value of the median Consumer Price Index (CPI). This series measures the central tendency of price changes across CPI components, excluding extreme movements.",
+            "dimension": {
+                "key": "d",
+                "name": "Date"
+            },
+            "dateFormat": "monthly",
+            "metadata": {
+                "unit": "Percent",
+                "frequency": "Monthly"
+            }
+        },
+        "CPI_COMMON": {
+            "label": "CPI-common",
+            "description": "The monthly value of the common component of Consumer Price Index (CPI).",
+            "dimension": {
+                "key": "d",
+                "name": "Date"
+            },
+            "dateFormat": "monthly",
+            "metadata": {
+                "unit": "Percent",
+                "frequency": "Monthly"
+            }
+        },
+        "ATOM_V41693242": {
+            "label": "CPIX, percentage change year-over-year (unadjusted)",
+            "description": "A measure of core inflation that excludes eight of the most volatile Consumer Price Index (CPI) components — fruit, vegetables, gasoline, fuel oil, natural gas, mortgage interest, inter-city transportation and tobacco products — as well as the effect of changes in indirect taxes on the remaining components. It is expressed as the percentage change over the past 12 months and is not seasonally adjusted.",
+            "dimension": {
+                "key": "d",
+                "name": "Date"
+            },
+            "dateFormat": "monthly",
+            "metadata": {
+                "unit": "Percent",
+                "frequency": "Monthly"
+            }
+        },
+        "STATIC_CPIXFET": {
+            "label": "CPI-XFET, percentage change year-over-year (unadjusted)",
+            "description": "The unadjusted 12-month percentage change in the Consumer Price Index (CPI) that excludes food, energy and the effect of changes in indirect taxes.",
+            "dimension": {
+                "key": "d",
+                "name": "Date"
+            },
+            "dateFormat": "monthly",
+            "metadata": {
+                "unit": "Percent",
+                "frequency": "Monthly"
+            }
+        },
+        "CPIW": {
+            "label": "CPIW, percentage change year-over-year (unadjusted)",
+            "description": "The year-over-year percentage change in the Consumer Price Index (CPI) with basket weights adjusted inversely to component variability and excluding the effect of changes in indirect taxes.",
+            "dimension": {
+                "key": "d",
+                "name": "Date"
+            },
+            "dateFormat": "monthly",
+            "metadata": {
+                "unit": "Percent",
+                "frequency": "Monthly"
+            }
+        }
+    },
+    "observations": [
+        {
+            "d": "2018-01-01",
+            "V41690973": {
+                "v": "131.7"
+            },
+            "V41690914": {
+                "v": "132.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.5"
+            },
+            "CPIW": {
+                "v": "1.4"
+            },
+            "ATOM_V41693242": {
+                "v": "1.2"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.8"
+            },
+            "CPI_TRIM": {
+                "v": "1.8"
+            },
+            "CPI_COMMON": {
+                "v": "1.6"
+            }
+        },
+        {
+            "d": "2018-02-01",
+            "V41690973": {
+                "v": "132.5"
+            },
+            "V41690914": {
+                "v": "132.6"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.8"
+            },
+            "CPIW": {
+                "v": "1.7"
+            },
+            "ATOM_V41693242": {
+                "v": "1.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.0"
+            },
+            "CPI_TRIM": {
+                "v": "2.0"
+            },
+            "CPI_COMMON": {
+                "v": "1.8"
+            }
+        },
+        {
+            "d": "2018-03-01",
+            "V41690973": {
+                "v": "132.9"
+            },
+            "V41690914": {
+                "v": "132.7"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.3"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.9"
+            },
+            "CPIW": {
+                "v": "1.8"
+            },
+            "ATOM_V41693242": {
+                "v": "1.4"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.9"
+            },
+            "CPI_TRIM": {
+                "v": "1.9"
+            },
+            "CPI_COMMON": {
+                "v": "1.8"
+            }
+        },
+        {
+            "d": "2018-04-01",
+            "V41690973": {
+                "v": "133.3"
+            },
+            "V41690914": {
+                "v": "132.8"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.8"
+            },
+            "CPIW": {
+                "v": "1.9"
+            },
+            "ATOM_V41693242": {
+                "v": "1.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.0"
+            },
+            "CPI_TRIM": {
+                "v": "2.0"
+            },
+            "CPI_COMMON": {
+                "v": "1.8"
+            }
+        },
+        {
+            "d": "2018-05-01",
+            "V41690973": {
+                "v": "133.4"
+            },
+            "V41690914": {
+                "v": "132.9"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.7"
+            },
+            "CPIW": {
+                "v": "1.9"
+            },
+            "ATOM_V41693242": {
+                "v": "1.3"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.9"
+            },
+            "CPI_TRIM": {
+                "v": "1.9"
+            },
+            "CPI_COMMON": {
+                "v": "1.7"
+            }
+        },
+        {
+            "d": "2018-06-01",
+            "V41690973": {
+                "v": "133.6"
+            },
+            "V41690914": {
+                "v": "133.1"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.5"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.8"
+            },
+            "CPIW": {
+                "v": "2.0"
+            },
+            "ATOM_V41693242": {
+                "v": "1.3"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.0"
+            },
+            "CPI_TRIM": {
+                "v": "1.9"
+            },
+            "CPI_COMMON": {
+                "v": "1.8"
+            }
+        },
+        {
+            "d": "2018-07-01",
+            "V41690973": {
+                "v": "134.3"
+            },
+            "V41690914": {
+                "v": "133.7"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.3"
+            },
+            "CPIW": {
+                "v": "2.2"
+            },
+            "ATOM_V41693242": {
+                "v": "1.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.9"
+            },
+            "CPI_TRIM": {
+                "v": "2.1"
+            },
+            "CPI_COMMON": {
+                "v": "1.9"
+            }
+        },
+        {
+            "d": "2018-08-01",
+            "V41690973": {
+                "v": "134.2"
+            },
+            "V41690914": {
+                "v": "133.9"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.8"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.3"
+            },
+            "CPIW": {
+                "v": "2.2"
+            },
+            "ATOM_V41693242": {
+                "v": "1.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.0"
+            },
+            "CPI_TRIM": {
+                "v": "2.1"
+            },
+            "CPI_COMMON": {
+                "v": "1.9"
+            }
+        },
+        {
+            "d": "2018-09-01",
+            "V41690973": {
+                "v": "133.7"
+            },
+            "V41690914": {
+                "v": "133.8"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.8"
+            },
+            "CPIW": {
+                "v": "2.1"
+            },
+            "ATOM_V41693242": {
+                "v": "1.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.9"
+            },
+            "CPI_TRIM": {
+                "v": "2.0"
+            },
+            "CPI_COMMON": {
+                "v": "1.8"
+            }
+        },
+        {
+            "d": "2018-10-01",
+            "V41690973": {
+                "v": "134.1"
+            },
+            "V41690914": {
+                "v": "134.2"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.1"
+            },
+            "CPIW": {
+                "v": "2.1"
+            },
+            "ATOM_V41693242": {
+                "v": "1.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.0"
+            },
+            "CPI_TRIM": {
+                "v": "2.0"
+            },
+            "CPI_COMMON": {
+                "v": "1.8"
+            }
+        },
+        {
+            "d": "2018-11-01",
+            "V41690973": {
+                "v": "133.5"
+            },
+            "V41690914": {
+                "v": "134.0"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.7"
+            },
+            "CPIW": {
+                "v": "1.9"
+            },
+            "ATOM_V41693242": {
+                "v": "1.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.9"
+            },
+            "CPI_TRIM": {
+                "v": "1.9"
+            },
+            "CPI_COMMON": {
+                "v": "1.8"
+            }
+        },
+        {
+            "d": "2018-12-01",
+            "V41690973": {
+                "v": "133.4"
+            },
+            "V41690914": {
+                "v": "134.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.3"
+            },
+            "CPIW": {
+                "v": "1.9"
+            },
+            "ATOM_V41693242": {
+                "v": "1.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.9"
+            },
+            "CPI_TRIM": {
+                "v": "1.9"
+            },
+            "CPI_COMMON": {
+                "v": "1.7"
+            }
+        },
+        {
+            "d": "2019-01-01",
+            "V41690973": {
+                "v": "133.6"
+            },
+            "V41690914": {
+                "v": "134.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.9"
+            },
+            "CPIW": {
+                "v": "1.9"
+            },
+            "ATOM_V41693242": {
+                "v": "1.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.9"
+            },
+            "CPI_TRIM": {
+                "v": "1.9"
+            },
+            "CPI_COMMON": {
+                "v": "1.8"
+            }
+        },
+        {
+            "d": "2019-02-01",
+            "V41690973": {
+                "v": "134.5"
+            },
+            "V41690914": {
+                "v": "134.7"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.5"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.0"
+            },
+            "CPIW": {
+                "v": "2.0"
+            },
+            "ATOM_V41693242": {
+                "v": "1.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.0"
+            },
+            "CPI_TRIM": {
+                "v": "2.0"
+            },
+            "CPI_COMMON": {
+                "v": "1.9"
+            }
+        },
+        {
+            "d": "2019-03-01",
+            "V41690973": {
+                "v": "135.4"
+            },
+            "V41690914": {
+                "v": "135.2"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.9"
+            },
+            "CPIW": {
+                "v": "2.1"
+            },
+            "ATOM_V41693242": {
+                "v": "1.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "2.2"
+            },
+            "CPI_COMMON": {
+                "v": "1.9"
+            }
+        },
+        {
+            "d": "2019-04-01",
+            "V41690973": {
+                "v": "136.0"
+            },
+            "V41690914": {
+                "v": "135.6"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.0"
+            },
+            "CPIW": {
+                "v": "2.0"
+            },
+            "ATOM_V41693242": {
+                "v": "1.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.0"
+            },
+            "CPI_TRIM": {
+                "v": "2.0"
+            },
+            "CPI_COMMON": {
+                "v": "2.0"
+            }
+        },
+        {
+            "d": "2019-05-01",
+            "V41690973": {
+                "v": "136.6"
+            },
+            "V41690914": {
+                "v": "136.0"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.4"
+            },
+            "CPIW": {
+                "v": "2.3"
+            },
+            "ATOM_V41693242": {
+                "v": "2.1"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "2.2"
+            },
+            "CPI_COMMON": {
+                "v": "2.1"
+            }
+        },
+        {
+            "d": "2019-06-01",
+            "V41690973": {
+                "v": "136.3"
+            },
+            "V41690914": {
+                "v": "135.9"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.3"
+            },
+            "CPIW": {
+                "v": "2.2"
+            },
+            "ATOM_V41693242": {
+                "v": "2.0"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "2.1"
+            },
+            "CPI_COMMON": {
+                "v": "2.1"
+            }
+        },
+        {
+            "d": "2019-07-01",
+            "V41690973": {
+                "v": "137.0"
+            },
+            "V41690914": {
+                "v": "136.4"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.2"
+            },
+            "CPIW": {
+                "v": "2.3"
+            },
+            "ATOM_V41693242": {
+                "v": "2.0"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "2.1"
+            },
+            "CPI_COMMON": {
+                "v": "2.2"
+            }
+        },
+        {
+            "d": "2019-08-01",
+            "V41690973": {
+                "v": "136.8"
+            },
+            "V41690914": {
+                "v": "136.4"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.2"
+            },
+            "CPIW": {
+                "v": "2.3"
+            },
+            "ATOM_V41693242": {
+                "v": "1.9"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.0"
+            },
+            "CPI_TRIM": {
+                "v": "2.0"
+            },
+            "CPI_COMMON": {
+                "v": "2.0"
+            }
+        },
+        {
+            "d": "2019-09-01",
+            "V41690973": {
+                "v": "136.2"
+            },
+            "V41690914": {
+                "v": "136.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.1"
+            },
+            "CPIW": {
+                "v": "2.3"
+            },
+            "ATOM_V41693242": {
+                "v": "1.9"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "2.0"
+            },
+            "CPI_COMMON": {
+                "v": "2.3"
+            }
+        },
+        {
+            "d": "2019-10-01",
+            "V41690973": {
+                "v": "136.6"
+            },
+            "V41690914": {
+                "v": "136.7"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.0"
+            },
+            "CPIW": {
+                "v": "2.3"
+            },
+            "ATOM_V41693242": {
+                "v": "1.9"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "2.1"
+            },
+            "CPI_COMMON": {
+                "v": "2.3"
+            }
+        },
+        {
+            "d": "2019-11-01",
+            "V41690973": {
+                "v": "136.4"
+            },
+            "V41690914": {
+                "v": "136.8"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.0"
+            },
+            "CPIW": {
+                "v": "2.4"
+            },
+            "ATOM_V41693242": {
+                "v": "1.9"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "2.2"
+            },
+            "CPI_COMMON": {
+                "v": "2.4"
+            }
+        },
+        {
+            "d": "2019-12-01",
+            "V41690973": {
+                "v": "136.4"
+            },
+            "V41690914": {
+                "v": "137.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.8"
+            },
+            "CPIW": {
+                "v": "2.4"
+            },
+            "ATOM_V41693242": {
+                "v": "1.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "2.1"
+            },
+            "CPI_COMMON": {
+                "v": "2.3"
+            }
+        },
+        {
+            "d": "2020-01-01",
+            "V41690973": {
+                "v": "136.8"
+            },
+            "V41690914": {
+                "v": "137.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.9"
+            },
+            "CPIW": {
+                "v": "2.2"
+            },
+            "ATOM_V41693242": {
+                "v": "1.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "2.0"
+            },
+            "CPI_COMMON": {
+                "v": "2.2"
+            }
+        },
+        {
+            "d": "2020-02-01",
+            "V41690973": {
+                "v": "137.4"
+            },
+            "V41690914": {
+                "v": "137.7"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.9"
+            },
+            "CPIW": {
+                "v": "2.1"
+            },
+            "ATOM_V41693242": {
+                "v": "1.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.9"
+            },
+            "CPI_TRIM": {
+                "v": "1.9"
+            },
+            "CPI_COMMON": {
+                "v": "2.0"
+            }
+        },
+        {
+            "d": "2020-03-01",
+            "V41690973": {
+                "v": "136.6"
+            },
+            "V41690914": {
+                "v": "136.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "0.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.7"
+            },
+            "CPIW": {
+                "v": "1.7"
+            },
+            "ATOM_V41693242": {
+                "v": "1.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.8"
+            },
+            "CPI_TRIM": {
+                "v": "1.8"
+            },
+            "CPI_COMMON": {
+                "v": "1.7"
+            }
+        },
+        {
+            "d": "2020-04-01",
+            "V41690973": {
+                "v": "135.7"
+            },
+            "V41690914": {
+                "v": "135.6"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "-0.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.3"
+            },
+            "CPIW": {
+                "v": "1.1"
+            },
+            "ATOM_V41693242": {
+                "v": "1.2"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.9"
+            },
+            "CPI_TRIM": {
+                "v": "1.8"
+            },
+            "CPI_COMMON": {
+                "v": "1.7"
+            }
+        },
+        {
+            "d": "2020-05-01",
+            "V41690973": {
+                "v": "136.1"
+            },
+            "V41690914": {
+                "v": "135.4"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "-0.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "0.6"
+            },
+            "CPIW": {
+                "v": "0.7"
+            },
+            "ATOM_V41693242": {
+                "v": "0.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.8"
+            },
+            "CPI_TRIM": {
+                "v": "1.5"
+            },
+            "CPI_COMMON": {
+                "v": "1.5"
+            }
+        },
+        {
+            "d": "2020-06-01",
+            "V41690973": {
+                "v": "137.2"
+            },
+            "V41690914": {
+                "v": "136.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "0.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.0"
+            },
+            "CPIW": {
+                "v": "1.2"
+            },
+            "ATOM_V41693242": {
+                "v": "1.1"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.8"
+            },
+            "CPI_TRIM": {
+                "v": "1.7"
+            },
+            "CPI_COMMON": {
+                "v": "1.6"
+            }
+        },
+        {
+            "d": "2020-07-01",
+            "V41690973": {
+                "v": "137.2"
+            },
+            "V41690914": {
+                "v": "136.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "0.1"
+            },
+            "STATIC_CPIXFET": {
+                "v": "0.5"
+            },
+            "CPIW": {
+                "v": "1.0"
+            },
+            "ATOM_V41693242": {
+                "v": "0.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.8"
+            },
+            "CPI_TRIM": {
+                "v": "1.6"
+            },
+            "CPI_COMMON": {
+                "v": "1.4"
+            }
+        },
+        {
+            "d": "2020-08-01",
+            "V41690973": {
+                "v": "137.0"
+            },
+            "V41690914": {
+                "v": "136.8"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "0.1"
+            },
+            "STATIC_CPIXFET": {
+                "v": "0.5"
+            },
+            "CPIW": {
+                "v": "1.1"
+            },
+            "ATOM_V41693242": {
+                "v": "0.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.8"
+            },
+            "CPI_TRIM": {
+                "v": "1.6"
+            },
+            "CPI_COMMON": {
+                "v": "1.5"
+            }
+        },
+        {
+            "d": "2020-09-01",
+            "V41690973": {
+                "v": "136.9"
+            },
+            "V41690914": {
+                "v": "137.1"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "0.5"
+            },
+            "STATIC_CPIXFET": {
+                "v": "0.8"
+            },
+            "CPIW": {
+                "v": "1.1"
+            },
+            "ATOM_V41693242": {
+                "v": "1.0"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.0"
+            },
+            "CPI_TRIM": {
+                "v": "1.7"
+            },
+            "CPI_COMMON": {
+                "v": "1.5"
+            }
+        },
+        {
+            "d": "2020-10-01",
+            "V41690973": {
+                "v": "137.5"
+            },
+            "V41690914": {
+                "v": "137.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "0.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "0.8"
+            },
+            "CPIW": {
+                "v": "1.2"
+            },
+            "ATOM_V41693242": {
+                "v": "1.0"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "1.8"
+            },
+            "CPI_COMMON": {
+                "v": "1.7"
+            }
+        },
+        {
+            "d": "2020-11-01",
+            "V41690973": {
+                "v": "137.7"
+            },
+            "V41690914": {
+                "v": "138.0"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.3"
+            },
+            "CPIW": {
+                "v": "1.4"
+            },
+            "ATOM_V41693242": {
+                "v": "1.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "1.9"
+            },
+            "CPI_COMMON": {
+                "v": "1.7"
+            }
+        },
+        {
+            "d": "2020-12-01",
+            "V41690973": {
+                "v": "137.4"
+            },
+            "V41690914": {
+                "v": "138.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "0.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.1"
+            },
+            "CPIW": {
+                "v": "1.2"
+            },
+            "ATOM_V41693242": {
+                "v": "1.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "1.8"
+            },
+            "CPI_COMMON": {
+                "v": "1.6"
+            }
+        },
+        {
+            "d": "2021-01-01",
+            "V41690973": {
+                "v": "138.2"
+            },
+            "V41690914": {
+                "v": "139.1"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.4"
+            },
+            "CPIW": {
+                "v": "1.3"
+            },
+            "ATOM_V41693242": {
+                "v": "1.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.2"
+            },
+            "CPI_TRIM": {
+                "v": "1.9"
+            },
+            "CPI_COMMON": {
+                "v": "1.6"
+            }
+        },
+        {
+            "d": "2021-02-01",
+            "V41690973": {
+                "v": "138.9"
+            },
+            "V41690914": {
+                "v": "139.4"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.1"
+            },
+            "STATIC_CPIXFET": {
+                "v": "0.8"
+            },
+            "CPIW": {
+                "v": "1.1"
+            },
+            "ATOM_V41693242": {
+                "v": "1.2"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.2"
+            },
+            "CPI_TRIM": {
+                "v": "2.0"
+            },
+            "CPI_COMMON": {
+                "v": "1.6"
+            }
+        },
+        {
+            "d": "2021-03-01",
+            "V41690973": {
+                "v": "139.6"
+            },
+            "V41690914": {
+                "v": "139.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "0.9"
+            },
+            "CPIW": {
+                "v": "1.6"
+            },
+            "ATOM_V41693242": {
+                "v": "1.4"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.3"
+            },
+            "CPI_TRIM": {
+                "v": "2.2"
+            },
+            "CPI_COMMON": {
+                "v": "2.0"
+            }
+        },
+        {
+            "d": "2021-04-01",
+            "V41690973": {
+                "v": "140.3"
+            },
+            "V41690914": {
+                "v": "139.9"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.8"
+            },
+            "CPIW": {
+                "v": "2.6"
+            },
+            "ATOM_V41693242": {
+                "v": "2.3"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.3"
+            },
+            "CPI_TRIM": {
+                "v": "2.4"
+            },
+            "CPI_COMMON": {
+                "v": "2.1"
+            }
+        },
+        {
+            "d": "2021-05-01",
+            "V41690973": {
+                "v": "141.0"
+            },
+            "V41690914": {
+                "v": "140.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.6"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.4"
+            },
+            "CPIW": {
+                "v": "3.0"
+            },
+            "ATOM_V41693242": {
+                "v": "2.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.6"
+            },
+            "CPI_TRIM": {
+                "v": "2.8"
+            },
+            "CPI_COMMON": {
+                "v": "2.4"
+            }
+        },
+        {
+            "d": "2021-06-01",
+            "V41690973": {
+                "v": "141.4"
+            },
+            "V41690914": {
+                "v": "140.7"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.1"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.2"
+            },
+            "CPIW": {
+                "v": "3.0"
+            },
+            "ATOM_V41693242": {
+                "v": "2.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.7"
+            },
+            "CPI_TRIM": {
+                "v": "2.8"
+            },
+            "CPI_COMMON": {
+                "v": "2.5"
+            }
+        },
+        {
+            "d": "2021-07-01",
+            "V41690973": {
+                "v": "142.3"
+            },
+            "V41690914": {
+                "v": "141.4"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.8"
+            },
+            "CPIW": {
+                "v": "3.3"
+            },
+            "ATOM_V41693242": {
+                "v": "3.3"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.9"
+            },
+            "CPI_TRIM": {
+                "v": "3.2"
+            },
+            "CPI_COMMON": {
+                "v": "2.6"
+            }
+        },
+        {
+            "d": "2021-08-01",
+            "V41690973": {
+                "v": "142.6"
+            },
+            "V41690914": {
+                "v": "142.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "4.1"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.0"
+            },
+            "CPIW": {
+                "v": "3.4"
+            },
+            "ATOM_V41693242": {
+                "v": "3.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.0"
+            },
+            "CPI_TRIM": {
+                "v": "3.4"
+            },
+            "CPI_COMMON": {
+                "v": "2.8"
+            }
+        },
+        {
+            "d": "2021-09-01",
+            "V41690973": {
+                "v": "142.9"
+            },
+            "V41690914": {
+                "v": "143.1"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "4.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.3"
+            },
+            "CPIW": {
+                "v": "3.5"
+            },
+            "ATOM_V41693242": {
+                "v": "3.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.1"
+            },
+            "CPI_TRIM": {
+                "v": "3.5"
+            },
+            "CPI_COMMON": {
+                "v": "3.0"
+            }
+        },
+        {
+            "d": "2021-10-01",
+            "V41690973": {
+                "v": "143.9"
+            },
+            "V41690914": {
+                "v": "143.9"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "4.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.2"
+            },
+            "CPIW": {
+                "v": "3.6"
+            },
+            "ATOM_V41693242": {
+                "v": "3.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.0"
+            },
+            "CPI_TRIM": {
+                "v": "3.5"
+            },
+            "CPI_COMMON": {
+                "v": "2.9"
+            }
+        },
+        {
+            "d": "2021-11-01",
+            "V41690973": {
+                "v": "144.2"
+            },
+            "V41690914": {
+                "v": "144.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "4.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.1"
+            },
+            "CPIW": {
+                "v": "3.6"
+            },
+            "ATOM_V41693242": {
+                "v": "3.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.1"
+            },
+            "CPI_TRIM": {
+                "v": "3.6"
+            },
+            "CPI_COMMON": {
+                "v": "3.1"
+            }
+        },
+        {
+            "d": "2021-12-01",
+            "V41690973": {
+                "v": "144.0"
+            },
+            "V41690914": {
+                "v": "145.2"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "4.8"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.4"
+            },
+            "CPIW": {
+                "v": "3.9"
+            },
+            "ATOM_V41693242": {
+                "v": "4.0"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.4"
+            },
+            "CPI_TRIM": {
+                "v": "4.0"
+            },
+            "CPI_COMMON": {
+                "v": "3.2"
+            }
+        },
+        {
+            "d": "2022-01-01",
+            "V41690973": {
+                "v": "145.3"
+            },
+            "V41690914": {
+                "v": "146.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "5.1"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.5"
+            },
+            "CPIW": {
+                "v": "4.2"
+            },
+            "ATOM_V41693242": {
+                "v": "4.3"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.7"
+            },
+            "CPI_TRIM": {
+                "v": "4.2"
+            },
+            "CPI_COMMON": {
+                "v": "3.6"
+            }
+        },
+        {
+            "d": "2022-02-01",
+            "V41690973": {
+                "v": "146.8"
+            },
+            "V41690914": {
+                "v": "147.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "5.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.9"
+            },
+            "CPIW": {
+                "v": "4.7"
+            },
+            "ATOM_V41693242": {
+                "v": "4.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "4.0"
+            },
+            "CPI_TRIM": {
+                "v": "4.5"
+            },
+            "CPI_COMMON": {
+                "v": "4.0"
+            }
+        },
+        {
+            "d": "2022-03-01",
+            "V41690973": {
+                "v": "148.9"
+            },
+            "V41690914": {
+                "v": "148.9"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "6.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "4.7"
+            },
+            "CPIW": {
+                "v": "5.3"
+            },
+            "ATOM_V41693242": {
+                "v": "5.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "4.4"
+            },
+            "CPI_TRIM": {
+                "v": "5.0"
+            },
+            "CPI_COMMON": {
+                "v": "4.4"
+            }
+        },
+        {
+            "d": "2022-04-01",
+            "V41690973": {
+                "v": "149.8"
+            },
+            "V41690914": {
+                "v": "149.4"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "6.8"
+            },
+            "STATIC_CPIXFET": {
+                "v": "4.6"
+            },
+            "CPIW": {
+                "v": "5.6"
+            },
+            "ATOM_V41693242": {
+                "v": "5.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "4.9"
+            },
+            "CPI_TRIM": {
+                "v": "5.3"
+            },
+            "CPI_COMMON": {
+                "v": "4.8"
+            }
+        },
+        {
+            "d": "2022-05-01",
+            "V41690973": {
+                "v": "151.9"
+            },
+            "V41690914": {
+                "v": "151.1"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "7.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "5.2"
+            },
+            "CPIW": {
+                "v": "6.3"
+            },
+            "ATOM_V41693242": {
+                "v": "6.1"
+            },
+            "CPI_MEDIAN": {
+                "v": "5.2"
+            },
+            "CPI_TRIM": {
+                "v": "5.6"
+            },
+            "CPI_COMMON": {
+                "v": "5.3"
+            }
+        },
+        {
+            "d": "2022-06-01",
+            "V41690973": {
+                "v": "152.9"
+            },
+            "V41690914": {
+                "v": "152.2"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "8.1"
+            },
+            "STATIC_CPIXFET": {
+                "v": "5.3"
+            },
+            "CPIW": {
+                "v": "6.4"
+            },
+            "ATOM_V41693242": {
+                "v": "6.2"
+            },
+            "CPI_MEDIAN": {
+                "v": "5.2"
+            },
+            "CPI_TRIM": {
+                "v": "5.7"
+            },
+            "CPI_COMMON": {
+                "v": "5.5"
+            }
+        },
+        {
+            "d": "2022-07-01",
+            "V41690973": {
+                "v": "153.1"
+            },
+            "V41690914": {
+                "v": "152.2"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "7.6"
+            },
+            "STATIC_CPIXFET": {
+                "v": "5.5"
+            },
+            "CPIW": {
+                "v": "6.2"
+            },
+            "ATOM_V41693242": {
+                "v": "6.1"
+            },
+            "CPI_MEDIAN": {
+                "v": "5.3"
+            },
+            "CPI_TRIM": {
+                "v": "5.6"
+            },
+            "CPI_COMMON": {
+                "v": "5.7"
+            }
+        },
+        {
+            "d": "2022-08-01",
+            "V41690973": {
+                "v": "152.6"
+            },
+            "V41690914": {
+                "v": "152.1"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "7.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "5.3"
+            },
+            "CPIW": {
+                "v": "6.0"
+            },
+            "ATOM_V41693242": {
+                "v": "5.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "5.1"
+            },
+            "CPI_TRIM": {
+                "v": "5.4"
+            },
+            "CPI_COMMON": {
+                "v": "5.7"
+            }
+        },
+        {
+            "d": "2022-09-01",
+            "V41690973": {
+                "v": "152.7"
+            },
+            "V41690914": {
+                "v": "152.8"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "6.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "5.4"
+            },
+            "CPIW": {
+                "v": "6.0"
+            },
+            "ATOM_V41693242": {
+                "v": "6.0"
+            },
+            "CPI_MEDIAN": {
+                "v": "5.2"
+            },
+            "CPI_TRIM": {
+                "v": "5.5"
+            },
+            "CPI_COMMON": {
+                "v": "5.8"
+            }
+        },
+        {
+            "d": "2022-10-01",
+            "V41690973": {
+                "v": "153.8"
+            },
+            "V41690914": {
+                "v": "153.7"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "6.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "5.3"
+            },
+            "CPIW": {
+                "v": "6.1"
+            },
+            "ATOM_V41693242": {
+                "v": "5.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "5.4"
+            },
+            "CPI_TRIM": {
+                "v": "5.5"
+            },
+            "CPI_COMMON": {
+                "v": "5.8"
+            }
+        },
+        {
+            "d": "2022-11-01",
+            "V41690973": {
+                "v": "154.0"
+            },
+            "V41690914": {
+                "v": "154.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "6.8"
+            },
+            "STATIC_CPIXFET": {
+                "v": "5.4"
+            },
+            "CPIW": {
+                "v": "6.1"
+            },
+            "ATOM_V41693242": {
+                "v": "5.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "5.3"
+            },
+            "CPI_TRIM": {
+                "v": "5.4"
+            },
+            "CPI_COMMON": {
+                "v": "6.1"
+            }
+        },
+        {
+            "d": "2022-12-01",
+            "V41690973": {
+                "v": "153.1"
+            },
+            "V41690914": {
+                "v": "154.2"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "6.3"
+            },
+            "STATIC_CPIXFET": {
+                "v": "5.3"
+            },
+            "CPIW": {
+                "v": "5.9"
+            },
+            "ATOM_V41693242": {
+                "v": "5.4"
+            },
+            "CPI_MEDIAN": {
+                "v": "5.2"
+            },
+            "CPI_TRIM": {
+                "v": "5.2"
+            },
+            "CPI_COMMON": {
+                "v": "6.0"
+            }
+        },
+        {
+            "d": "2023-01-01",
+            "V41690973": {
+                "v": "153.9"
+            },
+            "V41690914": {
+                "v": "154.9"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "5.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "4.9"
+            },
+            "CPIW": {
+                "v": "5.6"
+            },
+            "ATOM_V41693242": {
+                "v": "5.0"
+            },
+            "CPI_MEDIAN": {
+                "v": "4.9"
+            },
+            "CPI_TRIM": {
+                "v": "5.0"
+            },
+            "CPI_COMMON": {
+                "v": "6.1"
+            }
+        },
+        {
+            "d": "2023-02-01",
+            "V41690973": {
+                "v": "154.5"
+            },
+            "V41690914": {
+                "v": "155.1"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "5.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "4.8"
+            },
+            "CPIW": {
+                "v": "5.3"
+            },
+            "ATOM_V41693242": {
+                "v": "4.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "4.7"
+            },
+            "CPI_TRIM": {
+                "v": "4.7"
+            },
+            "CPI_COMMON": {
+                "v": "5.9"
+            }
+        },
+        {
+            "d": "2023-03-01",
+            "V41690973": {
+                "v": "155.3"
+            },
+            "V41690914": {
+                "v": "155.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "4.3"
+            },
+            "STATIC_CPIXFET": {
+                "v": "4.5"
+            },
+            "CPIW": {
+                "v": "4.9"
+            },
+            "ATOM_V41693242": {
+                "v": "4.3"
+            },
+            "CPI_MEDIAN": {
+                "v": "4.4"
+            },
+            "CPI_TRIM": {
+                "v": "4.2"
+            },
+            "CPI_COMMON": {
+                "v": "5.7"
+            }
+        },
+        {
+            "d": "2023-04-01",
+            "V41690973": {
+                "v": "156.4"
+            },
+            "V41690914": {
+                "v": "156.1"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "4.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "4.4"
+            },
+            "CPIW": {
+                "v": "4.8"
+            },
+            "ATOM_V41693242": {
+                "v": "4.1"
+            },
+            "CPI_MEDIAN": {
+                "v": "4.2"
+            },
+            "CPI_TRIM": {
+                "v": "4.1"
+            },
+            "CPI_COMMON": {
+                "v": "5.5"
+            }
+        },
+        {
+            "d": "2023-05-01",
+            "V41690973": {
+                "v": "157.0"
+            },
+            "V41690914": {
+                "v": "156.2"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "4.0"
+            },
+            "CPIW": {
+                "v": "4.7"
+            },
+            "ATOM_V41693242": {
+                "v": "3.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.8"
+            },
+            "CPI_TRIM": {
+                "v": "3.6"
+            },
+            "CPI_COMMON": {
+                "v": "5.2"
+            }
+        },
+        {
+            "d": "2023-06-01",
+            "V41690973": {
+                "v": "157.2"
+            },
+            "V41690914": {
+                "v": "156.6"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.8"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.5"
+            },
+            "CPIW": {
+                "v": "4.4"
+            },
+            "ATOM_V41693242": {
+                "v": "3.2"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.8"
+            },
+            "CPI_TRIM": {
+                "v": "3.6"
+            },
+            "CPI_COMMON": {
+                "v": "5.1"
+            }
+        },
+        {
+            "d": "2023-07-01",
+            "V41690973": {
+                "v": "158.1"
+            },
+            "V41690914": {
+                "v": "157.2"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.3"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.4"
+            },
+            "CPIW": {
+                "v": "4.2"
+            },
+            "ATOM_V41693242": {
+                "v": "3.2"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.8"
+            },
+            "CPI_TRIM": {
+                "v": "3.5"
+            },
+            "CPI_COMMON": {
+                "v": "4.8"
+            }
+        },
+        {
+            "d": "2023-08-01",
+            "V41690973": {
+                "v": "158.7"
+            },
+            "V41690914": {
+                "v": "158.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "4.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.6"
+            },
+            "CPIW": {
+                "v": "4.5"
+            },
+            "ATOM_V41693242": {
+                "v": "3.3"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.9"
+            },
+            "CPI_TRIM": {
+                "v": "3.8"
+            },
+            "CPI_COMMON": {
+                "v": "4.8"
+            }
+        },
+        {
+            "d": "2023-09-01",
+            "V41690973": {
+                "v": "158.5"
+            },
+            "V41690914": {
+                "v": "158.6"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.8"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.2"
+            },
+            "CPIW": {
+                "v": "4.2"
+            },
+            "ATOM_V41693242": {
+                "v": "2.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.8"
+            },
+            "CPI_TRIM": {
+                "v": "3.5"
+            },
+            "CPI_COMMON": {
+                "v": "4.3"
+            }
+        },
+        {
+            "d": "2023-10-01",
+            "V41690973": {
+                "v": "158.6"
+            },
+            "V41690914": {
+                "v": "158.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.1"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.4"
+            },
+            "CPIW": {
+                "v": "4.0"
+            },
+            "ATOM_V41693242": {
+                "v": "2.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.5"
+            },
+            "CPI_TRIM": {
+                "v": "3.4"
+            },
+            "CPI_COMMON": {
+                "v": "4.1"
+            }
+        },
+        {
+            "d": "2023-11-01",
+            "V41690973": {
+                "v": "158.8"
+            },
+            "V41690914": {
+                "v": "159.0"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.1"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.5"
+            },
+            "CPIW": {
+                "v": "4.0"
+            },
+            "ATOM_V41693242": {
+                "v": "2.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.7"
+            },
+            "CPI_TRIM": {
+                "v": "3.5"
+            },
+            "CPI_COMMON": {
+                "v": "3.9"
+            }
+        },
+        {
+            "d": "2023-12-01",
+            "V41690973": {
+                "v": "158.3"
+            },
+            "V41690914": {
+                "v": "159.4"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.4"
+            },
+            "CPIW": {
+                "v": "4.0"
+            },
+            "ATOM_V41693242": {
+                "v": "2.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.8"
+            },
+            "CPI_TRIM": {
+                "v": "3.7"
+            },
+            "CPI_COMMON": {
+                "v": "3.8"
+            }
+        },
+        {
+            "d": "2024-01-01",
+            "V41690973": {
+                "v": "158.3"
+            },
+            "V41690914": {
+                "v": "159.4"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.1"
+            },
+            "CPIW": {
+                "v": "3.7"
+            },
+            "ATOM_V41693242": {
+                "v": "2.4"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.7"
+            },
+            "CPI_TRIM": {
+                "v": "3.4"
+            },
+            "CPI_COMMON": {
+                "v": "3.3"
+            }
+        },
+        {
+            "d": "2024-02-01",
+            "V41690973": {
+                "v": "158.8"
+            },
+            "V41690914": {
+                "v": "159.4"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.8"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.8"
+            },
+            "CPIW": {
+                "v": "3.4"
+            },
+            "ATOM_V41693242": {
+                "v": "2.1"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.4"
+            },
+            "CPI_TRIM": {
+                "v": "3.2"
+            },
+            "CPI_COMMON": {
+                "v": "3.1"
+            }
+        },
+        {
+            "d": "2024-03-01",
+            "V41690973": {
+                "v": "159.8"
+            },
+            "V41690914": {
+                "v": "159.8"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.9"
+            },
+            "CPIW": {
+                "v": "3.3"
+            },
+            "ATOM_V41693242": {
+                "v": "2.0"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.3"
+            },
+            "CPI_TRIM": {
+                "v": "3.2"
+            },
+            "CPI_COMMON": {
+                "v": "2.8"
+            }
+        },
+        {
+            "d": "2024-04-01",
+            "V41690973": {
+                "v": "160.6"
+            },
+            "V41690914": {
+                "v": "160.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.7"
+            },
+            "CPIW": {
+                "v": "3.0"
+            },
+            "ATOM_V41693242": {
+                "v": "1.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.0"
+            },
+            "CPI_TRIM": {
+                "v": "2.9"
+            },
+            "CPI_COMMON": {
+                "v": "2.5"
+            }
+        },
+        {
+            "d": "2024-05-01",
+            "V41690973": {
+                "v": "161.5"
+            },
+            "V41690914": {
+                "v": "160.7"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.9"
+            },
+            "CPIW": {
+                "v": "3.4"
+            },
+            "ATOM_V41693242": {
+                "v": "1.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.2"
+            },
+            "CPI_TRIM": {
+                "v": "3.1"
+            },
+            "CPI_COMMON": {
+                "v": "2.4"
+            }
+        },
+        {
+            "d": "2024-06-01",
+            "V41690973": {
+                "v": "161.4"
+            },
+            "V41690914": {
+                "v": "160.8"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.9"
+            },
+            "CPIW": {
+                "v": "3.3"
+            },
+            "ATOM_V41693242": {
+                "v": "1.9"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.1"
+            },
+            "CPI_TRIM": {
+                "v": "3.0"
+            },
+            "CPI_COMMON": {
+                "v": "2.3"
+            }
+        },
+        {
+            "d": "2024-07-01",
+            "V41690973": {
+                "v": "162.1"
+            },
+            "V41690914": {
+                "v": "161.2"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.5"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.7"
+            },
+            "CPIW": {
+                "v": "3.1"
+            },
+            "ATOM_V41693242": {
+                "v": "1.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.8"
+            },
+            "CPI_TRIM": {
+                "v": "2.8"
+            },
+            "CPI_COMMON": {
+                "v": "2.2"
+            }
+        },
+        {
+            "d": "2024-08-01",
+            "V41690973": {
+                "v": "161.8"
+            },
+            "V41690914": {
+                "v": "161.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.4"
+            },
+            "CPIW": {
+                "v": "2.8"
+            },
+            "ATOM_V41693242": {
+                "v": "1.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.6"
+            },
+            "CPI_TRIM": {
+                "v": "2.6"
+            },
+            "CPI_COMMON": {
+                "v": "2.0"
+            }
+        },
+        {
+            "d": "2024-09-01",
+            "V41690973": {
+                "v": "161.1"
+            },
+            "V41690914": {
+                "v": "161.2"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.6"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.4"
+            },
+            "CPIW": {
+                "v": "2.7"
+            },
+            "ATOM_V41693242": {
+                "v": "1.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.5"
+            },
+            "CPI_TRIM": {
+                "v": "2.6"
+            },
+            "CPI_COMMON": {
+                "v": "2.1"
+            }
+        },
+        {
+            "d": "2024-10-01",
+            "V41690973": {
+                "v": "161.8"
+            },
+            "V41690914": {
+                "v": "161.7"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.3"
+            },
+            "CPIW": {
+                "v": "2.8"
+            },
+            "ATOM_V41693242": {
+                "v": "1.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.7"
+            },
+            "CPI_TRIM": {
+                "v": "2.8"
+            },
+            "CPI_COMMON": {
+                "v": "2.2"
+            }
+        },
+        {
+            "d": "2024-11-01",
+            "V41690973": {
+                "v": "161.8"
+            },
+            "V41690914": {
+                "v": "162.0"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.9"
+            },
+            "CPIW": {
+                "v": "2.6"
+            },
+            "ATOM_V41693242": {
+                "v": "1.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.6"
+            },
+            "CPI_TRIM": {
+                "v": "2.7"
+            },
+            "CPI_COMMON": {
+                "v": "2.0"
+            }
+        },
+        {
+            "d": "2024-12-01",
+            "V41690973": {
+                "v": "161.2"
+            },
+            "V41690914": {
+                "v": "162.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.8"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.3"
+            },
+            "CPIW": {
+                "v": "2.3"
+            },
+            "ATOM_V41693242": {
+                "v": "1.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.4"
+            },
+            "CPI_TRIM": {
+                "v": "2.5"
+            },
+            "CPI_COMMON": {
+                "v": "2.1"
+            }
+        },
+        {
+            "d": "2025-01-01",
+            "V41690973": {
+                "v": "161.3"
+            },
+            "V41690914": {
+                "v": "162.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.5"
+            },
+            "CPIW": {
+                "v": "2.3"
+            },
+            "ATOM_V41693242": {
+                "v": "2.1"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.5"
+            },
+            "CPI_TRIM": {
+                "v": "2.8"
+            },
+            "CPI_COMMON": {
+                "v": "2.2"
+            }
+        },
+        {
+            "d": "2025-02-01",
+            "V41690973": {
+                "v": "163.0"
+            },
+            "V41690914": {
+                "v": "163.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.6"
+            },
+            "STATIC_CPIXFET": {
+                "v": "3.0"
+            },
+            "CPIW": {
+                "v": "2.8"
+            },
+            "ATOM_V41693242": {
+                "v": "2.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.7"
+            },
+            "CPI_TRIM": {
+                "v": "2.9"
+            },
+            "CPI_COMMON": {
+                "v": "2.5"
+            }
+        },
+        {
+            "d": "2025-03-01",
+            "V41690973": {
+                "v": "163.5"
+            },
+            "V41690914": {
+                "v": "163.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.3"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.3"
+            },
+            "CPIW": {
+                "v": "2.7"
+            },
+            "ATOM_V41693242": {
+                "v": "2.2"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.7"
+            },
+            "CPI_TRIM": {
+                "v": "2.9"
+            },
+            "CPI_COMMON": {
+                "v": "2.4"
+            }
+        },
+        {
+            "d": "2025-04-01",
+            "V41690973": {
+                "v": "163.4"
+            },
+            "V41690914": {
+                "v": "163.1"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.6"
+            },
+            "CPIW": {
+                "v": "2.8"
+            },
+            "ATOM_V41693242": {
+                "v": "2.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.1"
+            },
+            "CPI_TRIM": {
+                "v": "3.1"
+            },
+            "CPI_COMMON": {
+                "v": "2.5"
+            }
+        },
+        {
+            "d": "2025-05-01",
+            "V41690973": {
+                "v": "164.3"
+            },
+            "V41690914": {
+                "v": "163.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.6"
+            },
+            "CPIW": {
+                "v": "2.8"
+            },
+            "ATOM_V41693242": {
+                "v": "2.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.9"
+            },
+            "CPI_TRIM": {
+                "v": "3.0"
+            },
+            "CPI_COMMON": {
+                "v": "2.6"
+            }
+        },
+        {
+            "d": "2025-06-01",
+            "V41690973": {
+                "v": "164.4"
+            },
+            "V41690914": {
+                "v": "163.9"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.6"
+            },
+            "CPIW": {
+                "v": "2.9"
+            },
+            "ATOM_V41693242": {
+                "v": "2.7"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.9"
+            },
+            "CPI_TRIM": {
+                "v": "3.1"
+            },
+            "CPI_COMMON": {
+                "v": "2.6"
+            }
+        },
+        {
+            "d": "2025-07-01",
+            "V41690973": {
+                "v": "164.9"
+            },
+            "V41690914": {
+                "v": "164.0"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.7"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.5"
+            },
+            "CPIW": {
+                "v": "2.9"
+            },
+            "ATOM_V41693242": {
+                "v": "2.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.0"
+            },
+            "CPI_TRIM": {
+                "v": "3.1"
+            },
+            "CPI_COMMON": {
+                "v": "2.6"
+            }
+        },
+        {
+            "d": "2025-08-01",
+            "V41690973": {
+                "v": "164.8"
+            },
+            "V41690914": {
+                "v": "164.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.9"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.4"
+            },
+            "CPIW": {
+                "v": "2.9"
+            },
+            "ATOM_V41693242": {
+                "v": "2.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.0"
+            },
+            "CPI_TRIM": {
+                "v": "3.0"
+            },
+            "CPI_COMMON": {
+                "v": "2.6"
+            }
+        },
+        {
+            "d": "2025-09-01",
+            "V41690973": {
+                "v": "164.9"
+            },
+            "V41690914": {
+                "v": "165.0"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.4"
+            },
+            "CPIW": {
+                "v": "3.0"
+            },
+            "ATOM_V41693242": {
+                "v": "2.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "3.1"
+            },
+            "CPI_TRIM": {
+                "v": "3.1"
+            },
+            "CPI_COMMON": {
+                "v": "2.8"
+            }
+        },
+        {
+            "d": "2025-10-01",
+            "V41690973": {
+                "v": "165.3"
+            },
+            "V41690914": {
+                "v": "165.2"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.7"
+            },
+            "CPIW": {
+                "v": "3.0"
+            },
+            "ATOM_V41693242": {
+                "v": "2.9"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.9"
+            },
+            "CPI_TRIM": {
+                "v": "3.0"
+            },
+            "CPI_COMMON": {
+                "v": "2.7"
+            }
+        },
+        {
+            "d": "2025-11-01",
+            "V41690973": {
+                "v": "165.4"
+            },
+            "V41690914": {
+                "v": "165.6"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.4"
+            },
+            "CPIW": {
+                "v": "3.0"
+            },
+            "ATOM_V41693242": {
+                "v": "2.9"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.8"
+            },
+            "CPI_TRIM": {
+                "v": "2.9"
+            },
+            "CPI_COMMON": {
+                "v": "2.8"
+            }
+        },
+        {
+            "d": "2025-12-01",
+            "V41690973": {
+                "v": "165.0"
+            },
+            "V41690914": {
+                "v": "166.1"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.4"
+            },
+            "CPIW": {
+                "v": "3.2"
+            },
+            "ATOM_V41693242": {
+                "v": "2.8"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.6"
+            },
+            "CPI_TRIM": {
+                "v": "2.7"
+            },
+            "CPI_COMMON": {
+                "v": "2.9"
+            }
+        },
+        {
+            "d": "2026-01-01",
+            "V41690973": {
+                "v": "165.0"
+            },
+            "V41690914": {
+                "v": "166.2"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.3"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.0"
+            },
+            "CPIW": {
+                "v": "3.3"
+            },
+            "ATOM_V41693242": {
+                "v": "2.6"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.5"
+            },
+            "CPI_TRIM": {
+                "v": "2.4"
+            },
+            "CPI_COMMON": {
+                "v": "2.7"
+            }
+        },
+        {
+            "d": "2026-02-01",
+            "V41690973": {
+                "v": "165.9"
+            },
+            "V41690914": {
+                "v": "166.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "1.8"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.8"
+            },
+            "CPIW": {
+                "v": "2.7"
+            },
+            "ATOM_V41693242": {
+                "v": "2.3"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.3"
+            },
+            "CPI_TRIM": {
+                "v": "2.3"
+            },
+            "CPI_COMMON": {
+                "v": "2.5"
+            }
+        },
+        {
+            "d": "2026-03-01",
+            "V41690973": {
+                "v": "167.4"
+            },
+            "V41690914": {
+                "v": "167.3"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.4"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.0"
+            },
+            "CPIW": {
+                "v": "2.6"
+            },
+            "ATOM_V41693242": {
+                "v": "2.5"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.3"
+            },
+            "CPI_TRIM": {
+                "v": "2.2"
+            },
+            "CPI_COMMON": {
+                "v": "2.6"
+            }
+        },
+        {
+            "d": "2026-04-01",
+            "V41690973": {
+                "v": "168.0"
+            },
+            "V41690914": {
+                "v": "167.9"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.8"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.5"
+            },
+            "CPIW": {
+                "v": "2.5"
+            },
+            "ATOM_V41693242": {
+                "v": "2.1"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "2.0"
+            },
+            "CPI_COMMON": {
+                "v": "2.6"
+            }
+        },
+        {
+            "d": "2026-05-01",
+            "V41690973": {
+                "v": "169.6"
+            },
+            "V41690914": {
+                "v": "168.6"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.2"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.6"
+            },
+            "CPIW": {
+                "v": "2.8"
+            },
+            "ATOM_V41693242": {
+                "v": "2.2"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.1"
+            },
+            "CPI_TRIM": {
+                "v": "2.0"
+            },
+            "CPI_COMMON": {
+                "v": "2.7"
+            }
+        },
+        {
+            "d": "2026-06-01",
+            "V41690973": {
+                "v": "169.0"
+            },
+            "V41690914": {
+                "v": "168.5"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "2.8"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.8"
+            },
+            "CPIW": {
+                "v": "2.5"
+            },
+            "ATOM_V41693242": {
+                "v": "2.1"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.9"
+            },
+            "CPI_TRIM": {
+                "v": "1.9"
+            },
+            "CPI_COMMON": {
+                "v": "2.6"
+            }
+        },
+        {
+            "d": "2026-07-01",
+            "V41690973": {
+                "v": "169.9"
+            },
+            "V41690914": {
+                "v": "168.9"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "1.9"
+            },
+            "CPIW": {
+                "v": "2.6"
+            },
+            "ATOM_V41693242": {
+                "v": "2.3"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.0"
+            },
+            "CPI_TRIM": {
+                "v": "1.9"
+            },
+            "CPI_COMMON": {
+                "v": "2.7"
+            }
+        },
+        {
+            "d": "2026-08-01",
+            "V41690973": {
+                "v": "169.8"
+            },
+            "V41690914": {
+                "v": "169.4"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.0"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.1"
+            },
+            "CPIW": {
+                "v": "2.5"
+            },
+            "ATOM_V41693242": {
+                "v": "2.4"
+            },
+            "CPI_MEDIAN": {
+                "v": "2.0"
+            },
+            "CPI_TRIM": {
+                "v": "1.9"
+            },
+            "CPI_COMMON": {
+                "v": "2.6"
+            }
+        },
+        {
+            "d": "2026-09-01",
+            "V41690973": {
+                "v": "170.0"
+            },
+            "V41690914": {
+                "v": "170.0"
+            },
+            "STATIC_TOTALCPICHANGE": {
+                "v": "3.1"
+            },
+            "STATIC_CPIXFET": {
+                "v": "2.1"
+            },
+            "CPIW": {
+                "v": "2.5"
+            },
+            "ATOM_V41693242": {
+                "v": "2.2"
+            },
+            "CPI_MEDIAN": {
+                "v": "1.9"
+            },
+            "CPI_TRIM": {
+                "v": "1.8"
+            },
+            "CPI_COMMON": {
+                "v": "2.4"
+            }
+        }
+    ]
+}
