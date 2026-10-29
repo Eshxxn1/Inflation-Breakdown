@@ -1,6 +1,7 @@
 name: Update CPI data
 
-# Fetches each new BLS CPI release and FRED data, rebuilds site/index.html and commits it.
+# Fetches each new BLS CPI release and FRED data (US) and Statistics Canada's CPI tables (Canada),
+# rebuilds site/index.html and site/canada/index.html and commits them.
 # Cloudflare Pages watches this repository and republishes inflationbreakdown.com on every commit.
 
 on:
@@ -35,6 +36,10 @@ jobs:
         env:
           BLS_USER_AGENT: ${{ secrets.BLS_USER_AGENT }}
         run: python scripts/update_data.py
+      - name: Fetch latest Statistics Canada data
+        # Canada's CPI comes out about a week after the US one; days without a new release change nothing.
+        continue-on-error: true
+        run: python scripts/update_canada.py
       - name: Build the site
         run: python scripts/build_site.py
       - name: Save to the repository (Cloudflare Pages republishes from this)

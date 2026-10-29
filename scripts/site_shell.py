@@ -34,6 +34,17 @@ DARK = ("--color-fg:#E6EBF2;--color-fg-muted:#9AA7BA;--color-bg:#0C1525;--color-
         "--cds-chart-grid:#1D2A40;--cds-chart-axis:#34445E;--cds-chart-reference:#9AA7BA;--cds-surface-popover:#1A2840;"
         "--cds-border:#2C3B55;--cds-shadow-popover:0 4px 16px rgba(0,0,0,.5);--cds-text-secondary:#9AA7BA;"
         "--navy:#16305A;--navy-2:#2F6FB3;--on-navy:#FFFFFF;--on-navy-muted:#B4C3DA;")
+def theme_css():
+    """Light by default, dark when the device prefers it, and either one when the visitor chooses it."""
+    return (f":root{{{LIGHT}{SIZES}color-scheme:light}}"
+            f"@media (prefers-color-scheme: dark){{:root:not([data-theme=light]){{{DARK}color-scheme:dark}}}}"
+            f":root[data-theme=dark]{{{DARK}color-scheme:dark}}")
+
+
+# runs before the page draws, so a saved choice never flashes the wrong theme
+THEME_HEAD = ("<script>try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')"
+              "document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>")
+
 SIZES = ("--cds-radius:10px;--cds-pad-xs:4px;--cds-pad-sm:8px;--cds-pad-md:12px;--cds-pad-lg:20px;--cds-gap-xs:4px;--cds-gap-sm:8px;"
          "--cds-gap-md:16px;--cds-gap-lg:24px;--cds-gap-xl:32px;--cds-font-size-caption:12.5px;--cds-font-size-body:15px;"
          "--cds-font-size-heading:19px;--cds-font-size-title:30px;--cds-font-weight-medium:600;"
@@ -50,6 +61,21 @@ a{color:inherit}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;font-size:17px;letter-spacing:.005em}
 .brand .logo{width:30px;height:30px}
 .toplinks{display:flex;gap:20px;font-size:14px}
+.top-right{display:flex;align-items:center;gap:10px}
+.country{display:flex;padding:3px;border-radius:999px;background:rgba(255,255,255,.1)}
+.country a{padding:6px 14px;border-radius:999px;font-size:14px;font-weight:500;color:var(--on-navy-muted);text-decoration:none;white-space:nowrap}
+.country a:hover{color:#FFFFFF}
+.country a[aria-current=page]{background:#FFFFFF;color:#12284A}
+.theme-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.25);
+  background:transparent;color:#FFFFFF;cursor:pointer;padding:0}
+.theme-btn:hover{background:rgba(255,255,255,.12)}
+.theme-btn svg{width:18px;height:18px}
+.theme-btn .moon{display:none}
+:root[data-theme=dark] .theme-btn .sun{display:none}:root[data-theme=dark] .theme-btn .moon{display:block}
+@media (prefers-color-scheme: dark){:root:not([data-theme=light]) .theme-btn .sun{display:none}:root:not([data-theme=light]) .theme-btn .moon{display:block}}
+.period{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--color-fg-muted)}
+.period[hidden]{display:none}
+.standalone .tab-lede{margin:2px 0 0;font-size:15px;color:var(--color-fg-muted);text-align:center}
 .toplinks a{color:var(--on-navy-muted);text-decoration:none}
 .toplinks a:hover,.toplinks a:focus-visible{color:var(--on-navy);text-decoration:underline;text-underline-offset:3px}
 .banner{text-align:center;padding:40px 0 48px}
@@ -144,28 +170,31 @@ a{color:inherit}
 .sitefoot p{margin:0}
 .sitefoot a{color:#DCE4F0}
 .sitefoot .legal{border-top:1px solid rgba(255,255,255,.12);padding:16px 0 28px;font-size:13px}
-@media (max-width:640px){.toplinks{display:none}.vb-opts button{min-width:0;width:100%}.vb-opts{width:100%}.mini-view{display:none !important}.banner .release{gap:4px 16px;flex-direction:column;align-items:center}.banner{padding:28px 0 36px}.banner .lede{font-size:16px}
-  .tabs-row{gap:10px;position:static}.standalone .cp-tabs button{padding:7px 13px;font-size:14px}.ruler-mark span b{font-size:18px}}
+@media (max-width:640px){.toplinks{display:none}.vb-opts button{min-width:0;width:100%}.vb-opts{width:100%}.country a{padding:6px 11px;font-size:13px}.banner .release{gap:4px 16px;flex-direction:column;align-items:center}.banner{padding:28px 0 36px}.banner .lede{font-size:16px}
+  .tabs-row{gap:10px;position:static}.brand span{display:none}.standalone .cp-tabs button{padding:7px 13px;font-size:14px}.ruler-mark span b{font-size:18px}}
 :focus-visible{outline:2px solid #6FA2E8;outline-offset:2px}
 """
 
 # moves the tab bar and the measure switch into one sticky row, and the takeaways into the Overview tab
 AFTER = """<script>
 (function(){
-  var tabs=document.getElementById('tabs'),seg=document.getElementById('viewseg'),take=document.getElementById('takeaways'),
-      ov=document.getElementById('overview'),vb=document.getElementById('viewbar');
-  if(tabs&&seg){var row=document.createElement('div');row.className='tabs-row';tabs.parentNode.insertBefore(row,tabs);row.appendChild(tabs);
-    var box=document.createElement('div');box.className='mini-view';var lab=document.createElement('span');lab.textContent='Compare over';
+  var tabs=document.getElementById('tabs'),seg=document.getElementById('viewseg'),take=document.getElementById('takeaways'),ov=document.getElementById('overview');
+  var NO_PERIOD=['momentum','compare','method'];
+  if(tabs&&seg){
+    var row=document.createElement('div');row.className='tabs-row';tabs.parentNode.insertBefore(row,tabs);row.appendChild(tabs);
+    var box=document.createElement('div');box.className='period';box.id='period';
+    var lab=document.createElement('span');lab.id='period-label';lab.textContent='Change over';
     box.appendChild(lab);box.appendChild(seg);row.appendChild(box);
-    seg.setAttribute('aria-label','Compare prices over');
-    seg.querySelectorAll('button').forEach(function(b){b.textContent=b.dataset.view==='yoy'?'12 months':'1 month';});
-    if(vb){row.parentNode.insertBefore(vb,row.nextSibling);}}
-  if(take&&ov){ov.insertBefore(take,ov.firstChild);}
-  if(vb){vb.addEventListener('click',function(e){var b=e.target.closest('button[data-view]');if(b)dash.setParams({view:b.dataset.view});});}
+    seg.setAttribute('aria-labelledby','period-label');
+    seg.querySelectorAll('button').forEach(function(b){
+      b.textContent=b.dataset.view==='yoy'?'12 months':'1 month';
+      b.title=b.dataset.view==='yoy'?(seg.dataset.yoyTitle||''):(seg.dataset.momTitle||'');
+    });
+  }
+  if(take&&ov){var lede=ov.querySelector('.tab-lede');ov.insertBefore(take,lede?lede.nextSibling:ov.firstChild);}
   dash.onData(function(){
-    var p=dash.params(),tab=p.tab||'overview',view=p.view==='mom'?'mom':'yoy',hide=(tab==='momentum'||tab==='method');
-    if(vb){vb.hidden=hide;vb.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.view===view));});}
-    var mv=document.querySelector('.mini-view');if(mv)mv.style.visibility=hide?'hidden':'visible';
+    var p=dash.params(),tab=p.tab||'overview';
+    var pr=document.getElementById('period');if(pr)pr.style.visibility=NO_PERIOD.indexOf(tab)>-1?'hidden':'visible';
     document.querySelectorAll('.cp-kpi .gapnum').forEach(function(s){
       var txt=s.textContent.trim(),v=parseFloat(txt.replace('\u2212','-'));
       if(isNaN(v))return;
@@ -173,11 +202,32 @@ AFTER = """<script>
       s.parentNode.classList.toggle('up',v>0);s.parentNode.classList.toggle('down',v<=0);
     });
   });
-  var go=function(){var t=location.hash.slice(1);if(['overview','drivers','components','momentum','regions','method'].indexOf(t)>-1){dash.setParams({tab:t});}};
+  var TABS=['overview','drivers','components','momentum','regions','compare','method'];
+  var go=function(){var t=location.hash.slice(1);if(TABS.indexOf(t)>-1){dash.setParams({tab:t});}};
   window.addEventListener('hashchange',go);
   document.querySelectorAll('a[data-tab-link]').forEach(function(a){a.addEventListener('click',function(){setTimeout(function(){var r=document.querySelector('.tabs-row');if(r)r.scrollIntoView({block:'start'});},0);});});
+  // switching country keeps the open tab
+  document.querySelectorAll('.country a').forEach(function(a){a.addEventListener('click',function(){var t=(dash.params().tab)||'';if(t&&t!=='overview')a.href=a.getAttribute('href').split('#')[0]+'#'+t;});});
 })();
 </script>"""
+
+# theme toggle, also used on the privacy page
+THEME_JS = """<script>
+(function(){
+  var b=document.querySelector('.theme-btn');if(!b)return;
+  var cur=function(){var t=document.documentElement.getAttribute('data-theme');if(t)return t;return window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';};
+  var label=function(){var d=cur()==='dark';b.setAttribute('aria-label',d?'Switch to light theme':'Switch to dark theme');b.title=d?'Light theme':'Dark theme';};
+  label();
+  b.addEventListener('click',function(){var n=cur()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}label();
+    if(window.dash&&dash.setParams)dash.setParams({});});
+})();
+</script>"""
+
+THEME_BTN = ('<button type="button" class="theme-btn" aria-label="Switch theme">'
+             '<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/>'
+             '<path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>'
+             '<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+             '<path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg></button>')
 
 
 def _num(x):
@@ -196,7 +246,8 @@ def _date(iso):
     return f"{d.strftime('%B')} {d.day}, {d.year}"
 
 
-def banner(data, release=None):
+def banner(data, release=None, country=None):
+    country = country or {}
     comps = {r["item"]: r for r in data["components"]}
     head = _num(comps["All items"]["yoy"])
     core = _num(comps["All items less food and energy"]["yoy"])
@@ -215,10 +266,11 @@ def banner(data, release=None):
     release_line = ('<p class="release">' + "<span></span>".join(f"<span>{b}</span>" for b in rel_bits) + "</p>") if rel_bits else ""
     verb = "rose" if head >= 0 else "fell"
     gap = head - 2
-    gap_txt = (f"{abs(gap):.1f} points {'above' if gap > 0 else 'below'} the Federal Reserve's 2% goal" if abs(gap) >= 0.05
-               else "right at the Federal Reserve's 2% goal")
+    goal = country.get("goal", "the Federal Reserve's 2% goal")
+    gap_txt = (f"{abs(gap):.1f} points {'above' if gap > 0 else 'below'} {goal}" if abs(gap) >= 0.05 else f"right at {goal}")
     lede = (f"That's {gap_txt}. Core inflation, which leaves out food and energy, was {core:.1f}%. "
-            f"{top['item']} added the most: {float(top['contrib']):.2f} of the {head:.1f} points.")
+            + country.get("lede_extra", "")
+            + f"{top['item']} added the most: {float(top['contrib']):.2f} of the {head:.1f} points.")
 
     lo = min(0, math.floor(min(head, core)))
     hi = max(6, math.ceil(max(head, core) + 1))
@@ -237,7 +289,7 @@ def banner(data, release=None):
 </div>"""
     return f"""<section class="banner" aria-labelledby="headline">
     <p class="kicker">Consumer Price Index, 12 months to {month_name}</p>
-    <h1 id="headline">US prices {verb} {abs(head):.1f}% over the past year</h1>
+    <h1 id="headline">{country.get("people", "US")} prices {verb} {abs(head):.1f}% over the past year</h1>
     <p class="lede">{html.escape(lede)}</p>
     {ruler}
     {release_line}
@@ -260,28 +312,36 @@ def viewbar(data):
 </div>"""
 
 
-def header(cfg, banner_html):
+def header(cfg, banner_html, country_code="us"):
     name = html.escape(cfg["site_name"])
+    cur = lambda c: ' aria-current="page"' if c == country_code else ""
     return f"""<header class="masthead">
   <div class="wrap">
     <nav class="topbar" aria-label="Site">
-      <a class="brand" href="#overview">{LOGO}<span>{name}</span></a>
-      <div class="toplinks"><a href="#momentum" data-tab-link>Momentum</a><a href="#method" data-tab-link>Methodology</a><a href="#method" data-tab-link>Data</a></div>
+      <a class="brand" href="/">{LOGO}<span>{name}</span></a>
+      <div class="top-right">
+        <nav class="country" aria-label="Country"><a href="/"{cur("us")}>United States</a><a href="/canada/"{cur("ca")}>Canada</a></nav>
+        {THEME_BTN}
+      </div>
     </nav>
     {banner_html}
   </div>
 </header>"""
 
 
-def footer(cfg, month_name, base=""):
+def footer(cfg, month_name, base="", country=None):
     name = html.escape(cfg["site_name"])
+    country = country or {}
+    sources = country.get("sources_html", '<a href="https://www.bls.gov/cpi/">U.S. Bureau of Labor Statistics</a>, CPI news release tables<br><a href="https://fred.stlouisfed.org/">FRED</a>, Federal Reserve Bank of St. Louis')
+    legal = country.get("legal", "Independent analysis, not an official BLS or Federal Reserve product, and not financial advice. BLS data are public domain; FRED data courtesy of the Federal Reserve Bank of St. Louis.")
+    about = country.get("about", "What's driving US inflation, component by component.")
     return f"""<footer class="sitefoot">
   <div class="wrap">
     <div class="cols">
-      <div><h4>{name}</h4><p>What's driving US inflation, component by component. Updated automatically after each monthly CPI release. Latest data: {month_name}.</p></div>
-      <div><h4>Sources</h4><p><a href="https://www.bls.gov/cpi/">U.S. Bureau of Labor Statistics</a>, CPI news release tables<br><a href="https://fred.stlouisfed.org/">FRED</a>, Federal Reserve Bank of St. Louis</p></div>
+      <div><h4>{name}</h4><p>{about} Updated automatically after each monthly CPI release. Latest data: {month_name}.</p></div>
+      <div><h4>Sources</h4><p>{sources}</p></div>
       <div><h4>About the numbers</h4><p>How each figure is calculated is explained in the <a href="{base}#method" data-tab-link>Methodology</a> tab, where you can also download the data.</p></div>
     </div>
-    <p class="legal">Independent analysis, not an official BLS or Federal Reserve product, and not financial advice. BLS data are public domain; FRED data courtesy of the Federal Reserve Bank of St. Louis. <a href="/privacy">Privacy policy</a></p>
+    <p class="legal">{legal} <a href="/privacy">Privacy policy</a></p>
   </div>
 </footer>"""

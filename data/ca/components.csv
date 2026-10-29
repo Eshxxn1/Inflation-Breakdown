@@ -1,0 +1,45 @@
+item,group,level,depth,weight,yoy,mom_sa
+All items,Headline,total,0,100.000,3.1,0.1
+Food,Food,aggregate,1,16.930,2.2,-0.3
+Food purchased from stores,Food,aggregate,2,10.850,1.7,-0.7
+Meat,Food,leaf,3,1.790,3.0,-0.7
+Fish and seafood,Food,leaf,3,0.260,4.1,-1.8
+Dairy products and eggs,Food,leaf,3,1.680,1.6,0.6
+Bakery and cereal products,Food,leaf,3,1.440,1.0,-0.7
+Fruit and nuts,Food,leaf,3,1.220,3.8,0.9
+Vegetables,Food,leaf,3,1.210,-1.5,-2.3
+Other food and drinks,Food,leaf,3,3.240,1.5,-1.1
+Restaurants,Food,leaf,2,6.080,3.1,0.2
+Energy,Energy,aggregate,1,6.680,19.0,4.2
+Gasoline,Energy,leaf,2,4.010,27.8,6.1
+Electricity,Energy,leaf,2,1.670,3.6,0.1
+Natural gas,Energy,leaf,2,0.440,-6.8,-0.8
+Fuel oil and other fuels,Energy,leaf,2,0.240,57.8,10.5
+All items less food and energy,Core,aggregate,1,76.400,2.1,-0.1
+Core goods,Core goods,aggregate,2,28.020,1.2,0.2
+Clothing and footwear,Core goods,leaf,3,4.500,1.7,0.4
+Vehicle purchases,Core goods,leaf,3,6.670,2.1,-0.2
+Furniture and household equipment,Core goods,leaf,3,4.080,-0.1,0.2
+Vehicle parts and supplies,Core goods,leaf,3,1.420,1.2,0.0
+Health care goods,Core goods,leaf,3,1.720,1.2,-0.5
+Personal care supplies,Core goods,leaf,3,1.680,-0.1,-0.3
+Alcohol from stores,Core goods,leaf,3,1.710,2.5,0.1
+Tobacco,Core goods,leaf,3,0.850,0.0,0.0
+Computers and devices,Core goods,leaf,3,0.580,6.9,0.0
+Core services,Core services,aggregate,2,48.370,2.6,-0.3
+Shelter,Core services,aggregate,3,28.300,1.8,0.3
+Rent,Core services,leaf,4,7.450,2.8,0.5
+Mortgage interest cost,Core services,leaf,4,5.210,-0.2,0.3
+Homeowners' replacement cost,Core services,leaf,4,4.380,-1.9,-0.1
+Property taxes,Core services,leaf,4,2.480,5.6,0.0
+Home and mortgage insurance,Core services,leaf,4,1.560,4.9,0.9
+Homeowners' maintenance and repairs,Core services,leaf,4,1.890,1.2,0.3
+Vehicle insurance,Core services,leaf,3,2.490,5.0,0.1
+Vehicle maintenance and repair,Core services,leaf,3,0.970,3.7,0.0
+Air travel,Core services,leaf,3,1.100,19.4,-10.0
+Phone services,Core services,leaf,3,1.470,1.6,0.4
+Travel tours,Core services,leaf,3,0.950,13.0,-6.3
+Tuition fees,Core services,leaf,3,1.570,2.4,2.4
+Child care,Core services,leaf,3,0.430,-3.7,0.0
+Health care services,Core services,leaf,3,1.110,3.9,0.4
+Personal care services,Core services,leaf,3,0.880,3.6,0.0

@@ -25,7 +25,9 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 BLS = "https://www.bls.gov/news.release/"
 FRED_IDS = {"headline": "CPIAUCSL", "core": "CPILFESL", "food": "CPIUFDSL", "energy": "CPIENGSL",
-            "core_goods": "CUSR0000SACL1E", "shelter": "CUSR0000SAH1"}
+            "core_goods": "CUSR0000SACL1E", "shelter": "CUSR0000SAH1",
+            # not seasonally adjusted, for the 12-month comparison with Canada (official 12-month rates use these)
+            "headline_nsa": "CPIAUCNS", "core_nsa": "CPILFENS"}
 OFFLINE = None
 if "--offline" in sys.argv:
     OFFLINE = pathlib.Path(sys.argv[sys.argv.index("--offline") + 1])

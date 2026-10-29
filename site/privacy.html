@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <title>Privacy policy · Inflation Breakdown</title>
 <meta name="description" content="How Inflation Breakdown handles visitor data, cookies and advertising.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2312284A'/%3E%3Crect x='6' y='19' width='4' height='7' rx='1' fill='%239CC3FF'/%3E%3Crect x='12' y='14' width='4' height='12' rx='1' fill='%239CC3FF'/%3E%3Crect x='18' y='10' width='4' height='16' rx='1' fill='%23FFFFFF'/%3E%3Crect x='24' y='6' width='4' height='20' rx='1' fill='%23FF8A7A'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
 <style>
-:root{--color-fg:#172033;--color-fg-muted:#566176;--color-bg:#F4F6F9;--color-panel:#FFFFFF;--color-border-line:#E1E6EE;--color-ok:#25734A;--color-warn:#9A6400;--color-bad:#B42D24;--cds-chart-status-critical:#D0453A;--cds-chart-muted:#B8C0CC;--cds-chart-grid:#EDF0F4;--cds-chart-axis:#C5CDD8;--cds-chart-reference:#566176;--cds-surface-popover:#FFFFFF;--cds-border:#D9DFE8;--cds-shadow-popover:0 4px 16px rgba(18,40,74,.14);--cds-text-secondary:#566176;--navy:#12284A;--navy-2:#1C3A66;--on-navy:#FFFFFF;--on-navy-muted:#B7C4D8;--cds-radius:10px;--cds-pad-xs:4px;--cds-pad-sm:8px;--cds-pad-md:12px;--cds-pad-lg:20px;--cds-gap-xs:4px;--cds-gap-sm:8px;--cds-gap-md:16px;--cds-gap-lg:24px;--cds-gap-xl:32px;--cds-font-size-caption:12.5px;--cds-font-size-body:15px;--cds-font-size-heading:19px;--cds-font-size-title:30px;--cds-font-weight-medium:600;--font-anthropic-sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;--font-anthropic-serif:'Source Serif 4',Georgia,serif;--cds-dur-slow:.3s;--cds-ease-out:cubic-bezier(.2,.8,.2,1);}
-@media (prefers-color-scheme: dark){:root{--color-fg:#E6EBF2;--color-fg-muted:#9AA7BA;--color-bg:#0C1525;--color-panel:#131F33;--color-border-line:#24324A;--color-ok:#6CC08B;--color-warn:#E0A84A;--color-bad:#F28B80;--cds-chart-status-critical:#E25F53;--cds-chart-muted:#56637A;--cds-chart-grid:#1D2A40;--cds-chart-axis:#34445E;--cds-chart-reference:#9AA7BA;--cds-surface-popover:#1A2840;--cds-border:#2C3B55;--cds-shadow-popover:0 4px 16px rgba(0,0,0,.5);--cds-text-secondary:#9AA7BA;--navy:#16305A;--navy-2:#2F6FB3;--on-navy:#FFFFFF;--on-navy-muted:#B4C3DA;}}
+:root{--color-fg:#172033;--color-fg-muted:#566176;--color-bg:#F4F6F9;--color-panel:#FFFFFF;--color-border-line:#E1E6EE;--color-ok:#25734A;--color-warn:#9A6400;--color-bad:#B42D24;--cds-chart-status-critical:#D0453A;--cds-chart-muted:#B8C0CC;--cds-chart-grid:#EDF0F4;--cds-chart-axis:#C5CDD8;--cds-chart-reference:#566176;--cds-surface-popover:#FFFFFF;--cds-border:#D9DFE8;--cds-shadow-popover:0 4px 16px rgba(18,40,74,.14);--cds-text-secondary:#566176;--navy:#12284A;--navy-2:#1C3A66;--on-navy:#FFFFFF;--on-navy-muted:#B7C4D8;--cds-radius:10px;--cds-pad-xs:4px;--cds-pad-sm:8px;--cds-pad-md:12px;--cds-pad-lg:20px;--cds-gap-xs:4px;--cds-gap-sm:8px;--cds-gap-md:16px;--cds-gap-lg:24px;--cds-gap-xl:32px;--cds-font-size-caption:12.5px;--cds-font-size-body:15px;--cds-font-size-heading:19px;--cds-font-size-title:30px;--cds-font-weight-medium:600;--font-anthropic-sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;--font-anthropic-serif:'Source Serif 4',Georgia,serif;--cds-dur-slow:.3s;--cds-ease-out:cubic-bezier(.2,.8,.2,1);color-scheme:light}@media (prefers-color-scheme: dark){:root:not([data-theme=light]){--color-fg:#E6EBF2;--color-fg-muted:#9AA7BA;--color-bg:#0C1525;--color-panel:#131F33;--color-border-line:#24324A;--color-ok:#6CC08B;--color-warn:#E0A84A;--color-bad:#F28B80;--cds-chart-status-critical:#E25F53;--cds-chart-muted:#56637A;--cds-chart-grid:#1D2A40;--cds-chart-axis:#34445E;--cds-chart-reference:#9AA7BA;--cds-surface-popover:#1A2840;--cds-border:#2C3B55;--cds-shadow-popover:0 4px 16px rgba(0,0,0,.5);--cds-text-secondary:#9AA7BA;--navy:#16305A;--navy-2:#2F6FB3;--on-navy:#FFFFFF;--on-navy-muted:#B4C3DA;color-scheme:dark}}:root[data-theme=dark]{--color-fg:#E6EBF2;--color-fg-muted:#9AA7BA;--color-bg:#0C1525;--color-panel:#131F33;--color-border-line:#24324A;--color-ok:#6CC08B;--color-warn:#E0A84A;--color-bad:#F28B80;--cds-chart-status-critical:#E25F53;--cds-chart-muted:#56637A;--cds-chart-grid:#1D2A40;--cds-chart-axis:#34445E;--cds-chart-reference:#9AA7BA;--cds-surface-popover:#1A2840;--cds-border:#2C3B55;--cds-shadow-popover:0 4px 16px rgba(0,0,0,.5);--cds-text-secondary:#9AA7BA;--navy:#16305A;--navy-2:#2F6FB3;--on-navy:#FFFFFF;--on-navy-muted:#B4C3DA;color-scheme:dark}
 
 html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:var(--font-anthropic-sans);-webkit-font-smoothing:antialiased}
 .wrap{max-width:1160px;margin:0 auto;padding:0 20px}
@@ -20,6 +20,21 @@ a{color:inherit}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;font-size:17px;letter-spacing:.005em}
 .brand .logo{width:30px;height:30px}
 .toplinks{display:flex;gap:20px;font-size:14px}
+.top-right{display:flex;align-items:center;gap:10px}
+.country{display:flex;padding:3px;border-radius:999px;background:rgba(255,255,255,.1)}
+.country a{padding:6px 14px;border-radius:999px;font-size:14px;font-weight:500;color:var(--on-navy-muted);text-decoration:none;white-space:nowrap}
+.country a:hover{color:#FFFFFF}
+.country a[aria-current=page]{background:#FFFFFF;color:#12284A}
+.theme-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.25);
+  background:transparent;color:#FFFFFF;cursor:pointer;padding:0}
+.theme-btn:hover{background:rgba(255,255,255,.12)}
+.theme-btn svg{width:18px;height:18px}
+.theme-btn .moon{display:none}
+:root[data-theme=dark] .theme-btn .sun{display:none}:root[data-theme=dark] .theme-btn .moon{display:block}
+@media (prefers-color-scheme: dark){:root:not([data-theme=light]) .theme-btn .sun{display:none}:root:not([data-theme=light]) .theme-btn .moon{display:block}}
+.period{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--color-fg-muted)}
+.period[hidden]{display:none}
+.standalone .tab-lede{margin:2px 0 0;font-size:15px;color:var(--color-fg-muted);text-align:center}
 .toplinks a{color:var(--on-navy-muted);text-decoration:none}
 .toplinks a:hover,.toplinks a:focus-visible{color:var(--on-navy);text-decoration:underline;text-underline-offset:3px}
 .banner{text-align:center;padding:40px 0 48px}
@@ -114,8 +129,8 @@ a{color:inherit}
 .sitefoot p{margin:0}
 .sitefoot a{color:#DCE4F0}
 .sitefoot .legal{border-top:1px solid rgba(255,255,255,.12);padding:16px 0 28px;font-size:13px}
-@media (max-width:640px){.toplinks{display:none}.vb-opts button{min-width:0;width:100%}.vb-opts{width:100%}.mini-view{display:none !important}.banner .release{gap:4px 16px;flex-direction:column;align-items:center}.banner{padding:28px 0 36px}.banner .lede{font-size:16px}
-  .tabs-row{gap:10px;position:static}.standalone .cp-tabs button{padding:7px 13px;font-size:14px}.ruler-mark span b{font-size:18px}}
+@media (max-width:640px){.toplinks{display:none}.vb-opts button{min-width:0;width:100%}.vb-opts{width:100%}.country a{padding:6px 11px;font-size:13px}.banner .release{gap:4px 16px;flex-direction:column;align-items:center}.banner{padding:28px 0 36px}.banner .lede{font-size:16px}
+  .tabs-row{gap:10px;position:static}.brand span{display:none}.standalone .cp-tabs button{padding:7px 13px;font-size:14px}.ruler-mark span b{font-size:18px}}
 :focus-visible{outline:2px solid #6FA2E8;outline-offset:2px}
 
 .policy{max-width:44rem;margin:0 auto;padding:40px 0 56px;font-size:16px;line-height:1.65;color:var(--color-fg)}
@@ -157,12 +172,12 @@ a{color:inherit}
 </head>
 <body class="standalone">
 <header class="masthead"><div class="wrap"><nav class="topbar" aria-label="Site"><a class="brand" href="/"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#1C3A66"/><rect x="6" y="19" width="4" height="7" rx="1" fill="#9CC3FF"/><rect x="12" y="14" width="4" height="12" rx="1" fill="#9CC3FF"/><rect x="18" y="10" width="4" height="16" rx="1" fill="#FFFFFF"/><rect x="24" y="6" width="4" height="20" rx="1" fill="#FF8A7A"/></svg><span>Inflation Breakdown</span></a>
-<div class="toplinks"><a href="/">Back to the dashboard</a></div></nav></div></header>
+<div class="top-right"><nav class="country" aria-label="Country"><a href="/">United States</a><a href="/canada/">Canada</a></nav><button type="button" class="theme-btn" aria-label="Switch theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg></button></div></nav></div></header>
 <main class="wrap"><article class="policy">
 <h1>Privacy policy</h1>
 <p class="muted">Inflation Breakdown · inflationbreakdown.com</p>
 <h2>What this site collects</h2>
-<p>There are no accounts, sign-ups or forms, and the site doesn’t ask for any personal information. The dashboard runs in your browser using public data from the U.S. Bureau of Labor Statistics and FRED.</p>
+<p>There are no accounts, sign-ups or forms, and the site doesn’t ask for any personal information. The dashboard runs in your browser using public data from the U.S. Bureau of Labor Statistics, FRED and Statistics Canada.</p>
 <p>To understand how the site is used, it counts visits itself: the page viewed, the dashboard tabs opened, time spent, the referring website, the country (worked out from the IP address, which is not stored), and the device and browser type. It uses no cookies for this. Each visitor is represented by an anonymous code built from the IP address and browser that changes every day, so visits can’t be linked across days or to a person. If your browser sends a Do Not Track or Global Privacy Control signal, nothing is counted. These records are kept for about 13 months.</p>
 <p>The site is hosted on Cloudflare, which processes standard request information such as IP addresses to deliver and protect the site. See <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare’s privacy policy</a>.</p>
 
@@ -185,5 +200,15 @@ a{color:inherit}
     <p class="legal">Independent analysis, not an official BLS or Federal Reserve product, and not financial advice. BLS data are public domain; FRED data courtesy of the Federal Reserve Bank of St. Louis. <a href="/privacy">Privacy policy</a></p>
   </div>
 </footer>
+<script>
+(function(){
+  var b=document.querySelector('.theme-btn');if(!b)return;
+  var cur=function(){var t=document.documentElement.getAttribute('data-theme');if(t)return t;return window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';};
+  var label=function(){var d=cur()==='dark';b.setAttribute('aria-label',d?'Switch to light theme':'Switch to dark theme');b.title=d?'Light theme':'Dark theme';};
+  label();
+  b.addEventListener('click',function(){var n=cur()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}label();
+    if(window.dash&&dash.setParams)dash.setParams({});});
+})();
+</script>
 </body>
 </html>

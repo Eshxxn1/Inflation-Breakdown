@@ -1,10 +1,13 @@
 # Inflation Breakdown
 
-A one-page website showing what's driving US inflation: every CPI component, its share of the
-basket, its contribution to the headline rate, momentum, regional differences and how all of it
-compares with the 2% target. Data from the U.S. Bureau of Labor Statistics (BLS) and FRED.
+A website showing what's driving inflation in the United States and Canada: every CPI component, its
+share of the basket, its contribution to the headline rate, momentum, regional differences, how all of
+it compares with the 2% target, and a side-by-side comparison of the two countries. US data from the
+U.S. Bureau of Labor Statistics (BLS) and FRED; Canadian data from Statistics Canada.
 
-`site/index.html` is the whole website in one file. It opens offline and works on any static host.
+`site/index.html` (United States) and `site/canada/index.html` (Canada) are each a whole page in one
+file. They open offline and work on any static host. Visitors switch country at the top of the page and
+can pick a light or dark theme (saved in their browser; it follows their device until they choose).
 
 ## Where it lives
 
@@ -49,10 +52,11 @@ Commit the change and the site rebuilds automatically.
 `.github/workflows/update.yml` runs every day at 13:45 UTC. It:
 
 1. runs `scripts/update_data.py`, which reads the BLS release tables (Tables A, 1, 2, 4, 6 and 7)
-   and six FRED series, checks them, and rewrites `data/*.csv`;
-2. runs `scripts/build_site.py`, which puts the page, the data and the chart library into
-   `site/index.html`;
-3. commits any changes; Cloudflare Pages then republishes the site.
+   and FRED series, checks them, and rewrites `data/*.csv`;
+2. runs `scripts/update_canada.py`, which downloads Statistics Canada tables 18-10-0004, -0006, -0007
+   and -0256, estimates contributions from the basket weights, checks them and rewrites `data/ca/*.csv`;
+3. runs `scripts/build_site.py`, which builds both pages from `template/page.html`;
+4. commits any changes; Cloudflare then republishes the site.
 
 On days without a new release nothing changes. If BLS has released but FRED hasn't caught up yet,
 or anything fails a check (a missing row, contributions that don't add up to the published
@@ -71,10 +75,11 @@ the name mappings are near the top of each section in `scripts/update_data.py`.
 
 | Path | What it is |
 |---|---|
-| `site/index.html` | The published website (built) |
+| `site/index.html`, `site/canada/index.html` | The published pages (built) |
 | `site/og-image.png` | Link-preview image |
 | `template/page.html` | The dashboard page: layout, charts and calculations |
-| `data/*.csv` | The data the page uses |
+| `data/*.csv` | US data |
+| `data/ca/*.csv` | Canada data (same layout as the US files) |
 | `vendor/d3.min.js` | d3 v7.9.0, the chart library |
 | `scripts/` | Updater and site builder |
 | `worker/` | Cloudflare Worker: analytics collector, stats API and the `/stats` dashboard |
@@ -85,3 +90,7 @@ the name mappings are near the top of each section in `scripts/update_data.py`.
 BLS data are in the public domain. FRED data are provided by the Federal Reserve Bank of St. Louis;
 cite FRED when you republish them. The footer and the Methodology tab do both. This is an
 independent analysis, not an official BLS or Federal Reserve product.
+
+Statistics Canada data are used under the Statistics Canada Open Licence; the Canada page's footer and
+Methodology tab carry the required attribution. Statistics Canada doesn't publish item contributions,
+so the Canadian contributions are estimates (explained in the Canada page's Methodology tab).

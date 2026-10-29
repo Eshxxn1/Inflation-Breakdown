@@ -70,6 +70,19 @@
 .cp-legend .ln { display: inline-block; width: 14px; height: 2px; background: var(--color-fg); margin-right: 5px; vertical-align: 3px; }
 .cp[data-view=yoy] ul.v-mom, .cp[data-view=mom] ul.v-yoy { display: none; }
 #tree .clickable { cursor: pointer; }
+.cmp-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: var(--cds-gap-md); }
+.cmp-kpi { display: flex; flex-direction: column; gap: 8px; }
+.cmp-kpi .lbl { font-size: 13px; font-weight: 500; color: var(--color-fg-muted); }
+.cmp-row { display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 10px; font-size: 14px; }
+.cmp-row b { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 3.2em; text-align: right; }
+.cmp-n { color: var(--color-fg); }
+.cmp-track { height: 8px; border-radius: 4px; background: color-mix(in srgb, var(--color-fg) 6%, transparent); overflow: hidden; }
+.cmp-track i { display: block; height: 100%; border-radius: 4px; }
+.cmp-diff { font-size: 13px; color: var(--color-fg-muted); }
+.cmp-note { font-size: 12px; color: var(--color-fg-muted); }
+.cmp-diffs { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 10px; line-height: 1.55; }
+.cmp-diffs b { font-weight: 600; }
+.tab-lede { margin: 0; font-size: 15px; color: var(--color-fg-muted); }
 @media (max-width: 640px) { .cp .hide-narrow { display: none; } }
 .cp-titlebox { min-width: 0; }
 .cp-dateline { margin: var(--cds-gap-xs) 0 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
@@ -132,11 +145,13 @@
     <button type="button" role="tab" data-tab="drivers" id="tab-drivers">Drivers</button>
     <button type="button" role="tab" data-tab="components" id="tab-components">Components</button>
     <button type="button" role="tab" data-tab="momentum" id="tab-momentum">Momentum</button>
-    <button type="button" role="tab" data-tab="regions" id="tab-regions">Regions</button>
+    <button type="button" role="tab" data-tab="regions" id="tab-regions">{{REGIONS_TAB}}</button>
+    <button type="button" role="tab" data-tab="compare" id="tab-compare">US vs Canada</button>
     <button type="button" role="tab" data-tab="method" id="tab-method">Methodology</button>
   </nav>
 
   <section data-tab="overview" role="tabpanel" aria-labelledby="tab-overview" id="overview" class="cp-panel">
+    <p class="tab-lede">The headline number, what’s behind it and how it has changed.</p>
     <div class="cp-kpis" id="kpis">
     <div class="cp-card cp-kpi">
       <div class="lbl">All items</div>
@@ -151,10 +166,10 @@
       <div class="sub"><span class="v-yoy">Latest month: <span data-source="components" data-field="mom_sa" data-where="item=All items less food and energy">—</span>%</span><span class="v-mom">Past 12 months: <span data-source="components" data-field="yoy" data-where="item=All items less food and energy">—</span>%</span></div>
     </div>
     <div class="cp-card cp-kpi">
-      <div class="lbl">Supercore*</div>
-      <div class="big"><span class="v-yoy"><span data-source="roc_latest" data-field="m12" data-where="series=Supercore">—</span>%</span><span class="v-mom"><span data-source="roc_latest" data-field="mom" data-where="series=Supercore">—</span>%</span></div>
-      <div class="kpi-gap kpi-gap-note">Services excluding housing</div>
-      <div class="sub">*Estimated from BLS and FRED data</div>
+      <div class="lbl">{{THIRD_LABEL}}</div>
+      <div class="big"><span class="v-yoy"><span data-source="roc_latest" data-field="m12" data-where="series={{THIRD}}">—</span>%</span><span class="v-mom"><span data-source="roc_latest" data-field="mom" data-where="series={{THIRD}}">—</span>%</span></div>
+      <div class="kpi-gap kpi-gap-note">{{THIRD_NOTE}}</div>
+      <div class="sub">{{THIRD_SUB}}</div>
     </div>
     <div class="cp-card cp-kpi">
       <div class="lbl">Energy</div>
@@ -215,6 +230,7 @@
   </section>
 
   <section data-tab="drivers" role="tabpanel" aria-labelledby="tab-drivers" id="drivers" class="cp-panel" hidden>
+    <p class="tab-lede">Which parts of the basket are pushing {{COUNTRY_ADJ}} inflation up, and which are holding it down.</p>
     <div class="cp-card" id="flow-card">
       <h2 id="flow">How the basket flows into the headline</h2>
       <div class="cp-controls">
@@ -257,6 +273,7 @@
   </section>
 
   <section data-tab="components" role="tabpanel" aria-labelledby="tab-components" id="components" class="cp-panel" hidden>
+    <p class="tab-lede">Every tracked item, and whether its prices are rising faster or slower than 2%.</p>
     <div class="cp-card" id="heatmap-card">
       <h2 id="heatmap">Component heat map</h2>
       <p class="cp-note" id="heatmap-note"></p>
@@ -272,7 +289,7 @@
     </div>
     <div class="cp-card">
       <h2 id="table">All tracked components</h2>
-      <p class="cp-note">Weight is each item's share of the basket. 1-month changes are seasonally adjusted where BLS adjusts the series.</p>
+      <p class="cp-note">Weight is each item's share of the basket. {{MOM_TABLE_NOTE}}</p>
       <div class="cp-tablebox">
         <table id="comptable" data-source="components" data-row-key="item">
           <thead><tr>
@@ -280,7 +297,7 @@
             <th data-field="weight" class="hide-narrow">Weight %</th>
             <th data-field="yoy">12-mo %</th>
             <th data-source="gaps" data-field="gap">vs 2%</th>
-            <th data-field="mom_sa">1-mo % SA</th>
+            <th data-field="mom_sa">{{MOM_HEAD}}</th>
             <th data-source="gaps" data-field="gap_m" class="hide-narrow">vs 0.17%</th>
           </tr></thead>
           <tbody></tbody>
@@ -290,9 +307,10 @@
   </section>
 
   <section data-tab="momentum" role="tabpanel" aria-labelledby="tab-momentum" id="momentum" class="cp-panel" hidden>
+    <p class="tab-lede">Whether inflation is speeding up or slowing down, using shorter windows than 12 months.</p>
     <div class="cp-card" id="roc-card">
       <h2 id="roc">Rolling rate of change</h2>
-      <p class="cp-note">Annualized change over the chosen window. Shorter windows turn sooner but are noisier. *Supercore is estimated; Oct 2025 was never published, hence the gap.</p>
+      <p class="cp-note">Annualized change over the chosen window. Shorter windows turn sooner but are noisier. {{ROC_NOTE}}</p>
       <div class="cp-controls">
         <span class="lbl">Window</span>
         <div class="cp-seg" role="group" aria-label="Window" id="winseg">
@@ -332,25 +350,69 @@
   </section>
 
   <section data-tab="regions" role="tabpanel" aria-labelledby="tab-regions" id="regions" class="cp-panel" hidden>
+    <p class="tab-lede">{{REGIONS_LEDE}}</p>
     <div class="cp-card">
-      <h2 id="regionmap">Regional map vs target</h2>
+      <h2 id="regionmap">{{REGION_TITLE}}</h2>
       <p class="cp-note" id="region-note"></p>
       <div class="cp-legend" id="legend-b"></div>
       <div class="cp-grid">
-        <div><div class="cp-chart" id="tilemap" data-source="regions" role="img" aria-label="Map of US states shaded by their census division's inflation" style="min-height:300px"></div></div>
+        <div><div class="cp-chart" id="tilemap" data-source="regions" role="img" aria-label="{{MAP_ARIA}}" style="min-height:300px"></div></div>
         <div>
-          <h3>Metro areas</h3>
+          <h3>{{METRO_TITLE}}</h3>
           <p class="cp-note" id="metro-note"></p>
-          <div class="cp-chart" id="metrobars" data-source="regions" role="img" aria-label="Bars of inflation by metro area" style="min-height:300px"></div>
+          <div class="cp-chart" id="metrobars" data-source="regions" role="img" aria-label="Bars of inflation by {{METRO_WORD}}" style="min-height:300px"></div>
         </div>
       </div>
       <div class="cp-tip" id="tip-map"></div>
     </div>
   </section>
 
+  <section data-tab="compare" role="tabpanel" aria-labelledby="tab-compare" id="compare" class="cp-panel" hidden>
+    <p class="tab-lede">How inflation in the United States and Canada compares, measured the same way.</p>
+    <div class="cmp-kpis" id="cmp-kpis"></div>
+    <div class="cp-card" id="cmp-line-card">
+      <h2 id="cmp-trend">12-month inflation since 2020</h2>
+      <div class="cp-controls">
+        <div class="cp-legend" id="cmp-legend" style="margin:0"></div>
+        <span class="cp-spacer"></span>
+        <div class="cp-seg" role="group" aria-label="Measure" id="cmpseg">
+          <button type="button" data-cmp="head">All items</button><button type="button" data-cmp="core">Core</button>
+        </div>
+      </div>
+      <div class="cp-chart" id="cmpline" role="img" aria-label="Line chart of 12-month inflation in the United States and Canada" style="min-height:300px"></div>
+      <p class="cp-note" id="cmpline-note" style="margin-top:var(--cds-gap-sm)"></p>
+      <div class="cp-tip" id="tip-cmpline"></div>
+    </div>
+    <div class="cp-card">
+      <h2 id="cmp-items">Same items, side by side</h2>
+      <p class="cp-note">12-month price change for comparable items. The gap between the dots is how much faster prices rose in one country.</p>
+      <div class="cp-legend" id="cmp-legend2"></div>
+      <div class="cp-chart" id="cmpdots" role="img" aria-label="Dot chart comparing 12-month price changes for matching items in the US and Canada" style="min-height:420px"></div>
+      <div class="cp-tip" id="tip-cmpdots"></div>
+    </div>
+    <div class="cp-card">
+      <h2 id="cmp-groups">What's adding to inflation in each country</h2>
+      <p class="cp-note">Points each group adds to the 12-month rate. Canada's are estimated from Statistics Canada basket weights.</p>
+      <div class="cp-chart" id="cmpgroups" role="img" aria-label="Stacked bars of food, energy, core goods and core services contributions in each country" style="min-height:120px"></div>
+      <div class="stack-key" id="cmp-groups-key"></div>
+      <div class="cp-tip" id="tip-cmpgroups"></div>
+    </div>
+    <div class="cp-card cp-prose">
+      <h2 id="cmp-diff">Why the numbers aren't perfectly comparable</h2>
+      <ul class="cmp-diffs">
+        <li><b>Housing is measured differently.</b> The US counts owners' equivalent rent, what homeowners would pay to rent their own home. Canada counts homeowners' actual costs, including mortgage interest, so Canadian inflation reacts more directly to interest rates.</li>
+        <li><b>The targets are similar but not the same.</b> The Bank of Canada targets 2% on this CPI. The Federal Reserve's 2% goal is formally for a different index, PCE prices, which usually runs a little below CPI.</li>
+        <li><b>Monthly figures.</b> The 12-month rates above are unadjusted in both countries, as each statistical agency headlines them. Canada's are as Statistics Canada publishes them; contributions for Canada are estimates.</li>
+        <li><b>Baskets differ.</b> Each country weights items by its own households' spending, so, for example, energy is a larger share of the US basket and food a larger share of Canada's.</li>
+      </ul>
+    </div>
+  </section>
+
   <section data-tab="method" role="tabpanel" aria-labelledby="tab-method" id="method" class="cp-panel" hidden>
+    <p class="tab-lede">Where the numbers come from and how each one is calculated.</p>
     <div class="cp-card cp-prose">
       <h2 id="methodology">Methodology</h2>
+<!--IF:us-->
       <h3>Sources</h3>
       <p>Component prices, basket weights (relative importance), area indexes and contributions come from the latest BLS <a href="https://www.bls.gov/news.release/cpi.htm">CPI news release</a> (Tables A, 1–4, 6 and 7). Monthly index history since 2019 comes from FRED: <a href="https://fred.stlouisfed.org/series/CPIAUCSL">CPIAUCSL</a> (all items), <a href="https://fred.stlouisfed.org/series/CPILFESL">CPILFESL</a> (core), <a href="https://fred.stlouisfed.org/series/CPIUFDSL">CPIUFDSL</a> (food), <a href="https://fred.stlouisfed.org/series/CPIENGSL">CPIENGSL</a> (energy), <a href="https://fred.stlouisfed.org/series/CUSR0000SACL1E">CUSR0000SACL1E</a> (core goods) and <a href="https://fred.stlouisfed.org/series/CUSR0000SAH1">CUSR0000SAH1</a> (shelter), all seasonally adjusted.</p>
       <h3>12-month and monthly views</h3>
@@ -369,27 +431,45 @@
       <p>Regional and division figures are BLS area indexes. They aren't seasonally adjusted and come from smaller samples than the national index, so they are noisier. Most metro areas are priced every other month, so their latest figure may be a month older. States are shaded by their census division; BLS doesn't publish state CPIs.</p>
       <h3>Accuracy</h3>
       <p>When this page was built (October 2026), every figure was checked against its source: food, energy and core, weighted together, reproduce the headline index within 0.04 points in every month since 2019. The FRED headline series agrees with the BLS unadjusted series within 0.14 points on a 12-month basis.</p>
+<!--/IF:us--><!--IF:ca-->
+      <h3>Sources</h3>
+      <p>Everything comes from <a href="https://www.statcan.gc.ca/en/subjects-start/prices_and_price_indexes/consumer_price_indexes">Statistics Canada</a>: the monthly CPI by product, province and city (<a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810000401">table 18-10-0004-01</a>, not seasonally adjusted), the seasonally adjusted all-items index and major components (<a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810000601">18-10-0006-01</a>), basket weights (<a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810000701">18-10-0007-01</a>) and the Bank of Canada's preferred core measures, CPI-trim and CPI-median (<a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810025601">18-10-0256-01</a>).</p>
+      <h3>12-month and monthly views</h3>
+      <p>The 12-month view compares with the same month a year earlier, not seasonally adjusted, as Statistics Canada headlines it. The monthly view also uses unadjusted changes from the previous month, because that is the figure Statistics Canada reports and adjusted figures exist only for the all-items index and its eight major components. The Momentum tab uses the seasonally adjusted series. The monthly benchmark is 0.165%, the pace that compounds to 2% over a year.</p>
+      <h3>Contributions</h3>
+      <p>Statistics Canada doesn't publish how many points each item adds to the headline, so contributions here are estimated: each item's basket weight is moved from the basket's link month to a year (or a month) earlier by how its price changed relative to the all-items index, then multiplied by its price change. Food, energy and core goods use Statistics Canada's own aggregates (core goods is "goods excluding food purchased from stores and energy"); core services is the remainder, so the four groups add exactly to the published all-items change. "Other …" rows are the parts of a group not listed separately. When a 12-month comparison reaches back past a basket update, the estimate is approximate.</p>
+      <h3>Contributions over time</h3>
+      <p>The history chart applies the same method to every month since 2019, using unadjusted indexes for all items, food, energy and core goods. Older months use today's basket weights moved back in time, so they're approximate.</p>
+      <h3>Core inflation</h3>
+      <p>"Core" on this page means all items excluding food and energy, the same definition as in the US, so the two countries can be compared. The Bank of Canada itself prefers CPI-trim and CPI-median, which drop the most extreme price moves each month instead of fixed categories. CPI-trim appears in the Momentum tab and the number cards.</p>
+      <h3>Provinces and cities</h3>
+      <p>Provincial figures are Statistics Canada's provincial CPIs. Statistics Canada doesn't publish territorial CPIs, so Yukon, the Northwest Territories and Nunavut are shown through their capitals: Whitehorse, Yellowknife and Iqaluit. Local indexes come from smaller samples, so they are noisier than the national one.</p>
+<!--/IF:ca-->
     </div>
 
     <div class="cp-card cp-prose">
       <h2 id="glossary">Glossary</h2>
       <dl class="cp-gloss">
-        <dt>CPI-U</dt><dd>The Consumer Price Index for All Urban Consumers: the average change in prices paid by urban households (over 90% of the US population) for a fixed basket of goods and services. Published monthly by the Bureau of Labor Statistics (BLS).</dd>
-        <dt>Headline CPI</dt><dd>The all-items index, including volatile food and energy prices.</dd>
+<!--IF:us-->        <dt>CPI-U</dt><dd>The Consumer Price Index for All Urban Consumers: the average change in prices paid by urban households (over 90% of the US population) for a fixed basket of goods and services. Published monthly by the Bureau of Labor Statistics (BLS).</dd>
+<!--/IF:us--><!--IF:ca-->        <dt>Consumer Price Index</dt><dd>The average change in prices Canadian consumers pay for a fixed basket of goods and services, published monthly by Statistics Canada.</dd>
+<!--/IF:ca-->        <dt>Headline CPI</dt><dd>The all-items index, including volatile food and energy prices.</dd>
         <dt>Core CPI</dt><dd>All items less food and energy. It strips out the most volatile prices to show the underlying trend.</dd>
-        <dt>Supercore</dt><dd>Core services excluding shelter (medical care, transportation services, recreation, education and so on). Watched as a gauge of wage-driven inflation. BLS doesn't publish it directly, so it's estimated here (see Methodology).</dd>
+<!--IF:us-->        <dt>Supercore</dt><dd>Core services excluding shelter (medical care, transportation services, recreation, education and so on). Watched as a gauge of wage-driven inflation. BLS doesn't publish it directly, so it's estimated here (see Methodology).</dd>
         <dt>Shelter</dt><dd>The cost of housing services: rent, owners' equivalent rent, hotels and home insurance. About a third of the basket.</dd>
         <dt>Owners' equivalent rent (OER)</dt><dd>What homeowners would pay to rent their own home. It measures the cost of housing services, not house prices, and is the largest single item in the CPI.</dd>
-        <dt>Relative importance (basket share)</dt><dd>Each item's share of total consumer spending in the CPI, in percent. The shares add to 100.</dd>
-        <dt>Contribution / effect</dt><dd>How many percentage points an item adds to the headline rate: roughly its basket share × its price change. BLS calls this the item's 'effect on all items'. Contributions add up to the headline.</dd>
+<!--/IF:us--><!--IF:ca-->        <dt>CPI-trim and CPI-median</dt><dd>The Bank of Canada's preferred core measures. Each month CPI-trim drops the 20% of price changes at each extreme; CPI-median takes the middle price change by weight.</dd>
+        <dt>Shelter</dt><dd>Housing costs: rent, mortgage interest, homeowners' replacement cost, property taxes, insurance, repairs, and water, fuel and electricity. About 28% of the basket.</dd>
+        <dt>Mortgage interest cost</dt><dd>The interest homeowners pay on their mortgages. It rises when interest rates go up, which makes Canada's CPI more sensitive to rate changes than the US one.</dd>
+<!--/IF:ca-->        <dt>Relative importance (basket share)</dt><dd>Each item's share of total consumer spending in the CPI, in percent. The shares add to 100.</dd>
+        <dt>Contribution / effect</dt><dd>How many percentage points an item adds to the headline rate: roughly its basket share × its price change. <!--IF:us-->BLS calls this the item's 'effect on all items'. <!--/IF:us-->Contributions add up to the headline.</dd>
         <dt>Percentage point (pt)</dt><dd>The difference between two percentages. If inflation is 3% and energy contributes 1 point, energy accounts for one of those three points.</dd>
         <dt>Share of inflation</dt><dd>An item's contribution as a percent of the sum of all contributions. It can be far larger than its basket share when its price is rising fast.</dd>
         <dt>12-month change</dt><dd>The change from the same month a year earlier, not seasonally adjusted. The figure usually quoted in the news.</dd>
-        <dt>1-month change (m/m)</dt><dd>The change from the previous month, seasonally adjusted (SA) so normal seasonal patterns don't look like inflation.</dd>
+        <dt>1-month change (m/m)</dt><dd><!--IF:us-->The change from the previous month, seasonally adjusted (SA) so normal seasonal patterns don't look like inflation.<!--/IF:us--><!--IF:ca-->The change from the previous month. Statistics Canada headlines the unadjusted figure, so normal seasonal patterns show up in it.<!--/IF:ca--></dd>
         <dt>Seasonally adjusted (SA)</dt><dd>Adjusted to remove regular calendar patterns, such as holiday discounts or summer travel prices. Best for comparing month to month.</dd>
         <dt>Annualized rate</dt><dd>A short-period change scaled up to a yearly pace by compounding: a 0.3% monthly rise is about 3.7% annualized.</dd>
         <dt>Rolling rate of change</dt><dd>The annualized change over the latest 1, 3, 6 or 12 months, recalculated each month. Short windows show turning points earlier but are noisier.</dd>
-        <dt>2% target</dt><dd>The Federal Reserve's inflation goal. It is formally defined for the PCE price index, which tends to run a little below CPI, so 2% on CPI is a common benchmark rather than the official test.</dd>
+        <dt>2% target</dt><dd><!--IF:us-->The Federal Reserve's inflation goal. It is formally defined for the PCE price index, which tends to run a little below CPI, so 2% on CPI is a common benchmark rather than the official test.<!--/IF:us--><!--IF:ca-->The Bank of Canada's inflation target: 2% on the CPI, the midpoint of a 1% to 3% control range.<!--/IF:ca--></dd>
       </dl>
     </div>
 
@@ -399,19 +479,19 @@
       <div id="downloads" hidden>
         <p>Download the data behind this page:</p>
         <div class="cp-dl">
-          <button type="button" data-ds="components">Components (Table 1)</button>
+          <button type="button" data-ds="components">Components</button>
           <button type="button" data-ds="tree">Contributions by component</button>
           <button type="button" data-ds="history">Contributions over time</button>
           <button type="button" data-ds="roc">Rolling rates of change</button>
-          <button type="button" data-ds="fred">Index history (FRED)</button>
-          <button type="button" data-ds="regions">Regions and metros</button>
+          <button type="button" data-ds="fred">{{HIST_DS}}</button>
+          <button type="button" data-ds="regions">{{REGIONS_DS}}</button>
         </div>
       </div>
     </div>
 
     <div class="cp-card cp-prose">
       <h2 id="disclaimer">Disclaimer</h2>
-      <p>This is an independent analysis, not an official BLS or Federal Reserve product. Figures marked as estimated are approximations. Nothing here is financial or investment advice. Source data are public domain (BLS) and courtesy of the Federal Reserve Bank of St. Louis (FRED).</p>
+      <p><!--IF:us-->This is an independent analysis, not an official BLS or Federal Reserve product. Figures marked as estimated are approximations. Nothing here is financial or investment advice. Source data are public domain (BLS) and courtesy of the Federal Reserve Bank of St. Louis (FRED).<!--/IF:us--><!--IF:ca-->This is an independent analysis, not an official Statistics Canada or Bank of Canada product. Contributions are estimated. Nothing here is financial or investment advice. Source: Statistics Canada, reproduced and distributed on an "as is" basis with the permission of Statistics Canada, under the <a href="https://www.statcan.gc.ca/en/reference/licence">Statistics Canada Open Licence</a>.<!--/IF:ca--></p>
       <!--ABOUT-->
     </div>
   </section>
@@ -426,6 +506,11 @@
     yoy: { key: 'yoy', target: 2, scale: 5, cap: 36, unit: '12-mo', label: '2%', regionKey: 'yoy' },
     mom: { key: 'mom_sa', target: MONTHLY_TARGET, scale: 0.5, cap: 4, unit: 'm/m', label: '0.17%/mo', regionKey: 'mom' }
   };
+  // per-country settings, written by build_site.py (defaults are the US)
+  const COUNTRY = Object.assign({ code: 'us', third: 'Supercore', thirdLabel: 'Supercore*', momUnit: 'm/m SA', agency: 'BLS',
+    histNSA: false, weightRef: null, histNoteYoy: '', histNoteMom: '', regionNoteYoy: '', regionNoteMom: '', metroNoteYoy: '', metroNoteMom: '',
+    tiles: null, tileCols: 12, tileRows: 8, regionWord: 'division' }, window.COUNTRY || {});
+  const lab3 = (s) => (s === COUNTRY.third ? COUNTRY.thirdLabel : s);
   const f1 = d3.format('.1f');
   const f2 = d3.format('.2f');
   const signed = (v, f = f1) => (v > 0 ? '+' : '') + f(v);
@@ -538,7 +623,8 @@
   // relative importance at month t, back-cast from the Aug 2026 weights by each group's price relative to the all-items index
   const backcast = (fred, components) => {
     const dates = fred.filter((r) => num(r.headline) != null).map((r) => r.date);
-    const ref = fred.find((r) => r.date === dates[dates.length - 2]); // weights are as of the month before the latest data
+    // weights are as of the month before the latest data (US relative importance) or the basket link month (Canada)
+    const ref = (COUNTRY.weightRef && fred.find((r) => r.date === COUNTRY.weightRef)) || fred.find((r) => r.date === dates[dates.length - 2]);
     const w = { food: 'Food', energy: 'Energy', core_goods: 'Core goods', shelter: 'Shelter' };
     const W = Object.fromEntries(Object.entries(w).map(([k, item]) => [k, Number(components.find((c) => c.item === item).weight)]));
     return (r, k) => (num(r[k]) == null || num(r.headline) == null ? null : W[k] * (num(r[k]) / num(ref[k])) / (num(r.headline) / num(ref.headline)));
@@ -547,7 +633,8 @@
     title: 'Contributions over time (estimated)',
     description: 'Monthly contribution of food, energy, core goods and core services to the 12-month and 1-month headline, from FRED seasonally adjusted indexes and BLS weights back-cast from Aug 2026. Core services is the remainder, so the groups add to the headline.',
     inputs: ['fred', 'components'],
-    fn: (fred, components) => {
+    fn: (fred0, components) => {
+      const fred = COUNTRY.histNSA ? fred0.map((r) => ({ ...r, headline: r.headline_nsa, food: r.food_nsa, energy: r.energy_nsa, core_goods: r.core_goods_nsa })) : fred0;
       const ri = backcast(fred, components);
       const out = [];
       fred.forEach((r, i) => {
@@ -599,7 +686,7 @@
       const series = [
         ['Headline', fred.map((r) => num(r.headline))],
         ['Core', fred.map((r) => num(r.core))],
-        ['Supercore', derived.map((r) => num(r.supercore))]
+        [COUNTRY.third, COUNTRY.third === 'Supercore' ? derived.map((r) => num(r.supercore)) : fred.map((r) => num(r.third))]
       ];
       series.forEach(([name, v]) => {
         fred.forEach((r, i) => {
@@ -616,7 +703,7 @@
     title: 'Latest rolling rates',
     description: 'The most recent month of each rolling window per series, plus the plain (not annualized) 1-month change.',
     inputs: ['roc'],
-    fn: (roc) => ['Headline', 'Core', 'Supercore'].map((series) => {
+    fn: (roc) => ['Headline', 'Core', COUNTRY.third].map((series) => {
       const rows = roc.filter((r) => r.series === series && r.roc != null);
       const date = rows.reduce((m, r) => (r.date > m ? r.date : m), '');
       const pick = (w) => (rows.find((r) => r.date === date && r.window === w) || {}).roc ?? null;
@@ -781,12 +868,13 @@
 
   function drawTileMap(el, regions, tp, c, view) {
     const div = new Map(regions.filter((r) => r.type === 'division' && r.v != null).map((r) => [r.area, r]));
+    const tiles = COUNTRY.tiles || TILES, cols = COUNTRY.tileCols, rowsN = COUNTRY.tileRows;
     const w = Math.max(240, el.clientWidth);
-    const cell = Math.min(46, (w - 4) / 12);
-    const h = cell * 8 + 4;
+    const cell = Math.min(COUNTRY.code === 'us' ? 46 : 64, (w - 4) / cols);
+    const h = cell * rowsN + 4;
     el.style.minHeight = '0px';
     const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`);
-    const g = svg.append('g').selectAll('g').data(TILES).join('g').attr('transform', (d) => `translate(${d[1] * cell + 2},${d[2] * cell + 2})`);
+    const g = svg.append('g').selectAll('g').data(tiles).join('g').attr('transform', (d) => `translate(${d[1] * cell + 2},${d[2] * cell + 2})`);
     g.append('rect').attr('width', cell - 3).attr('height', cell - 3).attr('rx', 4)
       .attr('fill', (d) => (div.get(d[3]) ? fillOf(div.get(d[3]).v, c) : 'var(--cds-chart-muted)'))
       .attr('fill-opacity', (d) => (div.get(d[3]) ? opOf(div.get(d[3]).v, c) : 0.2));
@@ -798,7 +886,7 @@
     }
     g.on('mousemove', (ev, d) => {
       const r = div.get(d[3]);
-      if (r) tp.show(ev, d[0] + ' · ' + d[3] + ' division', [
+      if (r) tp.show(ev, COUNTRY.code === 'us' ? d[0] + ' · ' + d[3] + ' division' : d[3] + (d[4] ? ' (' + d[4] + ')' : ''), [
         f1(r.v) + '% ' + (view === 'yoy' ? '12-mo' : '1-mo, not SA') + ' (' + r.period + ')',
         signed(r.v - c.target, view === 'yoy' ? f1 : f2) + ' pts vs ' + c.label, 'Region: ' + r.region]);
     }).on('mouseleave', () => tp.hide());
@@ -827,7 +915,10 @@
       d.data.label.split(' ').forEach((wd) => { const nx = cur ? cur + ' ' + wd : wd; if (!cur || fits(nx)) cur = nx; else { lines.push(cur); cur = wd; } });
       lines.push(cur);
       const maxLines = Math.min(3, Math.floor((ch - 22) / 15));
-      const ok = lines.length <= maxLines && lines.every((l) => fits(l));
+      t.attr('font-weight', 600);
+      const valFits = fits(f1(d.data.v) + '%');
+      t.attr('font-weight', null);
+      const ok = valFits && lines.length <= maxLines && lines.every((l) => fits(l));
       t.remove();
       if (!ok) return;
       lines.forEach((l, i) => s.append('text').attr('x', 7).attr('y', 17 + i * 15).attr('font-size', 12).attr('fill', 'var(--color-fg)').text(l));
@@ -895,7 +986,7 @@
     g.append('rect').attr('x', (d) => x(d.a) + (d.a === Math.min(0, neg) ? 0 : 1)).attr('y', 0).attr('width', (d) => Math.max(1, x(d.b) - x(d.a) - 2)).attr('height', barH).attr('rx', 4)
       .attr('fill', (d) => GROUP_COLORS[d.item]).attr('fill-opacity', 0.9);
     g.append('rect').attr('x', (d) => x(d.a)).attr('y', 0).attr('width', (d) => Math.max(1, x(d.b) - x(d.a))).attr('height', barH).attr('fill', 'transparent')
-      .on('mousemove', (ev, d) => tp.show(ev, d.item, [fpts(d.contrib) + ' pts of ' + f1(pub.contrib) + '% headline', Math.round(d.contrib / pub.contrib * 100) + '% of the total', f1(d.change) + '% ' + (view === 'yoy' ? '12-mo' : 'm/m SA') + ', weight ' + f2(d.weight) + '%']))
+      .on('mousemove', (ev, d) => tp.show(ev, d.item, [fpts(d.contrib) + ' pts of ' + f1(pub.contrib) + '% headline', Math.round(d.contrib / pub.contrib * 100) + '% of the total', f1(d.change) + '% ' + (view === 'yoy' ? '12-mo' : COUNTRY.momUnit) + ', weight ' + f2(d.weight) + '%']))
       .on('mouseleave', () => tp.hide());
     const key = document.getElementById('stack-key');
     if (key) {
@@ -909,7 +1000,7 @@
     }
     const sumEl = document.getElementById('stack-sum');
     if (sumEl) {
-      sumEl.textContent = 'Together ' + f2(total.contrib) + ' pts; BLS publishes ' + f1(pub.contrib) + '% (each part is rounded). ';
+      sumEl.textContent = 'Together ' + f2(total.contrib) + ' pts; ' + COUNTRY.agency + ' publishes ' + f1(pub.contrib) + '%' + (COUNTRY.code === 'us' ? ' (each part is rounded). ' : '. ');
       const a = document.createElement('a'); a.href = '#drivers'; a.textContent = 'Full breakdown on Drivers';
       a.addEventListener('click', (e) => { e.preventDefault(); dash.setParams({ tab: 'drivers' }); dash.setLink('drivers'); window.scrollTo(0, 0); });
       sumEl.appendChild(a);
@@ -1198,7 +1289,7 @@
   }
 
   // ---------- rolling ROC line chart (headline, core, supercore)
-  const SERIES_COLORS = { Headline: dash.colors[0], Core: dash.colors[1], Supercore: dash.colors[4] };
+  const SERIES_COLORS = { Headline: dash.colors[0], Core: dash.colors[1], [COUNTRY.third]: dash.colors[4] };
   function drawRoc(el, rows, tp, win, range) {
     const w = Math.max(240, el.clientWidth), narrowR = w < 520, h = narrowR ? 260 : 300;
     const parse = (s) => new Date(String(s).slice(0, 10) + 'T00:00:00Z');
@@ -1208,11 +1299,11 @@
     const first = d3.min(valid, (r) => r.d);
     const start = range === 'All' ? first : d3.max([first, d3.utcMonth.offset(last, range === '2Y' ? -24 : -60)]);
     const data = all.filter((r) => r.d >= start && r.d <= last);
-    const names = ['Headline', 'Core', 'Supercore'];
+    const names = ['Headline', 'Core', COUNTRY.third];
     const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('role', 'img')
       .attr('aria-label', `Rolling ${win} annualized rate of change of headline, core and supercore CPI`);
     const lastOf = (s) => data.filter((r) => r.series === s && r.roc != null).at(-1);
-    const endLabels = names.map((s) => (s === 'Supercore' ? 'Supercore*' : s) + ' ' + f1(lastOf(s).roc) + '%');
+    const endLabels = names.map((s) => lab3(s) + ' ' + f1(lastOf(s).roc) + '%');
     const m = { t: narrowR ? 30 : 12, r: narrowR ? 10 : Math.min(w * 0.32, measure(svg, endLabels) + 14), b: 26, l: 36 };
     const vals = data.filter((r) => r.roc != null).map((r) => r.roc);
     const y = d3.scaleLinear([Math.min(0, d3.min(vals)), Math.max(3, d3.max(vals))], [h - m.b, m.t]).nice();
@@ -1240,7 +1331,7 @@
       let lx = m.l;
       ends.forEach((e) => {
         svg.append('rect').attr('x', lx).attr('y', 8).attr('width', 14).attr('height', 2).attr('fill', SERIES_COLORS[e.s]);
-        const t = svg.append('text').attr('x', lx + 18).attr('y', 13).attr('font-size', 11.5).attr('fill', 'var(--color-fg)').text(e.s === 'Supercore' ? 'Supercore*' : e.s);
+        const t = svg.append('text').attr('x', lx + 18).attr('y', 13).attr('font-size', 11.5).attr('fill', 'var(--color-fg)').text(lab3(e.s));
         lx += 18 + t.node().getComputedTextLength() + 12;
       });
     } else ends.forEach((e) => svg.append('text').attr('x', x(e.p.d) + 7).attr('y', e.ly).attr('font-size', 12).attr('fill', 'var(--color-fg)').text(e.label));
@@ -1257,7 +1348,7 @@
         const lines = names.map((s, i) => {
           const r = data.find((q) => q.series === s && +q.d === +d);
           if (r && r.roc != null) dots[i].attr('cx', x(d)).attr('cy', y(r.roc)).attr('opacity', 1); else dots[i].attr('opacity', 0);
-          return (s === 'Supercore' ? 'Supercore*' : s) + ': ' + (r && r.roc != null ? f1(r.roc) + '%' : 'n/a');
+          return lab3(s) + ': ' + (r && r.roc != null ? f1(r.roc) + '%' : 'n/a');
         });
         tp.show(ev, d3.utcFormat('%b %Y')(d) + ' · ' + win + ' annualized', lines);
       })
@@ -1325,6 +1416,140 @@
       .on('mouseleave', () => tp.hide());
   }
 
+  // ---------- US vs Canada (data embedded by build_site.py as window.COMPARE)
+  const CMP = window.COMPARE || null;
+  const CC = { us: dash.colors[0], ca: dash.colors[4] };
+  const CN = { us: 'United States', ca: 'Canada' };
+  const CS = { us: 'US', ca: 'Canada' };
+  function drawCmpKpis(el) {
+    el.textContent = '';
+    CMP.kpis.forEach((k) => {
+      const card = document.createElement('div'); card.className = 'cp-card cmp-kpi';
+      const l = document.createElement('div'); l.className = 'lbl'; l.textContent = k.label; card.appendChild(l);
+      const mx = Math.max(Math.abs(k.us ?? 0), Math.abs(k.ca ?? 0), k.target || 0) || 1;
+      ['us', 'ca'].forEach((c) => {
+        const row = document.createElement('div'); row.className = 'cmp-row';
+        const n = document.createElement('span'); n.className = 'cmp-n'; n.textContent = CS[c];
+        const v = document.createElement('b'); v.textContent = k[c] == null ? '—' : f1(k[c]) + '%';
+        const tr = document.createElement('span'); tr.className = 'cmp-track';
+        const bar = document.createElement('i'); bar.style.width = (k[c] == null ? 0 : Math.max(2, Math.abs(k[c]) / mx * 100)) + '%'; bar.style.background = CC[c];
+        tr.appendChild(bar); row.append(n, tr, v); card.appendChild(row);
+      });
+      if (k.us != null && k.ca != null) {
+        const d = document.createElement('div'); d.className = 'cmp-diff';
+        const gap = Math.round((k.us - k.ca) * 10) / 10;
+        d.textContent = gap === 0 ? 'The same in both countries' : (gap > 0 ? 'US' : 'Canada') + ' ' + f1(Math.abs(gap)) + ' pts higher';
+        card.appendChild(d);
+      }
+      if (k.note) { const nn = document.createElement('div'); nn.className = 'cmp-note'; nn.textContent = k.note; card.appendChild(nn); }
+      el.appendChild(card);
+    });
+  }
+  function drawCmpLine(el, measure, tp) {
+    const w = Math.max(240, el.clientWidth), narrow = w < 520, h = narrow ? 260 : 300;
+    const parse = (s) => new Date(s + 'T00:00:00Z');
+    const key = (c) => c + '_' + measure;
+    const rows = CMP.series.map((r) => ({ ...r, d: parse(r.date) }));
+    const vals = rows.flatMap((r) => [r[key('us')], r[key('ca')]]).filter((v) => v != null);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`);
+    const lastOf = (c) => rows.filter((r) => r[key(c)] != null).at(-1);
+    const labs = ['us', 'ca'].map((c) => CS[c] + ' ' + f1(lastOf(c)[key(c)]) + '%');
+    const m = { t: 12, r: narrow ? 10 : measure_(svg, labs) + 16, b: 26, l: 36 };
+    const x = d3.scaleUtc(d3.extent(rows, (r) => r.d), [m.l, w - m.r]);
+    const y = d3.scaleLinear([Math.min(0, d3.min(vals)), Math.max(3, d3.max(vals))], [h - m.b, m.t]).nice();
+    y.ticks(4).forEach((t) => {
+      svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(t)).attr('y2', y(t)).attr('stroke', t === 0 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)');
+      svg.append('text').attr('x', m.l - 6).attr('y', y(t) + 4).attr('text-anchor', 'end').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(t + '%');
+    });
+    x.ticks(narrow ? 3 : 6).forEach((t) => svg.append('text').attr('x', x(t)).attr('y', h - 8).attr('text-anchor', 'middle').attr('font-size', 11)
+      .attr('fill', 'var(--color-fg-muted)').text(d3.utcFormat(narrow ? "'%y" : '%Y')(t)));
+    svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(2)).attr('y2', y(2)).attr('stroke', 'var(--color-fg)').attr('stroke-opacity', 0.45).attr('stroke-dasharray', '2 3');
+    const line = (c) => d3.line().defined((r) => r[key(c)] != null).x((r) => x(r.d)).y((r) => y(r[key(c)]));
+    ['us', 'ca'].forEach((c) => svg.append('path').datum(rows).attr('fill', 'none').attr('stroke', CC[c]).attr('stroke-width', 2).attr('stroke-linejoin', 'round').attr('stroke-linecap', 'round').attr('d', line(c)));
+    const ends = ['us', 'ca'].map((c, i) => ({ c, p: lastOf(c), label: labs[i], h: 14 }));
+    ends.forEach((e) => { e.ly = y(e.p[key(e.c)]); });
+    relax(ends, 2, m.t + 7, h - m.b);
+    ends.forEach((e) => {
+      svg.append('circle').attr('cx', x(e.p.d)).attr('cy', y(e.p[key(e.c)])).attr('r', 3.5).attr('fill', CC[e.c]);
+      if (!narrow) svg.append('text').attr('x', x(e.p.d) + 8).attr('y', e.ly + 4).attr('font-size', 12).attr('fill', 'var(--color-fg)').text(e.label);
+    });
+    const rule = svg.append('line').attr('y1', m.t).attr('y2', h - m.b).attr('stroke', 'var(--cds-chart-axis)').attr('opacity', 0);
+    const dots = ['us', 'ca'].map((c) => svg.append('circle').attr('r', 4).attr('fill', CC[c]).attr('opacity', 0));
+    const bis = d3.bisector((r) => r.d).center;
+    svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', Math.max(0, w - m.l - m.r)).attr('height', h - m.t - m.b).attr('fill', 'transparent')
+      .on('mousemove', (ev) => {
+        const r = rows[bis(rows, x.invert(d3.pointer(ev)[0]))];
+        if (!r) return;
+        rule.attr('x1', x(r.d)).attr('x2', x(r.d)).attr('opacity', 1);
+        ['us', 'ca'].forEach((c, i) => { const v = r[key(c)]; dots[i].attr('cx', x(r.d)).attr('cy', v == null ? 0 : y(v)).attr('opacity', v == null ? 0 : 1); });
+        tp.show(ev, d3.utcFormat('%b %Y')(r.d), ['us', 'ca'].map((c) => CN[c] + ': ' + (r[key(c)] == null ? 'not published' : f1(r[key(c)]) + '%')));
+      })
+      .on('mouseleave', () => { rule.attr('opacity', 0); dots.forEach((d) => d.attr('opacity', 0)); tp.hide(); });
+  }
+  const measure_ = (svg, texts) => measure(svg, texts, 12);
+  function drawCmpDots(el, tp) {
+    const pairs = CMP.pairs.filter((p) => p.us != null && p.ca != null);
+    const w = Math.max(240, el.clientWidth);
+    const probe = d3.select(el).append('svg').attr('width', 0).attr('height', 0);
+    const nameW = measure(probe, pairs.map((p) => p.label)) + 12; probe.remove();
+    const stacked = nameW > w * 0.38;
+    const rowH = stacked ? 40 : 28, top = 24, bottom = 6, by = stacked ? 27 : rowH / 2;
+    const h = top + pairs.length * rowH + bottom;
+    el.style.minHeight = h + 'px';
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('font-size', 12);
+    const labW = stacked ? 0 : nameW;
+    const vals = pairs.flatMap((p) => [p.us, p.ca]);
+    const x = d3.scaleLinear([Math.min(0, d3.min(vals)), Math.max(3, d3.max(vals))], [labW + 8, w - 14]).nice();
+    x.ticks(stacked ? 4 : 6).forEach((t) => {
+      svg.append('line').attr('x1', x(t)).attr('x2', x(t)).attr('y1', top - 4).attr('y2', h - bottom).attr('stroke', t === 0 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)');
+      svg.append('text').attr('x', x(t)).attr('y', top - 10).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(t + '%');
+    });
+    svg.append('line').attr('x1', x(2)).attr('x2', x(2)).attr('y1', top - 4).attr('y2', h - bottom).attr('stroke', 'var(--color-fg)').attr('stroke-opacity', 0.45).attr('stroke-dasharray', '2 3');
+    const g = svg.selectAll('g.row').data(pairs).join('g').attr('class', 'row').attr('transform', (d, i) => `translate(0,${top + i * rowH})`);
+    g.append('text').attr('x', stacked ? 0 : labW - 4).attr('y', stacked ? 13 : by + 4).attr('text-anchor', stacked ? 'start' : 'end')
+      .attr('fill', 'var(--color-fg)').attr('font-weight', (d) => (d.agg ? 600 : 400)).text((d) => d.label);
+    g.append('line').attr('x1', (d) => x(Math.min(d.us, d.ca))).attr('x2', (d) => x(Math.max(d.us, d.ca))).attr('y1', by).attr('y2', by)
+      .attr('stroke', 'var(--cds-chart-muted)').attr('stroke-width', 3).attr('stroke-linecap', 'round');
+    // nearly equal values: nudge the two dots apart vertically so both stay visible
+    const dy = (d, c) => (Math.abs(x(d.us) - x(d.ca)) < 9 ? (c === 'us' ? -4 : 4) : 0);
+    ['us', 'ca'].forEach((c) => g.append('circle').attr('cx', (d) => x(d[c])).attr('cy', (d) => by + dy(d, c)).attr('r', 5.5).attr('fill', CC[c]).attr('stroke', 'var(--color-panel)').attr('stroke-width', 2));
+    g.append('rect').attr('width', w).attr('height', rowH).attr('fill', 'transparent')
+      .on('mousemove', (ev, d) => tp.show(ev, d.label, ['United States: ' + f1(d.us) + '%' + (d.us_name && d.us_name !== d.label ? ' (' + d.us_name + ')' : ''),
+        'Canada: ' + f1(d.ca) + '%' + (d.ca_name && d.ca_name !== d.label ? ' (' + d.ca_name + ')' : '')]))
+      .on('mouseleave', () => tp.hide());
+  }
+  function drawCmpGroups(el, tp) {
+    const order = ['Core services', 'Core goods', 'Food', 'Energy'];
+    const w = Math.max(240, el.clientWidth), barH = 26, gap = 18, labW = Math.min(110, w * 0.3);
+    const rowsC = ['us', 'ca'];
+    const h = rowsC.length * (barH + gap) + 4;
+    el.style.minHeight = h + 'px';
+    const stacks = rowsC.map((c) => { let pos = 0, neg = 0; return { c, segs: order.map((gname) => { const v = CMP.groups[c][gname] || 0; const s = v >= 0 ? { g: gname, v, a: pos, b: pos + v } : { g: gname, v, a: neg + v, b: neg }; if (v >= 0) pos += v; else neg += v; return s; }), pos, neg }; });
+    const valW = 44;
+    const x = d3.scaleLinear([Math.min(0, d3.min(stacks, (s) => s.neg)), d3.max(stacks, (s) => s.pos)], [labW, w - valW]);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('font-size', 12);
+    stacks.forEach((st, i) => {
+      const y0 = 4 + i * (barH + gap);
+      svg.append('text').attr('x', 0).attr('y', y0 + barH / 2 + 4).attr('fill', 'var(--color-fg)').attr('font-weight', 600).text(CS[st.c]);
+      st.segs.forEach((sg) => {
+        if (Math.abs(sg.v) < 1e-6) return;
+        svg.append('rect').attr('x', x(sg.a) + 1).attr('y', y0).attr('width', Math.max(1, x(sg.b) - x(sg.a) - 2)).attr('height', barH).attr('rx', 3)
+          .attr('fill', GROUP_COLORS[sg.g]).attr('fill-opacity', 0.9)
+          .on('mousemove', (ev) => tp.show(ev, CN[st.c] + ' · ' + sg.g, [fpts(sg.v) + ' pts of ' + f1(CMP.heads[st.c]) + '%']))
+          .on('mouseleave', () => tp.hide());
+      });
+      svg.append('text').attr('x', x(st.pos) + 6).attr('y', y0 + barH / 2 + 4).attr('fill', 'var(--color-fg-muted)').attr('font-size', 11.5).text(f1(CMP.heads[st.c]) + '%');
+    });
+    svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', 0).attr('y2', h).attr('stroke', 'var(--cds-chart-axis)');
+    const key = document.getElementById('cmp-groups-key');
+    key.textContent = '';
+    order.forEach((gname) => {
+      const it = document.createElement('span'); const sw = document.createElement('i'); sw.style.background = GROUP_COLORS[gname];
+      const v = document.createElement('span'); v.textContent = 'US ' + fpts(CMP.groups.us[gname]) + ' · CA ' + fpts(CMP.groups.ca[gname]);
+      it.append(sw, gname, v); key.appendChild(it);
+    });
+  }
+
   // ---------- touch: a tap shows the same tooltip a hover does; scrolling hides tooltips
   document.addEventListener('pointerdown', (e) => {
     if (e.pointerType === 'mouse' || !e.target.closest('.cp-chart')) return;
@@ -1333,7 +1558,7 @@
   window.addEventListener('scroll', () => document.querySelectorAll('.cp-tip').forEach((t) => { t.style.opacity = 0; }), { passive: true });
 
   // ---------- controls
-  const TABS = ['overview', 'drivers', 'components', 'momentum', 'regions', 'method'];
+  const TABS = ['overview', 'drivers', 'components', 'momentum', 'regions', 'compare', 'method'];
   const cardOf = (id) => document.getElementById(id).closest('.cp-card');
   const tpTree = tipper('tip-treemap', cardOf('treemap'));
   const tpBars = tipper('tip-bars', cardOf('bars'));
@@ -1344,9 +1569,12 @@
   const tpHist = tipper('tip-hist', cardOf('histchart'));
   const tpContrib = tipper('tip-contrib', cardOf('contribitems'));
   const tpFlow = tipper('tip-flow', cardOf('sankey'));
-  const P = () => ({ tab: 'overview', view: 'yoy', roc_window: '3M', roc_range: '5Y', hist_range: '5Y', flow_measure: 'contrib', ...dash.params() });
+  const tpCmpLine = tipper('tip-cmpline', cardOf('cmpline'));
+  const tpCmpDots = tipper('tip-cmpdots', cardOf('cmpdots'));
+  const tpCmpGroups = tipper('tip-cmpgroups', cardOf('cmpgroups'));
+  const P = () => ({ tab: 'overview', view: 'yoy', roc_window: '3M', roc_range: '5Y', hist_range: '5Y', flow_measure: 'contrib', cmp_measure: 'head', ...dash.params() });
   const seg = (id, key, attr) => document.getElementById(id).addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) dash.setParams({ [key]: b.dataset[attr] }); });
-  seg('viewseg', 'view', 'view'); seg('winseg', 'roc_window', 'win'); seg('rangeseg', 'roc_range', 'range'); seg('histseg', 'hist_range', 'range'); seg('flowseg', 'flow_measure', 'measure');
+  seg('viewseg', 'view', 'view'); seg('winseg', 'roc_window', 'win'); seg('rangeseg', 'roc_range', 'range'); seg('histseg', 'hist_range', 'range'); seg('flowseg', 'flow_measure', 'measure'); seg('cmpseg', 'cmp_measure', 'cmp');
   document.getElementById('tabs').addEventListener('click', (e) => {
     const b = e.target.closest('button[data-tab]');
     if (!b) return;
@@ -1395,6 +1623,7 @@
     press('viewseg', 'view', view); press('winseg', 'win', p.roc_window); press('rangeseg', 'range', p.roc_range); press('histseg', 'range', p.hist_range);
     const measureSel = p.flow_measure === 'weight' ? 'weight' : 'contrib';
     press('flowseg', 'measure', measureSel);
+    press('cmpseg', 'cmp', p.cmp_measure === 'core' ? 'core' : 'head');
     const fd = dash.data('fred');
     const latestDate = fd.status === 'ok' ? fd.data.filter((r) => num(r.headline) != null).map((r) => r.date).sort().at(-1) : null;
     const asDate = (s) => new Date(s + 'T00:00:00Z');
@@ -1420,8 +1649,8 @@
       const hd = dash.data('history');
       const he = document.getElementById('histchart');
       document.getElementById('hist-note').textContent = view === 'yoy'
-        ? 'Points each group added to 12-month inflation. Estimated from FRED indexes and BLS weights.'
-        : 'Points each group added to each month’s change. Estimated from FRED indexes and BLS weights.';
+        ? COUNTRY.histNoteYoy || 'Points each group added to 12-month inflation. Estimated from FRED indexes and BLS weights.'
+        : COUNTRY.histNoteMom || 'Points each group added to each month’s change. Estimated from FRED indexes and BLS weights.';
       if (stateBox(he, hd)) drawHistory(he, hd.data, tpHist, view, p.hist_range);
       // summary: ranked components and subcomponents with bars
       const sb = document.getElementById('sumbox');
@@ -1493,9 +1722,10 @@
         drawContribItems(ci, [...items, ...ct.data.filter((r) => r.view === view && r.kind === 'published')], tpContrib, view);
       }
 
-      const allOfficial = tr.status === 'ok' && tr.data.filter((r) => r.view === view && r.level === 'parent').every((r) => r.basis === 'official');
+      const bases = tr.status === 'ok' ? [...new Set(tr.data.filter((r) => r.view === view && r.level === 'parent').map((r) => r.basis))] : [];
+      const allOfficial = bases.length <= 1;
       document.querySelectorAll('#sharetable .col-basis').forEach((th) => { th.style.display = allOfficial ? 'none' : ''; });
-      document.getElementById('share-note').textContent = 'Grey bar: share of the basket. Coloured bar: share of the ' + label + '.';
+      document.getElementById('share-note').textContent = 'Grey bar: share of the basket. Coloured bar: share of the ' + label + '.' + (bases[0] === 'estimated' && bases.length === 1 ? ' Contributions are estimated from basket weights.' : '');
       const stb = document.querySelector('#sharetable tbody');
       stb.textContent = '';
       if (tr.status === 'ok') {
@@ -1534,7 +1764,7 @@
         ? 'Bars start at the 2% target: right runs hotter, left cooler. Arrows mark bars cut short.'
         : monthName + ' change, starting at 0.17% a month. Arrows mark bars cut short.';
       const val = (r) => (view === 'yoy' ? r.yoyN : r.momN);
-      const lines = (r) => [f1(r.yoyN) + '% 12-mo · ' + signed(r.yoyN - 2) + ' pts vs 2%', f1(r.momN) + '% m/m SA · ' + signed(r.momN - MONTHLY_TARGET, f2) + ' vs 0.17%', 'Weight ' + f2(r.w) + '% of basket'];
+      const lines = (r) => [f1(r.yoyN) + '% 12-mo · ' + signed(r.yoyN - 2) + ' pts vs 2%', f1(r.momN) + '% ' + COUNTRY.momUnit + ' · ' + signed(r.momN - MONTHLY_TARGET, f2) + ' vs 0.17%', 'Weight ' + f2(r.w) + '% of basket'];
       const leaves = comps.filter((r) => r.level === 'leaf').map((r) => ({ label: r.item, group: r.group, v: val(r), w: r.w, lines: lines(r) }));
       const tm = document.getElementById('treemap');
       if (stateBox(tm, cd)) drawTreemap(tm, leaves, tpTree, c);
@@ -1563,7 +1793,7 @@
       if (stateBox(rc, rd)) drawRoc(rc, rd.data, tpRoc, p.roc_window, p.roc_range);
       const rl = dash.data('roc_latest');
       fillTable(document.querySelector('#roctable tbody'), rl.status === 'ok' ? rl.data : [], [
-        (r) => [r.series === 'Supercore' ? 'Supercore*' : r.series],
+        (r) => [lab3(r.series)],
         (r) => [fv(r.m1), cls(r.m1)], (r) => [fv(r.m3), cls(r.m3)], (r) => [fv(r.m6), cls(r.m6)], (r) => [fv(r.m12), cls(r.m12)]
       ]);
       const rm = rl.status === 'ok' && rl.data[0] && rl.data[0].date;
@@ -1573,6 +1803,7 @@
       if (stateBox(ge, mg)) drawGrid(ge, mg.data, tpGrid, CFG.mom);
       const cr = dash.data('comp_rolling');
       const yoyOf = new Map(comps.map((r) => [r.item, r.yoyN]));
+      (mg.status === 'ok' ? mg.data : []).forEach((r) => { if (r.yoy !== undefined && r.yoy !== '' && !yoyOf.has(r.item)) yoyOf.set(r.item, Number(r.yoy)); });
       const depthOf = new Map((mg.status === 'ok' ? mg.data : []).map((r) => [r.item, Number(r.depth)]));
       fillTable(document.querySelector('#rolltable tbody'),
         (cr.status === 'ok' ? cr.data : []).map((r) => ({ ...r, _indent: depthOf.get(r.item) ?? 0, _cls: (depthOf.get(r.item) ?? 0) <= 1 ? 'agg' : '' })),
@@ -1588,11 +1819,11 @@
     if (tab === 'regions') {
       legend(document.getElementById('legend-b'), c);
       document.getElementById('region-note').textContent = view === 'yoy'
-        ? 'States take their census division’s 12-month change to ' + latestLbl + '. Local figures are noisier than the national one.'
-        : 'States take their division’s ' + prevMonth + '→' + monthName + ' change, not seasonally adjusted.';
+        ? (COUNTRY.regionNoteYoy || 'States take their census division’s 12-month change to {latest}. Local figures are noisier than the national one.').replace('{latest}', latestLbl)
+        : (COUNTRY.regionNoteMom || 'States take their division’s {prev}→{month} change, not seasonally adjusted.').replace('{prev}', prevMonth).replace('{month}', monthName);
       document.getElementById('metro-note').textContent = view === 'yoy'
-        ? 'Latest available 12-month change (' + refLbl + ' or ' + latestLbl + ', depending on the metro’s pricing cycle).'
-        : 'Only New York, Los Angeles and Chicago are priced every month; the rest are bimonthly, so they have no 1-month change.';
+        ? (COUNTRY.metroNoteYoy || 'Latest available 12-month change ({ref} or {latest}, depending on the metro’s pricing cycle).').replace('{ref}', refLbl).replace('{latest}', latestLbl)
+        : COUNTRY.metroNoteMom || 'Only New York, Los Angeles and Chicago are priced every month; the rest are bimonthly, so they have no 1-month change.';
       const rg = dash.data('regions');
       const regs = rg.status === 'ok' ? rg.data.map((r) => ({ ...r, v: num(r[c.regionKey]) })) : [];
       const tmEl = document.getElementById('tilemap');
@@ -1605,8 +1836,26 @@
       }
     }
 
+    // ---- US vs Canada
+    if (tab === 'compare' && CMP) {
+      drawCmpKpis(document.getElementById('cmp-kpis'));
+      const cm = p.cmp_measure === 'core' ? 'core' : 'head';
+      document.getElementById('cmp-trend').textContent = (cm === 'core' ? 'Core inflation' : '12-month inflation') + ' since 2020';
+      const lg = document.getElementById('cmp-legend'); lg.textContent = '';
+      [['us', 'United States'], ['ca', 'Canada']].forEach(([c, n]) => { const sp = document.createElement('span'); const sw = document.createElement('span'); sw.className = 'ln'; sw.style.background = CC[c]; sp.append(sw, n); lg.appendChild(sp); });
+      const tsp = document.createElement('span'); const tsw = document.createElement('span'); tsw.style.cssText = 'display:inline-block;width:14px;height:0;border-top:1px dashed var(--color-fg);opacity:.6;margin-right:5px;vertical-align:3px'; tsp.append(tsw, '2% target'); lg.appendChild(tsp);
+      const lg2 = document.getElementById('cmp-legend2'); lg2.textContent = '';
+      [['us', 'United States'], ['ca', 'Canada']].forEach(([c, n]) => { const sp = document.createElement('span'); const sw = document.createElement('span'); sw.style.cssText = 'display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px;background:' + CC[c]; sp.append(sw, n); lg2.appendChild(sp); });
+      const ln = document.getElementById('cmpline'); ln.textContent = ''; drawCmpLine(ln, cm, tpCmpLine);
+      document.getElementById('cmpline-note').textContent = cm === 'core'
+        ? 'Core is all items excluding food and energy in both countries. Not seasonally adjusted, as each country headlines it.'
+        : 'All-items CPI, change from a year earlier, not seasonally adjusted. ' + (CMP.gapNote || '');
+      const dt = document.getElementById('cmpdots'); dt.textContent = ''; drawCmpDots(dt, tpCmpDots);
+      const gr = document.getElementById('cmpgroups'); gr.textContent = ''; drawCmpGroups(gr, tpCmpGroups);
+    }
+
     // ---- methodology: method check table
-    if (tab === 'method') {
+    if (tab === 'method' && document.querySelector('#checktable tbody')) {
       const mc = dash.data('method_check');
       fillTable(document.querySelector('#checktable tbody'), mc.status === 'ok' ? mc.data.filter((r) => r.view === view) : [], [
         (r) => [r.group], (r) => [r.estimated == null ? '—' : f2(r.estimated)], (r) => [r.official == null ? '—' : f2(r.official)],
